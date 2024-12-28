@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: 'Your application description goes here',
 };
 
+
+// Root layout component -> the index.html file will be wrapped with this component
 export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = await getLocale();
 

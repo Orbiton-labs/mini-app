@@ -1,20 +1,63 @@
 'use client';
 
-import { Section, Cell, Image, List } from '@telegram-apps/telegram-ui';
+import { Section, Cell, Image, List, FixedLayout, Button } from '@telegram-apps/telegram-ui';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/components/Link/Link';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher/LocaleSwitcher';
 import { Page } from '@/components/Page';
 
-import tonSvg from './_assets/ton.svg';
+import tonSvg from './_assets/logo.png';
+import { SectionHeader } from '@telegram-apps/telegram-ui/dist/components/Blocks/Section/components/SectionHeader/SectionHeader';
+import { TonConnectButton } from '@tonconnect/ui-react';
 
 export default function Home() {
   const t = useTranslations('i18n');
 
   return (
     <Page back={false}>
-      <List>
+      <FixedLayout
+        vertical='top'
+        style={{
+          padding: '16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {/* Logo */}
+        <Button
+          before={
+            <Image
+              src={tonSvg.src}
+              alt='OribiTON Logo'
+              size={40}
+
+              style={{
+                background: 'transparent',
+                borderWidth: 0,
+              }}
+              // style={{ backgroundColor: '#007AFF' }} // TODO: update later
+            />
+          }
+          size='l'
+          mode='plain'
+        >
+          OrbiTON
+        </Button>
+
+        {/* Connect button */}
+        <TonConnectButton
+          style={{
+
+          }}
+        />
+      </FixedLayout>
+    </Page>
+  );
+}
+
+/* <List>
         <Section
           header="Features"
           footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"
@@ -25,6 +68,7 @@ export default function Home() {
                 <Image
                   src={tonSvg.src}
                   style={{ backgroundColor: '#007AFF' }}
+                  alt='TON Connect'
                 />
               }
               subtitle="Connect your TON wallet"
@@ -56,7 +100,4 @@ export default function Home() {
         <Section header={t('header')} footer={t('footer')}>
           <LocaleSwitcher/>
         </Section>
-      </List>
-    </Page>
-  );
-}
+      </List> */
