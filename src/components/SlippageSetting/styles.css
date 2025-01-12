@@ -1,0 +1,16 @@
+.slippage-setting__slippage-option-root {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+}
+
+.slippage-setting__slippage-option-btn {
+    /* width: fit-content; */
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+
+.slippage-setting__slippage-option-btn-chosen {
+    /* width: fit-content; */
+    border: 1px solid;
+}

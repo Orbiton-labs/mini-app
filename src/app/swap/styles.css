@@ -1,0 +1,20 @@
+.swap__header-root {
+  display: flex;
+  max-width: 500px;
+  width: 100vw;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.swap__header-title {
+  padding: 0 0.75rem;
+}
+
+.swap-root {
+  padding: 1rem 0;
+  width: 100%;
+  /* background-color: yellow; */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -1,0 +1,6 @@
+.select-token-with-balance__root {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  padding: 0.75rem;
+}
