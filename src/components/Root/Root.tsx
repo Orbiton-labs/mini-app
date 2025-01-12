@@ -133,7 +133,7 @@ function RootInner({ children }: PropsWithChildren) {
                   text={text}
                   selected={id === currentTab}
                   onClick={() => {
-                    router.push(id);
+                    router.push(`/${id}`);
                   }}
                 >
                   <Icon />
