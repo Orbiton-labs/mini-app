@@ -60,3 +60,7 @@ body {
   max-height: 100px;
   display: flex;
 }
+
+.web-app-button {
+  display: none !important;
+}

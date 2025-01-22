@@ -69,7 +69,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
       <div className="slippage-setting__header">
         <Divider />
       </div>
-
+      
       <List>
         <Section header="Slippage Tolerance">
           <div className="slippage-setting__slippage-option-root">
