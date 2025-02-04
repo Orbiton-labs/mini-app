@@ -1,0 +1,9 @@
+.page-title__header-root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title__header-title {
+  padding: 0 0.75rem;
+}

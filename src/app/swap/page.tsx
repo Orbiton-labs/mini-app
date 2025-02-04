@@ -1,18 +1,19 @@
 "use client";
 
 import { Page } from "@/components/Page";
-import { Icon36Refresh } from "@/icons/36/refresh";
-import { IconButton, Section, Title } from "@telegram-apps/telegram-ui";
+import { IconButton, Section } from "@telegram-apps/telegram-ui";
 import { usePathname } from "next/navigation";
 
+import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
 import {
   SLIPPAGE_OPTIONS,
   SlippageSetting,
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./styles.css";
+import { Icon36Refresh } from "@/icons/36/refresh";
 
 export default function SwapPage() {
   const pathname = usePathname();
@@ -23,21 +24,26 @@ export default function SwapPage() {
   return (
     <Page>
       <Section
+        className="swap__root"
         header={
-          <div className="swap__header-root">
-            <Title className="swap__header-title" level="1" weight="3">
-              Swap
-            </Title>
-            <div>
-              <IconButton>
-                <Icon36Refresh />
-              </IconButton>
-              <SlippageSetting slippage={slippage} setSlippage={setSlippage} />
-            </div>
-          </div>
+          <PageTitle
+            title="Swap"
+            after={
+              <div>
+                <IconButton>
+                  <Icon36Refresh />
+                </IconButton>
+                <SlippageSetting
+                  slippage={slippage}
+                  setSlippage={setSlippage}
+                />
+              </div>
+            }
+            
+          />
         }
       >
-        <div className="swap-root">
+        <div className="swap__swap">
           <PairInput canSwapOrder={true} />
           <SubmitButton />
         </div>
