@@ -11,9 +11,9 @@ import {
   SlippageSetting,
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
+import { Icon36Refresh } from "@/icons/36/refresh";
 import { useState } from "react";
 import "./styles.css";
-import { Icon36Refresh } from "@/icons/36/refresh";
 
 export default function SwapPage() {
   const pathname = usePathname();
@@ -23,31 +23,32 @@ export default function SwapPage() {
 
   return (
     <Page>
-      <Section
-        className="swap__root"
-        header={
-          <PageTitle
-            title="Swap"
-            after={
-              <div>
-                <IconButton>
-                  <Icon36Refresh />
-                </IconButton>
-                <SlippageSetting
-                  slippage={slippage}
-                  setSlippage={setSlippage}
-                />
-              </div>
-            }
-            
-          />
-        }
-      >
-        <div className="swap__swap">
-          <PairInput canSwapOrder={true} />
-          <SubmitButton />
-        </div>
-      </Section>
+      <div className="swap__root">
+        <Section
+          className="swap__container"
+          header={
+            <PageTitle
+              title="Swap"
+              after={
+                <div>
+                  <IconButton>
+                    <Icon36Refresh />
+                  </IconButton>
+                  <SlippageSetting
+                    slippage={slippage}
+                    setSlippage={setSlippage}
+                  />
+                </div>
+              }
+            />
+          }
+        >
+          <div className="swap__swap">
+            <PairInput canSwapOrder={true} />
+            <SubmitButton />
+          </div>
+        </Section>
+      </div>
     </Page>
   );
 }

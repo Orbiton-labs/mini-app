@@ -1,26 +1,197 @@
 "use client";
 
+import { InputSearch } from "@/components/InputSearch/InputSearch";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
-import { Button, Section } from "@telegram-apps/telegram-ui";
-import { usePathname } from "next/navigation";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  Avatar,
+  AvatarStack,
+  Button,
+  Cell,
+  Section,
+  Text,
+} from "@telegram-apps/telegram-ui";
+import { useReducer, useState } from "react";
+import "./styles.css";
+
+type Token = {
+  name: string;
+  image: string;
+};
+
+type FeeTier = {
+  fee: string;
+  tickSpacing: number;
+};
+
+type Pool = {
+  token1: Token;
+  token2: Token;
+  feeTier: FeeTier;
+  tvl: number;
+  volume24h: number;
+  apr: number;
+};
+
+const listPools: Pool[] = [
+  {
+    token1: {
+      name: "TON",
+      image: "https://assets.dedust.io/images/ton.webp",
+    },
+    token2: {
+      name: "DUST",
+      image: "https://assets.dedust.io/images/dust.gif",
+    },
+    feeTier: {
+      fee: "0.3%",
+      tickSpacing: 100,
+    },
+    tvl: 764213,
+    volume24h: 568560,
+    apr: 278,
+  },
+  {
+    token1: {
+      name: "USDT",
+      image: "https://assets.dedust.io/images/usdt.webp",
+    },
+    token2: {
+      name: "DUST",
+      image: "https://assets.dedust.io/images/dust.gif",
+    },
+    feeTier: {
+      fee: "0.05%",
+      tickSpacing: 60,
+    },
+    tvl: 15728,
+    volume24h: 23200,
+    apr: 150,
+  },
+];
+
+const columnHelper = createColumnHelper<Pool>();
+
+const columns = [
+  columnHelper.accessor("token1.name", {
+    id: "pool",
+    header: "Pool",
+    cell: (info) => {
+      const row = info.row.original;
+      return (
+        <Cell
+          before={
+            <AvatarStack className="pools_avatar-stack">
+              <Avatar size={28} src={row.token1.image} />
+              <Avatar
+                style={{
+                  marginLeft: -5,
+                }}
+                size={28}
+                src={row.token2.image}
+              />
+            </AvatarStack>
+          }
+          after
+        >
+          <Text weight="2">
+            {row.token1.name} - {row.token2.name}
+          </Text>
+          <Text className="fee_tier" weight="2">
+            {row.feeTier.fee}
+          </Text>
+        </Cell>
+      );
+    },
+  }),
+  columnHelper.accessor("tvl", {
+    id: "tvl",
+    header: "TVL",
+    cell: (info) => <Text weight="3">{info.getValue()}</Text>,
+  }),
+  columnHelper.accessor("volume24h", {
+    id: "volume24h",
+    header: "Volume (24H)",
+    cell: (info) => <Text weight="3">{info.getValue()}</Text>,
+  }),
+  columnHelper.accessor("apr", {
+    id: "apr",
+    header: "APR",
+    cell: (info) => <Text weight="3">{info.getValue()}%</Text>,
+  }),
+];
 
 export default function PoolsPage() {
-  const pathname = usePathname();
+  const [data, _setData] = useState(() => [...listPools]);
+  const rerender = useReducer(() => ({}), {})[1];
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <Page>
-      <Section
-        header={
-          <PageTitle
-            title="Pools"
-            after={
-              <Button mode="filled" size="s">
-                Create Pool
-              </Button>
-            }
-          />
-        }
-      ></Section>
+      <div className="pools__root">
+        <Section
+          className="pools_list-section"
+          header={
+            <PageTitle
+              title="Pools"
+              after={
+                <Button mode="filled" size="s">
+                  Create Pool
+                </Button>
+              }
+            />
+          }
+        >
+          <InputSearch />
+          <div className="pools_wrapper">
+            <table className="pools_table-wrapper">
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id}>
+                        <Text weight="3">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </Text>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Section>
+      </div>
     </Page>
   );
 }

@@ -1,4 +1,11 @@
 .swap__root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.swap__container {
   max-width: 500px;
 }
 

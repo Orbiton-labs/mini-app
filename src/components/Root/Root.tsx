@@ -122,7 +122,9 @@ function RootInner({ children }: PropsWithChildren) {
           <Divider />
         </FixedLayout>
 
-        <div className="content__root">{children}</div>
+        {/* <div className="content__root"> */}
+          {children}
+          {/* </div> */}
 
         <FixedLayout vertical="bottom">
           <Tabbar className="fixed-footer__tab-bar">
