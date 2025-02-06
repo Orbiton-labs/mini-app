@@ -1,7 +1,6 @@
 import { Icon28Wallet } from "@/icons/28/wallet";
 import { Button, Text } from "@telegram-apps/telegram-ui";
 import { FC } from "react";
-import "./styles.css";
 
 export interface ChoosePercentOfBalanceProps {}
 

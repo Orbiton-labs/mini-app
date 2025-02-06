@@ -13,7 +13,6 @@ import {
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { Icon36Refresh } from "@/icons/36/refresh";
 import { useState } from "react";
-import "./styles.css";
 
 export default function SwapPage() {
   const pathname = usePathname();
@@ -23,9 +22,9 @@ export default function SwapPage() {
 
   return (
     <Page>
-      <div className="swap__root">
+      <div className="flex justify-center items-center min-h-screen">
         <Section
-          className="swap__container"
+          className="max-w-[500px]"
           header={
             <PageTitle
               title="Swap"
@@ -43,7 +42,7 @@ export default function SwapPage() {
             />
           }
         >
-          <div className="swap__swap">
+          <div className="w-full flex flex-col gap-4 px-0 py-4">
             <PairInput canSwapOrder={true} />
             <SubmitButton />
           </div>

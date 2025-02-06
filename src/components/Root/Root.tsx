@@ -31,7 +31,6 @@ import { Icon36Explore } from "@/icons/36/explore";
 import { Icon36Pool } from "@/icons/36/pool";
 import { Icon36Portfolio } from "@/icons/36/portfolio";
 import { Icon36Swap } from "@/icons/36/swap";
-import "./styles.css";
 
 const TABS = [
   {
@@ -103,14 +102,14 @@ function RootInner({ children }: PropsWithChildren) {
         appearance={isDark ? "dark" : "light"}
         platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
       >
-        <FixedLayout vertical="top" className="fixed-header__root">
-          <div className="fixed-header__wrapper ">
-            <div className="fixed-header__logo-wrapper">
+        <FixedLayout vertical="top" className="p-4 flex flex-col items-center gap-2 z-10">
+          <div className="flex justify-between w-full ">
+            <div className="flex items-center justify-between gap-2">
               <Image
                 src={tonSvg.src}
                 alt="OribiTON Logo"
                 size={40}
-                className="fixed-header__logo-image"
+                className="bg-blue-600"
               />
               <Title level="3" weight="2">
                 Orbiton
@@ -122,12 +121,12 @@ function RootInner({ children }: PropsWithChildren) {
           <Divider />
         </FixedLayout>
 
-        {/* <div className="content__root"> */}
-          {children}
-          {/* </div> */}
+        {/* <div className="flex justify-center items-center w-screen min-h-screen"> */}
+        {children}
+        {/* </div> */}
 
         <FixedLayout vertical="bottom">
-          <Tabbar className="fixed-footer__tab-bar">
+          <Tabbar className="flex">
             {TABS.filter((tab) => tab.id !== "welcome").map(
               ({ id, text, Icon }) => (
                 <Tabbar.Item
@@ -160,6 +159,8 @@ export function Root(props: PropsWithChildren) {
       <RootInner {...props} />
     </ErrorBoundary>
   ) : (
-    <div className="root__loading">Loading</div>
+    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+      Loading
+    </div>
   );
 }

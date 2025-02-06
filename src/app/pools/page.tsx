@@ -18,7 +18,6 @@ import {
   Text,
 } from "@telegram-apps/telegram-ui";
 import { useReducer, useState } from "react";
-import "./styles.css";
 
 type Token = {
   name: string;
@@ -139,9 +138,9 @@ export default function PoolsPage() {
 
   return (
     <Page>
-      <div className="pools__root">
+      <div className="flex justify-center items-center w-screen min-h-[60vh]">
         <Section
-          className="pools_list-section"
+          className=" w-[90%]"
           header={
             <PageTitle
               title="Pools"
@@ -154,8 +153,8 @@ export default function PoolsPage() {
           }
         >
           <InputSearch />
-          <div className="pools_wrapper">
-            <table className="pools_table-wrapper">
+          <div className=" p-2">
+            <table className="w-full">
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>

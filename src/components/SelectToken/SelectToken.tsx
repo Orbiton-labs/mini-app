@@ -14,7 +14,6 @@ import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays
 import Image from "next/image";
 import { FC } from "react";
 import { InputSearch } from "../InputSearch/InputSearch";
-import "./styles.css";
 
 const listTokens = [
   {
@@ -96,7 +95,7 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
     }
     trigger={
       <Button
-        className="select-token__root"
+        className="px-0 py-8"
         before={
           <Image
             src="https://assets.dedust.io/images/ton.webp"
@@ -119,7 +118,7 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
       <Section>
         <InputSearch />
       </Section>
-      <Section className="select-token__list-token">
+      <Section className="max-h-[60vh]">
         {listTokens.map((option, index) => (
           <Cell
             before={

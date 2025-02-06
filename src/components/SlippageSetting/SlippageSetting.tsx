@@ -13,7 +13,6 @@ import {
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
 import { FC, useState } from "react";
-import "./styles.css";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -71,14 +70,14 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
 
       <List>
         <Section header="Slippage Tolerance">
-          <div className="slippage-setting__slippage-option-root">
+          <div className="flex justify-between px-4 py-2">
             {SLIPPAGE_OPTIONS.map((option, index) => (
               <Cell
                 key={option.value}
                 Component="label"
-                className={`slippage-setting__slippage-option-btn ${
+                className={`border rounded-lg border-solid border-[grey] ${
                   slippage === option.value && !isCustom
-                    ? "slippage-setting__slippage-option-btn-chosen"
+                    ? "border border-solid"
                     : ""
                 }`}
                 onClick={() => {
