@@ -7,7 +7,7 @@ export interface SelectTokenWithInputAmountProps {}
 export const SelectTokenWithInputAmount: FC<
   SelectTokenWithInputAmountProps
 > = ({}) => (
-  <div className="flex justify-between items-center border w-full rounded-lg border-solid">
+  <div className="flex justify-between border w-full rounded-lg border-solid">
     <SelectTokenWithBalance />
     <InputWithCurrencyValue />
   </div>

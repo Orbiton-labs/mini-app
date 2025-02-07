@@ -4,7 +4,7 @@ export interface NationalCurrencyValueProps {}
 
 export const NationalCurrencyValue: FC<NationalCurrencyValueProps> = ({}) => (
   <p
-    className="text-right px-[1.1rem] py-0"
+    className="text-right pb-2 text-xl"
   >
     ≈ $ 0.00
   </p>

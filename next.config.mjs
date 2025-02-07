@@ -20,6 +20,13 @@ const nextConfig = {
       },
     ],
   },
+  redirects: () => ([
+    {
+      source: "/",
+      destination: "/swap",
+      permanent: true,
+    },
+  ]),
 };
 
 export default withNextIntl(nextConfig);

@@ -11,7 +11,7 @@ export const PairInput: FC<PairInputProps> = ({ canSwapOrder = true }) => (
   <div className="flex flex-col items-center gap-1 relative">
     <SelectTokenWithInputAmount />
     {canSwapOrder && (
-      <IconButton className="absolute z-[1] border bg-[white] border-solid border-[black]">
+      <IconButton className="absolute z-[1] border bg-[white] border-solid border-[w]">
         <Icon32SwapVertical />
       </IconButton>
     )}

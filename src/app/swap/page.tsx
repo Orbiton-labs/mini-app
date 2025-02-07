@@ -22,9 +22,9 @@ export default function SwapPage() {
 
   return (
     <Page>
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen -translate-y-5 min-w-">
         <Section
-          className="max-w-[500px]"
+          className="max-w-[500px] w-[90%]"
           header={
             <PageTitle
               title="Swap"

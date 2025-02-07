@@ -5,7 +5,7 @@ import { NationalCurrencyValue } from "../NationCurrencyValue/NationalCurrencyVa
 export interface InputWithCurrencyValueProps {}
 
 export const InputWithCurrencyValue: FC<InputWithCurrencyValueProps> = ({}) => (
-  <div className="flex flex-col p-3">
+  <div className="flex flex-col p-3 justify-between ">
     <Input />
     <NationalCurrencyValue />
   </div>

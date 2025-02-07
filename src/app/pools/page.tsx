@@ -140,7 +140,7 @@ export default function PoolsPage() {
     <Page>
       <div className="flex justify-center items-center w-screen min-h-[60vh]">
         <Section
-          className=" w-[90%]"
+          className="w-[90%]"
           header={
             <PageTitle
               title="Pools"

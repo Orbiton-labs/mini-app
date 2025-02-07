@@ -95,7 +95,6 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
     }
     trigger={
       <Button
-        className="px-0 py-8"
         before={
           <Image
             src="https://assets.dedust.io/images/ton.webp"
