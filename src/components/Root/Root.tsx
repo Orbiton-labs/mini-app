@@ -107,7 +107,7 @@ function RootInner({ children }: PropsWithChildren) {
             <div className="flex items-center justify-between gap-2">
               <Image
                 src={tonSvg.src}
-                alt="OribiTON Logo"
+                alt="OrbiTON Logo"
                 size={40}
                 className="bg-blue-600"
               />

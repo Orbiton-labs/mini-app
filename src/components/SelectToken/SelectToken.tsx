@@ -105,7 +105,7 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
         }
         after={<Icon28ArrowDown />}
       >
-        TONS
+        TONS1
       </Button>
     }
   >

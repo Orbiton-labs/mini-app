@@ -17,6 +17,7 @@ import {
   Section,
   Text,
 } from "@telegram-apps/telegram-ui";
+import { useRouter } from "next/navigation";
 import { useReducer, useState } from "react";
 
 type Token = {
@@ -130,6 +131,8 @@ export default function PoolsPage() {
   const [data, _setData] = useState(() => [...listPools]);
   const rerender = useReducer(() => ({}), {})[1];
 
+  const router = useRouter();
+
   const table = useReactTable({
     data,
     columns,
@@ -138,14 +141,18 @@ export default function PoolsPage() {
 
   return (
     <Page>
-      <div className="flex justify-center items-center w-screen min-h-[60vh]">
+      <div className="flex justify-center w-screen mt-[80.5px]">
         <Section
           className="w-[90%]"
           header={
             <PageTitle
               title="Pools"
               after={
-                <Button mode="filled" size="s">
+                <Button
+                  mode="filled"
+                  size="s"
+                  onClick={() => router.push("create-pool")}
+                >
                   Create Pool
                 </Button>
               }
@@ -154,12 +161,12 @@ export default function PoolsPage() {
         >
           <InputSearch />
           <div className=" p-2">
-            <table className="w-full">
-              <thead>
+            <table className="flex w-full flex-col">
+              <thead className="w-full">
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id}>
+                  <tr className="flex w-full" key={headerGroup.id}>
+                    {headerGroup.headers.map((header: any) => (
+                      <th className="flex-1 md:first:block first:hidden" key={header.id}>
                         <Text weight="3">
                           {header.isPlaceholder
                             ? null
@@ -173,11 +180,11 @@ export default function PoolsPage() {
                   </tr>
                 ))}
               </thead>
-              <tbody>
+              <tbody className="flex w-full flex-col">
                 {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
+                  <tr className="w-full md:flex grid grid-cols-3 grid-rows-2" key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
+                      <td className="first:col-span-3 flex-1" key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
