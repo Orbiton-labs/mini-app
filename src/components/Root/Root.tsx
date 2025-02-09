@@ -99,6 +99,7 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
       <AppRoot
+        className={`${isDark ? 'theme-black' : ''}`}
         appearance={isDark ? "dark" : "light"}
         platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
       >
@@ -112,7 +113,7 @@ function RootInner({ children }: PropsWithChildren) {
                 className="bg-blue-600"
               />
               <Title level="3" weight="2">
-                Orbiton
+                Orbiton {isDark ? 'hi' : 'hu'}
               </Title>
             </div>
 
