@@ -1,5 +1,6 @@
 import { Icon28ArrowDown } from "@/icons/28/arrow-down";
 import { Icon28Close } from "@/icons/28/close";
+import { Token } from "@/types/Token";
 import {
   Button,
   Cell,
@@ -15,72 +16,11 @@ import Image from "next/image";
 import { FC } from "react";
 import { InputSearch } from "../InputSearch/InputSearch";
 
-const listTokens = [
-  {
-    name: "TON",
-    image: "https://assets.dedust.io/images/ton.webp",
-    balance: "10.00",
-  },
-  {
-    name: "DUST",
-    image: "https://assets.dedust.io/images/dust.gif",
-    balance: "1230.75",
-  },
-  {
-    name: "USDT",
-    image: "https://assets.dedust.io/images/usdt.webp",
-    balance: "65.99",
-  },
-  {
-    name: "TON",
-    image: "https://assets.dedust.io/images/ton.webp",
-    balance: "10.00",
-  },
-  {
-    name: "DUST",
-    image: "https://assets.dedust.io/images/dust.gif",
-    balance: "1230.75",
-  },
-  {
-    name: "USDT",
-    image: "https://assets.dedust.io/images/usdt.webp",
-    balance: "65.99",
-  },
-  {
-    name: "TON",
-    image: "https://assets.dedust.io/images/ton.webp",
-    balance: "10.00",
-  },
-  {
-    name: "DUST",
-    image: "https://assets.dedust.io/images/dust.gif",
-    balance: "1230.75",
-  },
-  {
-    name: "USDT",
-    image: "https://assets.dedust.io/images/usdt.webp",
-    balance: "65.99",
-  },
-  {
-    name: "TON",
-    image: "https://assets.dedust.io/images/ton.webp",
-    balance: "0",
-  },
-  {
-    name: "DUST",
-    image: "https://assets.dedust.io/images/dust.gif",
-    balance: "0",
-  },
-  {
-    name: "USDT",
-    image: "https://assets.dedust.io/images/usdt.webp",
-    balance: "0",
-  },
-];
+export interface SelectTokenProps {
+  tokens: Token[];
+}
 
-export interface SelectTokenProps {}
-
-export const SelectToken: FC<SelectTokenProps> = ({}) => (
+export const SelectToken: FC<SelectTokenProps> = ({ tokens }) => (
   <Modal
     header={
       <ModalHeader
@@ -105,7 +45,7 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
         }
         after={<Icon28ArrowDown />}
       >
-        TONS1
+        TON
       </Button>
     }
   >
@@ -118,7 +58,7 @@ export const SelectToken: FC<SelectTokenProps> = ({}) => (
         <InputSearch />
       </Section>
       <Section className="max-h-[60vh]">
-        {listTokens.map((option, index) => (
+        {tokens.map((option, index) => (
           <Cell
             before={
               <Image

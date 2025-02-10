@@ -113,7 +113,7 @@ function RootInner({ children }: PropsWithChildren) {
                 className="bg-blue-600"
               />
               <Title level="3" weight="2">
-                Orbiton {isDark ? 'hi' : 'hu'}
+                Orbiton
               </Title>
             </div>
 

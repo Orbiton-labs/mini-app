@@ -2,7 +2,6 @@
 
 import { Page } from "@/components/Page";
 import { IconButton, Section } from "@telegram-apps/telegram-ui";
-import { usePathname } from "next/navigation";
 
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
@@ -13,15 +12,13 @@ import {
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { Icon36Refresh } from "@/icons/36/refresh";
 import { useState } from "react";
-import { useSignal, miniApp } from "@telegram-apps/sdk-react";
+import { useSwap } from "./hooks/useSwap";
 
 export default function SwapPage() {
-  const pathname = usePathname();
-
-  // MOCKING
+  // TODO: remove this later
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
 
-  const isDark = useSignal(miniApp.isDark);
+  const { tokens } = useSwap();
 
   return (
     <Page>
@@ -46,7 +43,7 @@ export default function SwapPage() {
           }
         >
           <div className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}>
-            <PairInput canSwapOrder={true} />
+            <PairInput canSwapOrder={true} tokens={tokens} />
             <SubmitButton />
           </div>
         </Section>

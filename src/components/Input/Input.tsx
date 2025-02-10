@@ -8,7 +8,7 @@ export const Input: FC<InputProps> = ({}) => (
     style={{
       fontSize: '150%'
     }}
-    className="w-[100%] text-right mt-[0.3rem] py-2  border-0 border-solid outline-0 outline-transparent"
+    className="w-[100%] text-right py-1  border-0 border-solid outline-0 outline-transparent"
     type="number"
   ></input>
 );
