@@ -4,15 +4,22 @@ import { InputWithCurrencyValue } from "../InputWithCurrencyValue/InputWithCurre
 import { SelectTokenWithBalance } from "../SelectTokenWithBalance/SelectTokenWithBalance";
 
 export interface SelectTokenWithInputAmountProps {
-  tokens: Token[];
+  selectedToken: Token | null;
+  tokenList: Token[];
+  setToken: (token: Token) => void;
   hideBalance?: boolean;
 }
 
 export const SelectTokenWithInputAmount: FC<
   SelectTokenWithInputAmountProps
-> = ({ hideBalance, tokens }) => (
+> = ({ selectedToken, setToken, tokenList, hideBalance }) => (
   <div className="flex justify-between border w-full rounded-lg border-solid">
-    <SelectTokenWithBalance hideBalance={hideBalance} tokens={tokens}/>
+    <SelectTokenWithBalance
+      hideBalance={hideBalance}
+      tokenList={tokenList}
+      selectedToken={selectedToken}
+      setToken={setToken}
+    />
     <InputWithCurrencyValue />
   </div>
 );

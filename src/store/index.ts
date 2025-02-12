@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { createTokenSlice, TokenSlice } from "./token";
+import { createPairSlice, PairSlice } from "./pair";
 
-export type BoundStore = TokenSlice;
+export type BoundStore = PairSlice;
 
 export const useBoundStore = create<BoundStore>((...a) => ({
-  ...createTokenSlice(...a),
+  ...createPairSlice(...a),
 }));

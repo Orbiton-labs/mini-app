@@ -4,16 +4,28 @@ import { ChoosePercentOfBalance } from "../ChoosePercentOfBalance/ChoosePercentO
 import { SelectToken } from "../SelectToken/SelectToken";
 
 export interface SelectTokenWithBalanceProps {
-  tokens: Token[];
+  selectedToken: Token | null;
+  tokenList: Token[];
+  setToken: (token: Token) => void;
   hideBalance?: boolean;
 }
 
 export const SelectTokenWithBalance: FC<SelectTokenWithBalanceProps> = ({
-  tokens,
+  selectedToken,
+  tokenList,
+  setToken,
   hideBalance = false,
 }) => (
   <div className="flex flex-col p-3 justify-between">
-    <SelectToken tokens={tokens}/>
-    {!hideBalance && <ChoosePercentOfBalance />}
+    <SelectToken
+      selectedToken={selectedToken}
+      tokenList={tokenList}
+      setToken={setToken}
+    />
+    {!hideBalance && (
+      <ChoosePercentOfBalance
+        balance={selectedToken?.balance ? selectedToken.balance : "0.00"}
+      />
+    )}
   </div>
 );

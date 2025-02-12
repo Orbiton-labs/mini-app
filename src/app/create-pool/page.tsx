@@ -33,7 +33,13 @@ export default function CreatePoolPage() {
           header={<PageTitle title="Create Pool" />}
         >
           <div className="w-full flex flex-col gap-4 px-0 py-4">
-            <PairInput canSwapOrder={true} hideBalance={true} />
+            <PairInput
+              token1={null}
+              token2={null}
+              reverseOrder={() => {}}
+              canSwapOrder={true}
+              hideBalance={true}
+            />
             <div className="w-full flex gap-3">
               {FEE_TIERS.map((e) => {
                 return (
