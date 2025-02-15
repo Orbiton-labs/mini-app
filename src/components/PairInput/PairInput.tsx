@@ -9,6 +9,7 @@ export interface PairInputProps {
   token2: Token | null;
   setToken1: (token: Token) => void;
   setToken2: (token: Token) => void;
+  displayTokenList: () => void;
   tokenList: Token[];
   reverseOrder: () => void;
   canSwapOrder: boolean;
@@ -21,6 +22,7 @@ export const PairInput: FC<PairInputProps> = ({
   setToken1,
   setToken2,
   reverseOrder,
+  displayTokenList,
   tokenList,
   hideBalance = false,
   canSwapOrder = true,
@@ -31,6 +33,7 @@ export const PairInput: FC<PairInputProps> = ({
         hideBalance={hideBalance}
         selectedToken={token1}
         tokenList={tokenList}
+        displayTokenList={displayTokenList}
         setToken={setToken1}
       />
       {canSwapOrder && (
@@ -47,6 +50,7 @@ export const PairInput: FC<PairInputProps> = ({
         tokenList={tokenList}
         hideBalance={hideBalance}
         selectedToken={token2}
+        displayTokenList={displayTokenList}
         setToken={setToken2}
       />
     </div>

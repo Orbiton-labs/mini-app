@@ -24,13 +24,18 @@ export default function SwapPage() {
   const setToken2 = useBoundStore((state) => state.setToken2);
   const reverseOrder = useBoundStore((state) => state.reverseOrder);
   const filteredTokens = useBoundStore((state) => state.filteredTokens);
+  const displayTokenList = useBoundStore(
+    (state) => state.displayFilteredListToken
+  );
   const initToken = useBoundStore((state) => state.initToken);
+
+  // const wallet = useBoundStore((state) => state.wallet);
+
+  // console.log(wallet);
 
   useEffect(() => {
     initToken();
   }, []);
-
-  useEffect(() => {}, [token1, token2]);
 
   return (
     <Page>
@@ -62,6 +67,7 @@ export default function SwapPage() {
               setToken2={setToken2}
               tokenList={filteredTokens}
               reverseOrder={reverseOrder}
+              displayTokenList={displayTokenList}
               hideBalance={false}
               canSwapOrder={true}
             />

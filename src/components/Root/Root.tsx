@@ -6,15 +6,8 @@ import {
   useLaunchParams,
   useSignal,
 } from "@telegram-apps/sdk-react";
-import {
-  AppRoot,
-  Divider,
-  FixedLayout,
-  Image,
-  Tabbar,
-  Title,
-} from "@telegram-apps/telegram-ui";
-import { TonConnectButton, TonConnectUIProvider } from "@tonconnect/ui-react";
+import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { type PropsWithChildren, useEffect, useState } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -25,12 +18,12 @@ import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
 import { useTelegramMock } from "@/hooks/useTelegramMock";
 import { usePathname, useRouter } from "next/navigation";
-import tonSvg from "../../app/_assets/ton.svg";
 
 import { Icon36Explore } from "@/icons/36/explore";
 import { Icon36Pool } from "@/icons/36/pool";
 import { Icon36Portfolio } from "@/icons/36/portfolio";
 import { Icon36Swap } from "@/icons/36/swap";
+import { Header } from "../Header/Header";
 
 const TABS = [
   {
@@ -99,28 +92,11 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
       <AppRoot
-        className={`${isDark ? 'theme-black' : ''}`}
+        className={`${isDark ? "theme-black" : ""}`}
         appearance={isDark ? "dark" : "light"}
         platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
       >
-        <FixedLayout vertical="top" className="p-4 flex flex-col items-center gap-2 z-10">
-          <div className="flex justify-between w-full ">
-            <div className="flex items-center justify-between gap-2">
-              <Image
-                src={tonSvg.src}
-                alt="OrbiTON Logo"
-                size={40}
-                className="bg-blue-600"
-              />
-              <Title level="3" weight="2">
-                Orbiton
-              </Title>
-            </div>
-
-            <TonConnectButton />
-          </div>
-          <Divider />
-        </FixedLayout>
+        <Header />
 
         {/* <div className="flex justify-center items-center w-screen min-h-screen"> */}
         {children}

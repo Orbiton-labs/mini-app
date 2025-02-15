@@ -20,12 +20,14 @@ import { InputSearch } from "../InputSearch/InputSearch";
 export interface SelectTokenProps {
   selectedToken: Token | null;
   tokenList: Token[];
+  displayTokenList: () => void;
   setToken: (token: Token) => void;
 }
 
 export const SelectToken: FC<SelectTokenProps> = ({
   selectedToken,
   tokenList,
+  displayTokenList,
   setToken,
 }) => {
   return (
@@ -52,6 +54,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
             />
           }
           after={<Icon28ArrowDown />}
+          onClick={displayTokenList}
         >
           {selectedToken?.token.symbol || "Select token"}
         </Button>

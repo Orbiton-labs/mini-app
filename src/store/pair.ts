@@ -8,11 +8,23 @@ export interface PairSlice {
   token2: Token | null;
   tokensList: Token[];
   filteredTokens: Token[];
+  displayFilteredListToken: () => void;
   reverseOrder: () => void;
   setToken1: (token: Token) => void;
   setToken2: (token: Token) => void;
   initToken: () => void;
 }
+
+const filterTokens = (
+  tokensList: Token[],
+  token1: Token | null,
+  token2: Token | null
+) => {
+  const excludedNames = [token1?.token.name, token2?.token.name].filter(
+    Boolean
+  );
+  return tokensList.filter((t) => !excludedNames.includes(t.token.name));
+};
 
 export const createPairSlice: StateCreator<PairSlice, [], []> = logger(
   (set, get) => ({
@@ -29,40 +41,33 @@ export const createPairSlice: StateCreator<PairSlice, [], []> = logger(
     setToken1: (token) => {
       set((state) => ({
         token1: token,
-        filteredTokens: get().tokensList.filter(
-          (t) =>
-            ![token.token.name, get().token2?.token.name].includes(t.token.name)
-        ),
       }));
     },
     setToken2: (token) => {
       set((state) => ({
         token2: token,
-        filteredTokens: get().tokensList.filter(
-          (t) =>
-            ![get().token1?.token.name, token.token.name].includes(t.token.name)
-        ),
       }));
     },
     initToken: async () => {
       const tokenInfos = await getTokenList();
+      const tokensList = tokenInfos.map((token) => ({ token }));
+      const token1 = tokensList[0] || null;
+      const token2 = tokensList[1] || null;
+
       set((state) => ({
-        filteredTokens: tokenInfos
-          .map((token) => ({ token }))
-          .filter(
-            (token) =>
-              ![get().token1?.token.name, get().token2?.token.name].includes(
-                token.token.name
-              )
-          ),
-        tokensList: tokenInfos.map((token) => ({ token })),
+        tokensList,
+        token1,
+        token2,
       }));
-      if (tokenInfos.length >= 2) {
-        set((state) => ({
-          token1: { token: tokenInfos[0] },
-          token2: { token: tokenInfos[1] },
-        }));
-      }
+    },
+    displayFilteredListToken: () => {
+      set((state) => ({
+        filteredTokens: filterTokens(
+          get().tokensList,
+          get().token1,
+          get().token2
+        ),
+      }));
     },
   })
 );
