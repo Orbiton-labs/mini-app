@@ -1,7 +1,8 @@
-import { getTokenList } from "@/apis/tokens";
+import { getTokenList } from "@/apis/off-chain/tokens";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { StateCreator } from "zustand";
+import { TonWalletSlice } from "./ton-wallet";
 
 export interface PairSlice {
   token1: Token | null;
@@ -71,3 +72,23 @@ export const createPairSlice: StateCreator<PairSlice, [], []> = logger(
     },
   })
 );
+
+// when token 1 and token 2 is set, fetch balance to token1 and token2
+export interface WalletSwapShareSlice {
+  fetchPairBalances: () => void;
+}
+
+export const createWalletSwapShareSlice: StateCreator<
+  PairSlice & TonWalletSlice,
+  [],
+  [],
+  WalletSwapShareSlice
+> = (set, get) => ({
+  fetchPairBalances: async () => {
+    const token1 = get().token1;
+    const token2 = get().token2;
+    const sender = get().sender;
+
+    console.log({ token1, token2, sender });
+  },
+});

@@ -29,9 +29,9 @@ export default function SwapPage() {
   );
   const initToken = useBoundStore((state) => state.initToken);
 
-  // const wallet = useBoundStore((state) => state.wallet);
+  const wallet = useBoundStore((state) => state.wallet);
 
-  // console.log(wallet);
+  console.log(wallet);
 
   useEffect(() => {
     initToken();

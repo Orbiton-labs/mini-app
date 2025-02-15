@@ -51,6 +51,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
               alt="token"
               width={28}
               height={28}
+              className="rounded-full"
             />
           }
           after={<Icon28ArrowDown />}

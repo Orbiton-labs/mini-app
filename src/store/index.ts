@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { createPairSlice, PairSlice } from "./pair";
+import { createPairSlice, PairSlice } from "./swap";
 import { createTonWalletSlice, TonWalletSlice } from "./ton-wallet";
 
 export type BoundStore = PairSlice & TonWalletSlice;

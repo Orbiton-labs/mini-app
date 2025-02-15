@@ -1,5 +1,6 @@
 import { sleep } from "@/helper/time";
 import { TokenInfo, TokenType } from "@/types/Token";
+import { TonClient } from "@ton/ton";
 
 export const getTokenList = async (): Promise<TokenInfo[]> => {
   try {
