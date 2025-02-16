@@ -1,5 +1,5 @@
 import { useBoundStore } from "@/store";
-import { Divider, FixedLayout, Image, Title } from "@telegram-apps/telegram-ui";
+import { Divider, FixedLayout, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
   TonConnectButton,
@@ -55,9 +55,7 @@ export function Header({ props }: any): JSX.Element {
             size={40}
             className="bg-blue-600"
           />
-          <Title level="3" weight="2">
-            Orbiton
-          </Title>
+          <h1>Orbiton</h1>
         </div>
 
         <TonConnectButton />

@@ -99,7 +99,7 @@ export interface WalletSwapShareSlice {
   setToken2: (token: Token) => void;
   setAmount1: (amount: string | undefined) => void;
   setAmount2: (amount: string | undefined) => void;
-  simulateAmountOut: (isFromToken1: boolean) => void;
+  // simulateAmountOut: (isFromToken1: boolean) => void;
 }
 
 const fetchPairBalance = async (

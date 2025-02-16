@@ -15,7 +15,6 @@ import {
   Button,
   Cell,
   Section,
-  Text,
 } from "@telegram-apps/telegram-ui";
 import { useRouter } from "next/navigation";
 import { useReducer, useState } from "react";
@@ -100,12 +99,10 @@ const columns = [
           }
           after
         >
-          <Text weight="2">
+          <h2>
             {row.token1.name} - {row.token2.name}
-          </Text>
-          <Text className="fee_tier" weight="2">
-            {row.feeTier.fee}
-          </Text>
+          </h2>
+          <h2 className="fee_tier">{row.feeTier.fee}</h2>
         </Cell>
       );
     },
@@ -113,17 +110,17 @@ const columns = [
   columnHelper.accessor("tvl", {
     id: "tvl",
     header: "TVL",
-    cell: (info) => <Text weight="3">{info.getValue()}</Text>,
+    cell: (info) => <h3>{info.getValue()}</h3>,
   }),
   columnHelper.accessor("volume24h", {
     id: "volume24h",
     header: "Volume (24H)",
-    cell: (info) => <Text weight="3">{info.getValue()}</Text>,
+    cell: (info) => <h3>{info.getValue()}</h3>,
   }),
   columnHelper.accessor("apr", {
     id: "apr",
     header: "APR",
-    cell: (info) => <Text weight="3">{info.getValue()}%</Text>,
+    cell: (info) => <h3>{info.getValue()}%</h3>,
   }),
 ];
 
@@ -166,15 +163,18 @@ export default function PoolsPage() {
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr className="flex w-full" key={headerGroup.id}>
                     {headerGroup.headers.map((header: any) => (
-                      <th className="flex-1 md:first:block first:hidden" key={header.id}>
-                        <Text weight="3">
+                      <th
+                        className="flex-1 md:first:block first:hidden"
+                        key={header.id}
+                      >
+                        <h3>
                           {header.isPlaceholder
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
                                 header.getContext()
                               )}
-                        </Text>
+                        </h3>
                       </th>
                     ))}
                   </tr>
@@ -182,7 +182,10 @@ export default function PoolsPage() {
               </thead>
               <tbody className="flex w-full flex-col">
                 {table.getRowModel().rows.map((row) => (
-                  <tr className="w-full md:flex grid grid-cols-3 grid-rows-2" key={row.id}>
+                  <tr
+                    className="w-full md:flex grid grid-cols-3 grid-rows-2"
+                    key={row.id}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <td className="first:col-span-3 flex-1" key={cell.id}>
                         {flexRender(

@@ -9,7 +9,6 @@ import {
   List,
   Modal,
   Section,
-  Text,
 } from "@telegram-apps/telegram-ui";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
@@ -82,7 +81,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
                     height={28}
                   />
                 }
-                after={<Text>{option.balance}</Text>}
+                after={<h2>{option.balance}</h2>}
                 Component="label"
               >
                 {option.token.symbol}

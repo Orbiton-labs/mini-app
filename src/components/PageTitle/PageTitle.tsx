@@ -1,4 +1,3 @@
-import { Title } from "@telegram-apps/telegram-ui";
 import { FC, ReactNode } from "react";
 
 export interface PageTitleProps {
@@ -8,9 +7,7 @@ export interface PageTitleProps {
 
 export const PageTitle: FC<PageTitleProps> = ({ title, after }) => (
   <div className="flex w-[full] justify-between items-center py-4">
-    <Title className="px-3 py-0" level="1" weight="3">
-      {title}
-    </Title>
+    <h1 className="px-3 py-0 bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">{title}</h1>
     <div>{after}</div>
   </div>
 );

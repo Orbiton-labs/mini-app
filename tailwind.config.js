@@ -11,8 +11,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "var(--color-primary)"
-      }
+        grey1: "var(--color-grey-1)",
+        grey2: "var(--color-grey-2)",
+        green1: "var(--color-green-1)",
+        green2: "var(--color-green-2)",
+      },
+      fontFamily: {
+        michroma: ["Michroma", "sans-serif"],
+      },
     },
   },
   plugins: [],

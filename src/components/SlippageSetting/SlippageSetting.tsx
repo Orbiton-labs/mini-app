@@ -8,7 +8,6 @@ import {
   List,
   Modal,
   Section,
-  Text,
 } from "@telegram-apps/telegram-ui";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
@@ -116,12 +115,12 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
               }
             }}
             onFocus={() => setIsCustom(true)}
-            after={<Text weight="3">%</Text>}
+            after={<h2>%</h2>}
           />
         </Section>
 
         <Section header="Transaction Deadline">
-          <Input placeholder="30" after={<Text weight="3">minutes</Text>} />
+          <Input placeholder="30" after={<h2>minutes</h2>} />
         </Section>
       </List>
     </Modal>

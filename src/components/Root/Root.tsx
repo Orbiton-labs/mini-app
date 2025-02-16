@@ -92,7 +92,7 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
       <AppRoot
-        className={`${isDark ? "theme-black" : ""}`}
+        className={`bg-gradient-to-b from-grey1 to-grey2 ${isDark ? "theme-black" : ""}`}
         appearance={isDark ? "dark" : "light"}
         platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
       >

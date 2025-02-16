@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Michroma&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,10 +22,22 @@
   }
 
   :root {
-    --color-primary: hsl(0, 0%, 100%);
+    --tgui--font-family: "Michroma", sans-serif !important;
+
+    --color-grey-1: hsl(222, 13%, 15%);
+    --color-grey-2: hsl(240, 6%, 6%);
+    --color-green-1: hsl(145, 93%, 40%);
+    --color-green-2: hsl(113, 93%, 72%);
   }
 
   .theme-black {
-    --color-primary: hsl(0, 0%, 0%);
+    --color-grey-1: hsl(222, 13%, 15%);
+    --color-grey-2: hsl(240, 6%, 6%);
+    --color-green-1: hsl(145, 93%, 40%);
+    --color-green-2: hsl(113, 93%, 72%);
+  }
+
+  * {
+    font-family: "Michroma", sans-serif !important;
   }
 }
