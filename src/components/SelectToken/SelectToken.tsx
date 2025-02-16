@@ -71,7 +71,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
         </Section>
         <Section className="max-h-[60vh]">
           {tokenList.map((option, index) => (
-            <ModalClose>
+            <ModalClose key={index}>
               <Cell
                 onClick={() => setToken(option)}
                 before={
@@ -83,7 +83,6 @@ export const SelectToken: FC<SelectTokenProps> = ({
                   />
                 }
                 after={<Text>{option.balance}</Text>}
-                key={index}
                 Component="label"
               >
                 {option.token.symbol}

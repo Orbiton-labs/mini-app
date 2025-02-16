@@ -9,6 +9,8 @@ export interface PairInputProps {
   token2: Token | null;
   setToken1: (token: Token) => void;
   setToken2: (token: Token) => void;
+  setAmount1: (amount: string | undefined) => void;
+  setAmount2: (amount: string | undefined) => void;
   displayTokenList: () => void;
   tokenList: Token[];
   reverseOrder: () => void;
@@ -21,6 +23,8 @@ export const PairInput: FC<PairInputProps> = ({
   token2,
   setToken1,
   setToken2,
+  setAmount1,
+  setAmount2,
   reverseOrder,
   displayTokenList,
   tokenList,
@@ -35,6 +39,7 @@ export const PairInput: FC<PairInputProps> = ({
         tokenList={tokenList}
         displayTokenList={displayTokenList}
         setToken={setToken1}
+        setAmount={setAmount1}
       />
       {canSwapOrder && (
         <IconButton
@@ -52,6 +57,7 @@ export const PairInput: FC<PairInputProps> = ({
         selectedToken={token2}
         displayTokenList={displayTokenList}
         setToken={setToken2}
+        setAmount={setAmount2}
       />
     </div>
   );

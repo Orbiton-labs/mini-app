@@ -33,6 +33,7 @@ const nextConfig = {
       permanent: true,
     },
   ],
+  reactStrictMode: false,
 };
 
 export default withNextIntl(nextConfig);

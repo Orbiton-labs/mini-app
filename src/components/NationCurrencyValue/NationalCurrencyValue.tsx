@@ -1,11 +1,16 @@
 import { FC } from "react";
 
-export interface NationalCurrencyValueProps {}
+export interface NationalCurrencyValueProps {
+  value: string;
+  currency?: string;
+}
 
-export const NationalCurrencyValue: FC<NationalCurrencyValueProps> = ({}) => (
-  <p
-    className="text-right pb-2 text-xl"
-  >
-    ≈ $ 0.00
+export const NationalCurrencyValue: FC<NationalCurrencyValueProps> = ({
+  value,
+  currency = "$",
+}) => (
+  <p className="text-right pb-2 text-xl">
+    ≈ {currency}
+    {value}
   </p>
 );
