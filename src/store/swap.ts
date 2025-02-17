@@ -1,6 +1,8 @@
 import { getUserJettonData } from "@/apis/blockchain/jetton";
+import { simulateSwap } from "@/apis/server/swap";
 import { getTokenList } from "@/apis/server/tokens";
 import { Token } from "@/types/Token";
+import { TransactionSwapEstimation } from "@/types/Transaction";
 import { OpenedContract, Sender } from "@ton/core";
 import {
   JettonMinterWrapper,
@@ -14,8 +16,8 @@ export interface PairSlice {
   token2: Token | null;
   tokensList: Token[];
   filteredTokens: Token[];
+  transactionEstimation?: TransactionSwapEstimation;
   displayFilteredListToken: () => void;
-  reverseOrder: () => void;
   updateTokenBalance1: (balance: string) => void;
   updateTokenBalance2: (balance: string) => void;
   updatePairBalance: (balance1: string, balance2: string) => void;
@@ -37,12 +39,7 @@ export const createPairSlice: StateCreator<PairSlice, [], []> = (set, get) => ({
   token2: null,
   tokensList: [],
   filteredTokens: [],
-  reverseOrder: () => {
-    set((state) => ({
-      token1: state.token2,
-      token2: state.token1,
-    }));
-  },
+
   displayFilteredListToken: () => {
     set((state) => ({
       filteredTokens: filterTokens(
@@ -97,9 +94,9 @@ export interface WalletSwapShareSlice {
   initToken: () => void;
   setToken1: (token: Token) => void;
   setToken2: (token: Token) => void;
-  setAmount1: (amount: string | undefined) => void;
-  setAmount2: (amount: string | undefined) => void;
-  // simulateAmountOut: (isFromToken1: boolean) => void;
+  setAmount1: (amount: string | undefined) => Promise<void>;
+  setAmount2: (amount: string | undefined) => Promise<void>;
+  reverseOrder: () => void;
 }
 
 const fetchPairBalance = async (
@@ -182,8 +179,24 @@ export const createWalletSwapShareSlice: StateCreator<
       get().updateTokenBalance2(res?.jetton.balance);
     }
   },
-  setAmount1: (amount) => {
+  setAmount1: async (amount) => {
     const token = get().token1;
+
+    const token2 = get().token2;
+
+    if (!token2?.token) {
+      console.log("No token 2");
+      return;
+    }
+
+    set((state) => ({
+      token2: {
+        ...token2,
+        amount: "0",
+      },
+      transactionEstimation: undefined,
+    }));
+
     if (token) {
       set((state) => ({
         token1: {
@@ -191,9 +204,33 @@ export const createWalletSwapShareSlice: StateCreator<
           amount,
         },
       }));
+
+      if (!amount) {
+        console.log("enter amount");
+        return;
+      }
+
+      const simulateRes = await simulateSwap(
+        token.token,
+        token2?.token,
+        amount
+      );
+
+      if (!simulateRes) {
+        console.log("No route found");
+        return;
+      }
+
+      set((state) => ({
+        token2: {
+          ...token2,
+          amount: simulateRes.amountOut,
+        },
+        transactionEstimation: simulateRes.txEstimation,
+      }));
     }
   },
-  setAmount2: (amount) => {
+  setAmount2: async (amount) => {
     const token = get().token2;
     if (token) {
       set((state) => ({
@@ -203,6 +240,52 @@ export const createWalletSwapShareSlice: StateCreator<
         },
       }));
     }
+  },
+  reverseOrder: async () => {
+    set((state) => ({
+      token1: state.token2,
+      token2: state.token1,
+    }));
+
+    const token1 = get().token1;
+    const token2 = get().token2;
+    const amount = token1?.amount;
+
+    // simulate with amount in 1
+    if (!token2?.token) {
+      console.log("No token 2");
+      return;
+    }
+
+    set((state) => ({
+      token2: {
+        ...token2,
+        amount: "0",
+      },
+      transactionEstimation: undefined,
+    }));
+
+    if (!amount) {
+      console.log("enter amount");
+      return;
+    }
+
+    const simulateRes = await simulateSwap(token1.token, token2?.token, amount);
+
+    if (!simulateRes) {
+      console.log("No route found");
+      return;
+    }
+
+    console.log(simulateRes)
+
+    set((state) => ({
+      token2: {
+        ...token2,
+        amount: simulateRes.amountOut,
+      },
+      transactionEstimation: simulateRes.txEstimation,
+    }));
   },
   initToken: async () => {
     const tokenInfos = await getTokenList();

@@ -19,6 +19,7 @@ export const InputWithCurrencyValue: FC<InputWithCurrencyValueProps> = ({
       decimals={
         selectedToken?.token.decimals ? selectedToken.token.decimals : 9
       }
+      value={selectedToken?.amount}
     />
     <NationalCurrencyValue
       value={

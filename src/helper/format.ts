@@ -5,7 +5,7 @@ export const printBigInt = (
   decimals: number,
   fixed: number = 2
 ): string => {
-  return new BigNumber(value).div(10 ** decimals).toFixed(fixed);
+  return new BigNumber(value).div(10 ** decimals).toFixed(fixed).replace(/\.?0+$/, '');
 };
 
 export const bigIntToUsd = (
@@ -21,7 +21,7 @@ export const bigIntToUsd = (
   return new BigNumber(value)
     .div(10 ** decimals)
     .multipliedBy(priceUsd)
-    .toFixed(fixed);
+    .toFixed(fixed).replace(/\.?0+$/, '');
 };
 
 export const numberToBigInt = (value: string, decimals: number): string => {

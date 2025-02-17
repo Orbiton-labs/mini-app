@@ -10,6 +10,7 @@ import {
   SlippageSetting,
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
+import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon36Refresh } from "@/icons/36/refresh";
 import { useBoundStore } from "@/store";
 import { useEffect, useState } from "react";
@@ -30,6 +31,9 @@ export default function SwapPage() {
     (state) => state.displayFilteredListToken
   );
   const initToken = useBoundStore((state) => state.initToken);
+  const transactionEstimation = useBoundStore(
+    (state) => state.transactionEstimation
+  );
 
   useEffect(() => {
     initToken();
@@ -72,6 +76,32 @@ export default function SwapPage() {
               canSwapOrder={true}
             />
             <SubmitButton />
+            {transactionEstimation && (
+              <TransactionSimulation
+                infos={[
+                  {
+                    key: "Price",
+                    data: "= 0.2443 TON / USDT",
+                  },
+                  {
+                    key: "Price impact",
+                    data: "0.00 %",
+                  },
+                  {
+                    key: "Minimum received",
+                    data: "0.241914 TON",
+                  },
+                  {
+                    key: "Slippage tolerance",
+                    data: "1.00 %",
+                  },
+                  {
+                    key: "Fee",
+                    data: "0.3% / 0.003 TON",
+                  },
+                ]}
+              />
+            )}
           </div>
         </Section>
       </div>
