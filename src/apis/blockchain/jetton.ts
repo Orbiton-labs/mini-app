@@ -15,11 +15,11 @@ export const getUserJettonData = async (
   balance: string;
 }> => {
   try {
-    return {
-      minter: null,
-      wallet: null,
-      balance: "0",
-    };
+    // return {
+    //   minter: null,
+    //   wallet: null,
+    //   balance: "0",
+    // };
 
     if (!jettonMaster) {
       const balance = await getTonNativeBalance(sender.address!);

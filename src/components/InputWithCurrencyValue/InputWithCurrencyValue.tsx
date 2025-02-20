@@ -13,7 +13,7 @@ export const InputWithCurrencyValue: FC<InputWithCurrencyValueProps> = ({
   selectedToken,
   setAmount,
 }) => (
-  <div className="flex flex-col p-3 gap-2 justify-between">
+  <div className="flex flex-col gap-2 justify-between">
     <Input
       setValue={setAmount}
       decimals={

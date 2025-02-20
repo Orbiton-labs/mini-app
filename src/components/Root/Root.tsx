@@ -19,11 +19,9 @@ import { useDidMount } from "@/hooks/useDidMount";
 import { useTelegramMock } from "@/hooks/useTelegramMock";
 import { usePathname, useRouter } from "next/navigation";
 
-import { Icon36Explore } from "@/icons/36/explore";
-import { Icon36Pool } from "@/icons/36/pool";
-import { Icon36Portfolio } from "@/icons/36/portfolio";
 import { Icon36Swap } from "@/icons/36/swap";
 import { Header } from "../Header/Header";
+import { IconSwap } from "@/icons/fixed/arrow-up-arrow-down";
 
 const TABS = [
   {
@@ -34,23 +32,23 @@ const TABS = [
   {
     id: "swap",
     text: "Swap",
-    Icon: Icon36Swap,
+    Icon: IconSwap,
   },
-  {
-    id: "pools",
-    text: "Pools",
-    Icon: Icon36Pool,
-  },
-  {
-    id: "explore",
-    text: "Explore",
-    Icon: Icon36Explore,
-  },
-  {
-    id: "portfolio",
-    text: "Portfolio",
-    Icon: Icon36Portfolio,
-  },
+  // {
+  //   id: "pools",
+  //   text: "Pools",
+  //   Icon: Icon36Pool,
+  // },
+  // {
+  //   id: "explore",
+  //   text: "Explore",
+  //   Icon: Icon36Explore,
+  // },
+  // {
+  //   id: "portfolio",
+  //   text: "Portfolio",
+  //   Icon: Icon36Portfolio,
+  // },
 ];
 
 function RootInner({ children }: PropsWithChildren) {
@@ -92,18 +90,18 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
       <AppRoot
-        className={`bg-gradient-to-b from-grey1 to-grey2 ${isDark ? "theme-black" : ""}`}
+        className={`${
+          isDark ? "theme-black" : ""
+        } bg-gradient-to-b from-grey1 to-grey2`}
         appearance={isDark ? "dark" : "light"}
         platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
       >
         <Header />
 
-        {/* <div className="flex justify-center items-center w-screen min-h-screen"> */}
         {children}
-        {/* </div> */}
 
         <FixedLayout vertical="bottom">
-          <Tabbar className="flex">
+          <Tabbar className="flex bg-grey3">
             {TABS.filter((tab) => tab.id !== "welcome").map(
               ({ id, text, Icon }) => (
                 <Tabbar.Item

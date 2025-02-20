@@ -9,8 +9,8 @@ export const NationalCurrencyValue: FC<NationalCurrencyValueProps> = ({
   value,
   currency = "$",
 }) => (
-  <p className="text-right pb-2 text-xl">
+  <span className="text-right text-sm">
     ≈ {currency}
     {value}
-  </p>
+  </span>
 );

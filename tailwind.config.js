@@ -13,8 +13,13 @@ module.exports = {
       colors: {
         grey1: "var(--color-grey-1)",
         grey2: "var(--color-grey-2)",
+        grey3: "var(--color-grey-3)",
+        grey4: "var(--color-grey-4)",
         green1: "var(--color-green-1)",
         green2: "var(--color-green-2)",
+        white1: "var(--color-white-1)",
+        black1: "var(--color-black-1)",
+        black2: "var(--color-black-2)",
       },
       fontFamily: {
         michroma: ["Michroma", "sans-serif"],

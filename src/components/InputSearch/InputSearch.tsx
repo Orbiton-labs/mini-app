@@ -1,9 +1,11 @@
 import { Icon28Search } from "@/icons/28/search";
-import { Input } from "@telegram-apps/telegram-ui";
 import { FC } from "react";
 
 export interface InputSearchProps {}
 
 export const InputSearch: FC<InputSearchProps> = ({}) => (
-  <Input placeholder="Find a token by its name" before={<Icon28Search />} />
+  <div>
+    <Icon28Search />
+    <input placeholder="Find a token by its name"></input>
+  </div>
 );

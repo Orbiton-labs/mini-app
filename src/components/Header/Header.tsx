@@ -2,6 +2,7 @@ import { useBoundStore } from "@/store";
 import { Divider, FixedLayout, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
+  THEME,
   TonConnectButton,
   useTonAddress,
   useTonConnectUI,
@@ -45,17 +46,17 @@ export function Header({ props }: any): JSX.Element {
   return (
     <FixedLayout
       vertical="top"
-      className="p-4 flex flex-col items-center gap-2 z-10"
+      className="flex flex-col items-center gap-2 z-10 pt-8 pl-4 pr-4"
     >
-      <div className="flex justify-between w-full ">
+      <div className="flex justify-between w-full border-b-[1px] border-b-grey3 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">
           <Image
             src={tonSvg.src}
             alt="OrbiTON Logo"
-            size={40}
+            size={24}
             className="bg-blue-600"
           />
-          <h1>Orbiton</h1>
+          <span className="text-base">Orbiton</span>
         </div>
 
         <TonConnectButton />
@@ -64,3 +65,12 @@ export function Header({ props }: any): JSX.Element {
     </FixedLayout>
   );
 }
+
+/*
+font-family: Michroma;
+font-weight: 400;
+font-size: Heading/Size Base;
+line-height: 28.8px;
+letter-spacing: -2%;
+text-align: center;
+*/

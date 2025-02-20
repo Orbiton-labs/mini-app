@@ -1,17 +1,9 @@
 import { UNKNOWN_IMAGE_URL } from "@/constants/unknown";
-import { Icon28ArrowDown } from "@/icons/28/arrow-down";
+import { Icon20Chevron } from "@/icons/20/chevron-down";
 import { Icon28Close } from "@/icons/28/close";
 import { Token } from "@/types/Token";
-import {
-  Button,
-  Cell,
-  Divider,
-  List,
-  Modal,
-  Section,
-} from "@telegram-apps/telegram-ui";
+import { Cell, Modal } from "@telegram-apps/telegram-ui";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
-import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
 import Image from "next/image";
 import { FC } from "react";
 import { InputSearch } from "../InputSearch/InputSearch";
@@ -31,65 +23,56 @@ export const SelectToken: FC<SelectTokenProps> = ({
 }) => {
   return (
     <Modal
-      header={
-        <ModalHeader
-          after={
-            <ModalClose>
-              <Icon28Close style={{ color: "var(--tgui--plain_foreground)" }} />
-            </ModalClose>
-          }
-        >
-          Select a token
-        </ModalHeader>
-      }
       trigger={
-        <Button
-          before={
+        <div
+          className="flex justify-between items-center p-2 w-40 bg-grey4 rounded-lg opacity-80"
+          onClick={displayTokenList}
+        >
+          <div className="flex gap-2 justify-between items-center">
             <Image
               src={selectedToken?.token.image || UNKNOWN_IMAGE_URL}
               alt="token"
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               className="rounded-full"
             />
-          }
-          after={<Icon28ArrowDown />}
-          onClick={displayTokenList}
-        >
-          {selectedToken?.token.symbol || "Select token"}
-        </Button>
+            <span className="text-base">
+              {selectedToken?.token.symbol || "Select token"}
+            </span>
+          </div>
+          <Icon20Chevron />
+        </div>
       }
     >
-      <div className="slippage-setting__header">
-        <Divider />
+      <div className="bg-gradient-to-b from-grey1 to-grey2">
+        <div className="flex justify-between items-center">
+          <div></div>
+          <span>Select a token</span>
+          <ModalClose>
+            <Icon28Close style={{ color: "var(--tgui--plain_foreground)" }} />
+          </ModalClose>
+        </div>
+        <InputSearch />
+        {tokenList.map((option, index) => (
+          <ModalClose key={index}>
+            <Cell
+              onClick={() => setToken(option)}
+              before={
+                <Image
+                  src={option.token.image}
+                  alt="token icon"
+                  width={28}
+                  height={28}
+                />
+              }
+              after={<h2>{option.balance}</h2>}
+              Component="label"
+            >
+              {option.token.symbol}
+            </Cell>
+          </ModalClose>
+        ))}
       </div>
-
-      <List>
-        <Section>
-          <InputSearch />
-        </Section>
-        <Section className="max-h-[60vh]">
-          {tokenList.map((option, index) => (
-            <ModalClose key={index}>
-              <Cell
-                onClick={() => setToken(option)}
-                before={
-                  <Image
-                    src={option.token.image}
-                    alt="token icon"
-                    width={28}
-                    height={28}
-                  />
-                }
-                after={<h2>{option.balance}</h2>}
-                Component="label"
-              >
-                {option.token.symbol}
-              </Cell>
-            </ModalClose>
-          ))}
-        </Section>
-      </List>
     </Modal>
   );
 };

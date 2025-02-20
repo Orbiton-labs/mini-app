@@ -1,11 +1,10 @@
-import { Button } from "@telegram-apps/telegram-ui";
 import { FC } from "react";
 
 export interface SubmitButtonProps {}
 
 export const SubmitButton: FC<SubmitButtonProps> = ({}) => (
-  <button className="bg-gradient-to-b from-green1 to-green2">
-    <h1>Connect Wallet</h1>
+  <button className="bg-gradient-to-b from-green1 to-green2 text-base text-black2 py-4 rounded-lg">
+    Enter an amount
   </button>
 );
 

@@ -19,7 +19,7 @@ export const SelectTokenWithBalance: FC<SelectTokenWithBalanceProps> = ({
   displayTokenList,
   hideBalance = false,
 }) => (
-  <div className="flex flex-col p-3 justify-between">
+  <div className="flex flex-col justify-between gap-4">
     <SelectToken
       selectedToken={selectedToken}
       tokenList={tokenList}

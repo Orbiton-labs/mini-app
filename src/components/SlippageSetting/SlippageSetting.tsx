@@ -1,9 +1,8 @@
+import { Icon24Gear } from "@/icons/24/gear";
 import { Icon28Close } from "@/icons/28/close";
-import { Icon36Setting } from "@/icons/36/setting";
 import {
   Cell,
   Divider,
-  IconButton,
   Input,
   List,
   Modal,
@@ -57,11 +56,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
           Transaction Settings
         </ModalHeader>
       }
-      trigger={
-        <IconButton>
-          <Icon36Setting />
-        </IconButton>
-      }
+      trigger={<Icon24Gear />}
     >
       <div className="slippage-setting__header">
         <Divider />
