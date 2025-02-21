@@ -2,7 +2,6 @@ import { useBoundStore } from "@/store";
 import { Divider, FixedLayout, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
-  THEME,
   TonConnectButton,
   useTonAddress,
   useTonConnectUI,
@@ -41,7 +40,7 @@ export function Header({ props }: any): JSX.Element {
         ? Address.parse(tonConnectUI.account?.address)
         : undefined,
     });
-  }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI]);
+  }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI, initWallet]);
 
   return (
     <FixedLayout

@@ -2,9 +2,7 @@
 
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
-import { PairInput } from "@/components/PairInput/PairInput";
-import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
-import { Section, Subheadline } from "@telegram-apps/telegram-ui";
+import { Section } from "@telegram-apps/telegram-ui";
 
 const FEE_TIERS = [
   {
@@ -32,7 +30,7 @@ export default function CreatePoolPage() {
           className="max-w-[500px] w-[90%]"
           header={<PageTitle title="Create Pool" />}
         >
-          <div className="w-full flex flex-col gap-4 px-0 py-4">
+          {/* <div className="w-full flex flex-col gap-4 px-0 py-4">
             <PairInput
               token1={null}
               token2={null}
@@ -51,7 +49,7 @@ export default function CreatePoolPage() {
               })}
             </div>
             <SubmitButton />
-          </div>
+          </div> */}
         </Section>
       </div>
     </Page>

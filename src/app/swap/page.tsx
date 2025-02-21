@@ -36,7 +36,7 @@ export default function SwapPage() {
 
   useEffect(() => {
     initToken();
-  }, []);
+  }, [initToken]);
 
   return (
     <Page>
