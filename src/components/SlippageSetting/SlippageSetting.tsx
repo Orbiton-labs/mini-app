@@ -1,15 +1,7 @@
 import { Icon24Gear } from "@/icons/24/gear";
-import { Icon28Close } from "@/icons/28/close";
-import {
-  Cell,
-  Divider,
-  Input,
-  List,
-  Modal,
-  Section,
-} from "@telegram-apps/telegram-ui";
+import { IconClose } from "@/icons/fixed/close";
+import { Modal } from "@telegram-apps/telegram-ui";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
-import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
 import { FC, useState } from "react";
 
 export interface SlippageSettingProps {
@@ -39,39 +31,24 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
   const [isCustom, setIsCustom] = useState<boolean>(false);
 
   return (
-    <Modal
-      header={
-        <ModalHeader
-          // before={
-          //   <Subheadline level="1" weight="2">
-          //     Transaction Settings
-          //   </Subheadline>
-          // }
-          after={
-            <ModalClose>
-              <Icon28Close style={{ color: "var(--tgui--plain_foreground)" }} />
-            </ModalClose>
-          }
-        >
-          Transaction Settings
-        </ModalHeader>
-      }
-      trigger={<Icon24Gear />}
-    >
-      <div className="slippage-setting__header">
-        <Divider />
-      </div>
-
-      <List>
-        <Section header="Slippage Tolerance">
-          <div className="flex justify-between px-4 py-2">
+    <Modal trigger={<Icon24Gear />}>
+      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl min-h-[45vh] overflow-auto">
+        <div className="flex justify-between items-center mx-4 px-2 py-5">
+          <div className="w-3"></div>
+          <span className="text-base text-white2">Select a token</span>
+          <ModalClose>
+            <IconClose />
+          </ModalClose>
+        </div>
+        <div className="mx-4 px-2">
+          <span className="text-sm text-white2">Slippage Tolerance</span>
+          <div className="mt-2 flex justify-between gap-2 items-center">
             {SLIPPAGE_OPTIONS.map((option, index) => (
-              <Cell
+              <div
                 key={option.value}
-                Component="label"
-                className={`border rounded-lg border-solid border-[grey] ${
+                className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center  ${
                   slippage === option.value && !isCustom
-                    ? "border border-solid"
+                    ? "bg-gradient-to-b from-green1 to-green2 border-none text-black2"
                     : ""
                 }`}
                 onClick={() => {
@@ -80,44 +57,56 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
                 }}
               >
                 {option.value}%
-              </Cell>
+              </div>
             ))}
           </div>
-          <Input
-            header="Custom"
-            placeholder="10"
-            type="number"
-            value={
-              isCustom &&
-              !SLIPPAGE_OPTIONS.map((option) => option.value).includes(slippage)
-                ? slippage
-                : undefined
-            }
-            onChange={(e) => {
-              const value = parseFloat(e.target.value);
-              if (!isNaN(value)) {
-                setSlippage(value);
-              } else {
-                setSlippage(SLIPPAGE_OPTIONS[0].value);
-                setIsCustom(false);
-              }
-            }}
-            onBlur={(e) => {
-              const value = parseFloat(e.target.value);
-              if (isNaN(value)) {
-                setSlippage(SLIPPAGE_OPTIONS[0].value);
-                setIsCustom(false);
-              }
-            }}
-            onFocus={() => setIsCustom(true)}
-            after={<h2>%</h2>}
-          />
-        </Section>
 
-        <Section header="Transaction Deadline">
-          <Input placeholder="30" after={<h2>minutes</h2>} />
-        </Section>
-      </List>
+          <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
+            <input
+              className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
+              placeholder="10"
+              type="number"
+              value={
+                isCustom &&
+                !SLIPPAGE_OPTIONS.map((option) => option.value).includes(
+                  slippage
+                )
+                  ? slippage
+                  : undefined
+              }
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setSlippage(value);
+                } else {
+                  setSlippage(SLIPPAGE_OPTIONS[0].value);
+                  setIsCustom(false);
+                }
+              }}
+              onBlur={(e) => {
+                const value = parseFloat(e.target.value);
+                if (isNaN(value)) {
+                  setSlippage(SLIPPAGE_OPTIONS[0].value);
+                  setIsCustom(false);
+                }
+              }}
+              onFocus={() => setIsCustom(true)}
+            />
+            <h2>%</h2>
+          </div>
+        </div>
+
+        <div className="mx-4 px-2 mt-6">
+          <span className="text-sm text-white2">Transaction Deadline</span>
+          <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
+            <input
+              className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
+              placeholder="30"
+            />
+            <span className="text-sm">minutes</span>
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 };

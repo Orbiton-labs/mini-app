@@ -104,34 +104,34 @@ function RootInner({ children }: PropsWithChildren) {
         {children}
 
         <FixedLayout vertical="bottom">
-          <Tabbar className="flex bg-grey3">
+          <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center ">
             {TABS.filter((tab) => tab.id !== "welcome").map(
-              ({ id, text, Icon }) => (
-                <Tabbar.Item
-                  style={
-                    id === currentTab
-                      ? {
-                          background:
-                            "linear-gradient(to bottom, var(--color-green-1), var(--color-green-2))",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          marginBottom: "1.5rem",
-                        }
-                      : {
-                          color: "var(--color-white-2)",
-                          marginBottom: "1.5rem",
-                        }
-                  }
-                  key={id}
-                  text={text}
-                  selected={id === currentTab}
-                  onClick={() => {
-                    router.push(`/${id}`);
-                  }}
-                >
-                  <Icon isActive={id === currentTab} />
-                </Tabbar.Item>
-              )
+              ({ id, text, Icon }) => {
+                const selected = id === currentTab;
+
+                return (
+                  <div
+                    className={`${
+                      selected
+                        ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
+                        : "text-white-2"
+                    } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
+                    key={id}
+                    onClick={() => router.push(`/${id}`)}
+                  >
+                    <Icon isActive={id === currentTab} />
+                    <span
+                      className={`${
+                        selected
+                          ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
+                          : ""
+                      } text-xs`}
+                    >
+                      {text}
+                    </span>
+                  </div>
+                );
+              }
             )}
           </Tabbar>
         </FixedLayout>

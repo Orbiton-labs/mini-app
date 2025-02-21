@@ -97,6 +97,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
         aliased: true,
         price: "0",
       },
+      
     ];
   } catch (error) {
     console.log("getTokenList: ", error);

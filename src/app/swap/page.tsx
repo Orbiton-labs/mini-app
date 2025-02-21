@@ -68,7 +68,7 @@ export default function SwapPage() {
             canSwapOrder={true}
           />
           <SubmitButton />
-          {transactionEstimation && (
+          {token1?.amount && token2?.amount && transactionEstimation && (
             <TransactionSimulation
               infos={[
                 {

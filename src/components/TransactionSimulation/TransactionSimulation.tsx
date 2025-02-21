@@ -13,8 +13,8 @@ export const TransactionSimulation: FC<TransactionSimulationProps> = ({
   <div className="flex flex-col gap-1">
     {infos.map((info) => (
       <div className="flex flex-row justify-between">
-        <h3>{info.key}</h3>
-        <h3>{info.data}</h3>
+        <span className="text-xs text-white1">{info.key}</span>
+        <span className="text-xs text-white2">{info.data}</span>
       </div>
     ))}
   </div>

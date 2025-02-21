@@ -57,5 +57,10 @@
       var(--color-grey-2, hsl(240, 6%, 6%))
     );
     --tgui--secondary_fill: transparent;
+    @apply appearance-none outline-none;
+  }
+
+  *:focus {
+    @apply appearance-none outline-none;
   }
 }
