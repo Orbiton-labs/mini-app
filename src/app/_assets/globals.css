@@ -12,7 +12,7 @@
 
   html,
   body {
-    overflow-x: hidden;
+    @apply overflow-hidden h-screen w-screen;
   }
 
   input[type="number"]::-webkit-inner-spin-button,
