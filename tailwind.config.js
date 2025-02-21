@@ -18,6 +18,8 @@ module.exports = {
         green1: "var(--color-green-1)",
         green2: "var(--color-green-2)",
         white1: "var(--color-white-1)",
+        white2: "var(--color-white-2)",
+        white3: "var(--color-white-3)",
         black1: "var(--color-black-1)",
         black2: "var(--color-black-2)",
       },

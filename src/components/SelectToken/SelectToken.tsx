@@ -36,7 +36,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
               height={32}
               className="rounded-full"
             />
-            <span className="text-base">
+            <span className="text-base text-white3">
               {selectedToken?.token.symbol || "Select token"}
             </span>
           </div>

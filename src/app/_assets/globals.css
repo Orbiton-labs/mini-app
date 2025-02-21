@@ -30,6 +30,7 @@
     --color-green-2: hsl(113, 93%, 72%);
     --color-white-1: hsl(0, 0%, 70%);
     --color-white-2: hsl(68, 57%, 97%);
+    --color-white-3: hsl(0, 0%, 100%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
   }
@@ -43,6 +44,7 @@
     --color-green-2: hsl(113, 93%, 72%);
     --color-white-1: hsl(0, 0%, 70%);
     --color-white-2: hsl(68, 57%, 97%);
+    --color-white-3: hsl(0, 0%, 100%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
   }

@@ -115,10 +115,12 @@ function RootInner({ children }: PropsWithChildren) {
                             "linear-gradient(to bottom, var(--color-green-1), var(--color-green-2))",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
+                          marginBottom: "1.5rem",
                         }
                       : {
-                        color: "var(--color-white-2)"
-                      }
+                          color: "var(--color-white-2)",
+                          marginBottom: "1.5rem",
+                        }
                   }
                   key={id}
                   text={text}

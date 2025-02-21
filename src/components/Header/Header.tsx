@@ -56,7 +56,7 @@ export function Header({ props }: any): JSX.Element {
             size={24}
             className="bg-blue-600"
           />
-          <span className="text-base">Orbiton</span>
+          <span className="text-base text-white3">Orbiton</span>
         </div>
 
         <TonConnectButton />
