@@ -138,7 +138,7 @@ export default function PoolsPage() {
 
   return (
     <Page>
-      <div className="flex justify-center w-screen mt-[80.5px]">
+      <div className="flex flex-col min-h-screen pt-28 pl-4 pr-4 gap-1">
         <Section
           className="w-[90%]"
           header={

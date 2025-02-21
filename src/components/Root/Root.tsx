@@ -20,8 +20,11 @@ import { useTelegramMock } from "@/hooks/useTelegramMock";
 import { usePathname, useRouter } from "next/navigation";
 
 import { Icon36Swap } from "@/icons/36/swap";
+import { IconExplore } from "@/icons/fixed/explore";
+import { IconPool } from "@/icons/fixed/pool";
+import { IconPortfolio } from "@/icons/fixed/potfolio";
+import { IconSwap } from "@/icons/fixed/swap";
 import { Header } from "../Header/Header";
-import { IconSwap } from "@/icons/fixed/arrow-up-arrow-down";
 
 const TABS = [
   {
@@ -34,21 +37,21 @@ const TABS = [
     text: "Swap",
     Icon: IconSwap,
   },
-  // {
-  //   id: "pools",
-  //   text: "Pools",
-  //   Icon: Icon36Pool,
-  // },
-  // {
-  //   id: "explore",
-  //   text: "Explore",
-  //   Icon: Icon36Explore,
-  // },
-  // {
-  //   id: "portfolio",
-  //   text: "Portfolio",
-  //   Icon: Icon36Portfolio,
-  // },
+  {
+    id: "pools",
+    text: "Pools",
+    Icon: IconPool,
+  },
+  {
+    id: "explore",
+    text: "Explore",
+    Icon: IconExplore,
+  },
+  {
+    id: "portfolio",
+    text: "Portfolio",
+    Icon: IconPortfolio,
+  },
 ];
 
 function RootInner({ children }: PropsWithChildren) {
@@ -105,6 +108,18 @@ function RootInner({ children }: PropsWithChildren) {
             {TABS.filter((tab) => tab.id !== "welcome").map(
               ({ id, text, Icon }) => (
                 <Tabbar.Item
+                  style={
+                    id === currentTab
+                      ? {
+                          background:
+                            "linear-gradient(to bottom, var(--color-green-1), var(--color-green-2))",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                        }
+                      : {
+                        color: "var(--color-white-2)"
+                      }
+                  }
                   key={id}
                   text={text}
                   selected={id === currentTab}
@@ -112,7 +127,7 @@ function RootInner({ children }: PropsWithChildren) {
                     router.push(`/${id}`);
                   }}
                 >
-                  <Icon />
+                  <Icon isActive={id === currentTab} />
                 </Tabbar.Item>
               )
             )}

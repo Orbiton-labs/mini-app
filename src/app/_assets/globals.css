@@ -22,8 +22,6 @@
   }
 
   :root {
-    --tgui--font-family: "Michroma", sans-serif !important;
-
     --color-grey-1: hsl(222, 13%, 15%);
     --color-grey-2: hsl(240, 6%, 6%);
     --color-grey-3: hsl(222, 8%, 24%);
@@ -31,6 +29,7 @@
     --color-green-1: hsl(145, 93%, 40%);
     --color-green-2: hsl(113, 93%, 72%);
     --color-white-1: hsl(0, 0%, 70%);
+    --color-white-2: hsl(68, 57%, 97%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
   }
@@ -43,6 +42,7 @@
     --color-green-1: hsl(145, 93%, 40%);
     --color-green-2: hsl(113, 93%, 72%);
     --color-white-1: hsl(0, 0%, 70%);
+    --color-white-2: hsl(68, 57%, 97%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
   }
@@ -54,5 +54,6 @@
       var(--color-grey-1, hsl(222, 13%, 15%)),
       var(--color-grey-2, hsl(240, 6%, 6%))
     );
+    --tgui--secondary_fill: transparent;
   }
 }
