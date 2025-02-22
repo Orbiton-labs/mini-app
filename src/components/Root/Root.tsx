@@ -24,6 +24,7 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
+import Head from "next/head";
 import { Header } from "../Header/Header";
 
 const TABS = [
@@ -91,52 +92,60 @@ function RootInner({ children }: PropsWithChildren) {
   }, [pathname]);
 
   return (
-    <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
-      <AppRoot
-        className={`${
-          isDark ? "theme-black" : ""
-        } bg-gradient-to-b from-grey1 to-grey2`}
-        appearance={isDark ? "dark" : "light"}
-        platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
-      >
-        <Header />
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        />
+      </Head>
+      <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
+        <AppRoot
+          className={`${
+            isDark ? "theme-black" : ""
+          } bg-gradient-to-b from-grey1 to-grey2`}
+          appearance={isDark ? "dark" : "light"}
+          platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
+        >
+          <Header />
 
-        {children}
+          {children}
 
-        <FixedLayout vertical="bottom">
-          <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center ">
-            {TABS.filter((tab) => tab.id !== "welcome").map(
-              ({ id, text, Icon }) => {
-                const selected = id === currentTab;
+          {/* <FixedLayout vertical="bottom">
+            <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center ">
+              {TABS.filter((tab) => tab.id !== "welcome").map(
+                ({ id, text, Icon }) => {
+                  const selected = id === currentTab;
 
-                return (
-                  <div
-                    className={`${
-                      selected
-                        ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
-                        : "text-white-2"
-                    } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
-                    key={id}
-                    onClick={() => router.push(`/${id}`)}
-                  >
-                    <Icon isActive={id === currentTab} />
-                    <span
+                  return (
+                    <div
                       className={`${
                         selected
-                          ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
-                          : ""
-                      } text-xs`}
+                          ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
+                          : "text-white-2"
+                      } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
+                      key={id}
+                      onClick={() => router.push(`/${id}`)}
                     >
-                      {text}
-                    </span>
-                  </div>
-                );
-              }
-            )}
-          </Tabbar>
-        </FixedLayout>
-      </AppRoot>
-    </TonConnectUIProvider>
+                      <Icon isActive={id === currentTab} />
+                      <span
+                        className={`${
+                          selected
+                            ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
+                            : ""
+                        } text-xs`}
+                      >
+                        {text}
+                      </span>
+                    </div>
+                  );
+                }
+              )}
+            </Tabbar>
+          </FixedLayout> */}
+        </AppRoot>
+      </TonConnectUIProvider>
+    </>
   );
 }
 
