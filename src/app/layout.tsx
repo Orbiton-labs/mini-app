@@ -9,8 +9,14 @@ import "normalize.css/normalize.css";
 import "./_assets/globals.css";
 
 export const metadata: Metadata = {
-  title: "Your Application Title Goes Here",
-  description: "Your application description goes here",
+  title: "Orbiton",
+  description: "Welcome to orbiton",
+  viewport: {
+    width: "device-width",
+    initialScale: 1.0,
+    maximumScale: 1.0,
+    userScalable: false,
+  },
 };
 
 // Root layout component -> the index.html file will be wrapped with this component
