@@ -53,7 +53,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
         </div>
       }
     >
-      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl h-[86vh] overflow-auto">
+      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl h-[86vh] overflow-hidden z-20">
         <div className="flex justify-between items-center mx-4 px-2 py-5">
           <div className="w-3"></div>
           <span className="text-base text-white2">Select a token</span>
