@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { getLocale } from "next-intl/server";
-import type { PropsWithChildren } from "react";
+import { useEffect, useState, type PropsWithChildren } from "react";
 
 import { Root } from "@/components/Root/Root";
 
@@ -27,6 +27,23 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = await getLocale();
 
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <html lang={locale}>
       <Head>
@@ -35,7 +52,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
       </Head>
-      <body className="">
+      <body style={{ width: size.width, height: size.height }}>
         <Root>{children}</Root>
       </body>
     </html>
