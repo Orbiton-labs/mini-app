@@ -97,7 +97,7 @@ function RootInner({ children }: PropsWithChildren) {
         <AppRoot
           className={`${
             isDark ? "theme-black" : ""
-          } bg-gradient-to-b from-grey1 to-grey2`}
+          }`}
           appearance={isDark ? "dark" : "light"}
           platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
         >
@@ -105,7 +105,7 @@ function RootInner({ children }: PropsWithChildren) {
 
           {children}
 
-          {/* <FixedLayout vertical="bottom">
+          <FixedLayout vertical="bottom">
             <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center ">
               {TABS.filter((tab) => tab.id !== "welcome").map(
                 ({ id, text, Icon }) => {
@@ -136,7 +136,7 @@ function RootInner({ children }: PropsWithChildren) {
                 }
               )}
             </Tabbar>
-          </FixedLayout> */}
+          </FixedLayout>
         </AppRoot>
       </TonConnectUIProvider>
     </>

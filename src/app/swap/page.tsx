@@ -40,7 +40,7 @@ export default function SwapPage() {
 
   return (
     <Page back={false}>
-      <div className="flex flex-col min-h-screen pt-28 pl-4 pr-4 gap-1">
+      <div className="flex flex-col pt-28 pl-4 pr-4 gap-1">
         <PageTitle
           title="Swap"
           after={

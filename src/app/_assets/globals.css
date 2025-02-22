@@ -12,7 +12,7 @@
 
   html,
   body {
-    @apply overflow-hidden;
+    @apply overflow-hidden min-h-screen bg-gradient-to-b from-grey1 to-grey2;
   }
 
   input[type="number"]::-webkit-inner-spin-button,

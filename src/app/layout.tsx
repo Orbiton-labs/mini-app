@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
       </Head>
-      <body>
+      <body className="">
         <Root>{children}</Root>
       </body>
     </html>
