@@ -66,36 +66,38 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
           </div>
 
           <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
-            <input
-              className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
-              placeholder="10"
-              type="number"
-              value={
-                isCustom &&
-                !SLIPPAGE_OPTIONS.map((option) => option.value).includes(
-                  slippage
-                )
-                  ? slippage
-                  : undefined
-              }
-              onChange={(e) => {
-                const value = parseFloat(e.target.value);
-                if (!isNaN(value)) {
-                  setSlippage(value);
-                } else {
-                  setSlippage(SLIPPAGE_OPTIONS[0].value);
-                  setIsCustom(false);
+            <form action="">
+              <input
+                className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
+                placeholder="10"
+                type="number"
+                value={
+                  isCustom &&
+                  !SLIPPAGE_OPTIONS.map((option) => option.value).includes(
+                    slippage
+                  )
+                    ? slippage
+                    : undefined
                 }
-              }}
-              onBlur={(e) => {
-                const value = parseFloat(e.target.value);
-                if (isNaN(value)) {
-                  setSlippage(SLIPPAGE_OPTIONS[0].value);
-                  setIsCustom(false);
-                }
-              }}
-              onFocus={() => setIsCustom(true)}
-            />
+                onChange={(e) => {
+                  const value = parseFloat(e.target.value);
+                  if (!isNaN(value)) {
+                    setSlippage(value);
+                  } else {
+                    setSlippage(SLIPPAGE_OPTIONS[0].value);
+                    setIsCustom(false);
+                  }
+                }}
+                onBlur={(e) => {
+                  const value = parseFloat(e.target.value);
+                  if (isNaN(value)) {
+                    setSlippage(SLIPPAGE_OPTIONS[0].value);
+                    setIsCustom(false);
+                  }
+                }}
+                onFocus={() => setIsCustom(true)}
+              />
+            </form>
             <h2>%</h2>
           </div>
         </div>
