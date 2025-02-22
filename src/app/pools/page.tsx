@@ -138,7 +138,7 @@ export default function PoolsPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pt-28 pl-4 pr-4 gap-1">
+      <div className="flex flex-col pl-4 pr-4 gap-1">
         <Section
           className="w-[90%]"
           header={

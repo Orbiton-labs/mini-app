@@ -1,5 +1,5 @@
 import { useBoundStore } from "@/store";
-import { Divider, FixedLayout, Image } from "@telegram-apps/telegram-ui";
+import { Divider, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
   TonConnectButton,
@@ -43,10 +43,7 @@ export function Header({ props }: any): JSX.Element {
   }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI, initWallet]);
 
   return (
-    <FixedLayout
-      vertical="top"
-      className="flex flex-col items-center gap-2 pt-8 pl-4 pr-4"
-    >
+    <div className="flex flex-col items-center gap-2 pt-8 pl-4 pr-4">
       <div className="flex justify-between w-full border-b-[1px] border-b-grey3 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">
           <Image
@@ -61,7 +58,7 @@ export function Header({ props }: any): JSX.Element {
         <TonConnectButton />
       </div>
       <Divider />
-    </FixedLayout>
+    </div>
   );
 }
 

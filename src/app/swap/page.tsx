@@ -1,7 +1,7 @@
 "use client";
 
-import { SlippageSetting } from "@/components/NewSlippageSetting/NewSlippageSetting";
 import { Page } from "@/components/Page";
+import { SlippageSetting } from "@/components/SlippageSetting/SlippageSetting";
 
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
@@ -38,7 +38,7 @@ export default function SwapPage() {
 
   return (
     <Page back={false}>
-      <div className="flex flex-col pt-28 pl-4 pr-4 gap-1">
+      <div className="flex flex-col pl-4 pr-4 gap-1">
         <PageTitle
           title="Swap"
           after={
