@@ -5,9 +5,7 @@ import { Page } from "@/components/Page";
 
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
-import {
-  SLIPPAGE_OPTIONS,
-} from "@/components/SlippageSetting/SlippageSetting";
+import { SLIPPAGE_OPTIONS } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
@@ -40,7 +38,7 @@ export default function SwapPage() {
 
   return (
     <Page back={false}>
-      <div className="flex flex-col pt-28 pl-4 pr-4 gap-1">
+      <div className="flex flex-col pt-28 pl-4 pr-4 gap-1 min-h-screen">
         <PageTitle
           title="Swap"
           after={
@@ -51,9 +49,7 @@ export default function SwapPage() {
           }
         />
 
-        <div
-          className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}
-        >
+        <div className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}>
           <PairInput
             token1={token1}
             token2={token2}
