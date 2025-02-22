@@ -1,8 +1,12 @@
 import { Icon24Gear } from "@/icons/24/gear";
-import { IconClose } from "@/icons/fixed/close";
-import { Modal } from "@telegram-apps/telegram-ui";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { FC, useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -31,15 +35,15 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
   const [isCustom, setIsCustom] = useState<boolean>(false);
 
   return (
-    <Modal trigger={<Icon24Gear />}>
-      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl h-fit overflow-y-hidden">
-        <div className="flex justify-between items-center mx-4 px-2 py-5">
-          <div className="w-3"></div>
-          <span className="text-base text-white2">Select a token</span>
-          <ModalClose>
-            <IconClose />
-          </ModalClose>
-        </div>
+    <Sheet>
+      <SheetTrigger>
+        <Icon24Gear />
+      </SheetTrigger>
+      <SheetContent side={"bottom"}>
+        <SheetHeader>
+          <SheetTitle>Select a token</SheetTitle>
+        </SheetHeader>
+
         <div className="mx-4 px-2">
           <span className="text-sm text-white2">Slippage Tolerance</span>
           <div className="mt-2 flex justify-between gap-2 items-center">
@@ -106,7 +110,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
             <span className="text-sm">minutes</span>
           </div>
         </div>
-      </div>
-    </Modal>
+      </SheetContent>
+    </Sheet>
   );
 };

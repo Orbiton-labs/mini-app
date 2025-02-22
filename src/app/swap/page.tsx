@@ -1,12 +1,12 @@
 "use client";
 
+import { SlippageSetting } from "@/components/NewSlippageSetting/NewSlippageSetting";
 import { Page } from "@/components/Page";
 
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
 import {
   SLIPPAGE_OPTIONS,
-  SlippageSetting,
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
@@ -39,7 +39,7 @@ export default function SwapPage() {
   }, [initToken]);
 
   return (
-    <Page>
+    <Page back={false}>
       <div className="flex flex-col min-h-screen pt-28 pl-4 pr-4 gap-1">
         <PageTitle
           title="Swap"
@@ -52,7 +52,7 @@ export default function SwapPage() {
         />
 
         <div
-          className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary bg-inherit`}
+          className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}
         >
           <PairInput
             token1={token1}
