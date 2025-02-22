@@ -104,6 +104,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
           <span className="text-sm text-white2">Transaction Deadline</span>
           <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
             <input
+              type="number"
               className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
               placeholder="30"
             />
