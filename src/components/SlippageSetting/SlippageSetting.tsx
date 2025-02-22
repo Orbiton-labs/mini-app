@@ -32,7 +32,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
 
   return (
     <Modal trigger={<Icon24Gear />}>
-      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl min-h-[45vh] overflow-hidden z-20">
+      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl max-h-[45vh] overflow-hidden">
         <div className="flex justify-between items-center mx-4 px-2 py-5">
           <div className="w-3"></div>
           <span className="text-base text-white2">Select a token</span>

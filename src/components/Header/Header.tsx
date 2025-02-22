@@ -45,7 +45,7 @@ export function Header({ props }: any): JSX.Element {
   return (
     <FixedLayout
       vertical="top"
-      className="flex flex-col items-center gap-2 z-10 pt-8 pl-4 pr-4"
+      className="flex flex-col items-center gap-2 pt-8 pl-4 pr-4"
     >
       <div className="flex justify-between w-full border-b-[1px] border-b-grey3 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">
