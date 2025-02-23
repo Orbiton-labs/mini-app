@@ -2,11 +2,16 @@ import { UNKNOWN_IMAGE_URL } from "@/constants/unknown";
 import { Icon20Chevron } from "@/icons/20/chevron-down";
 import { IconClose } from "@/icons/fixed/close";
 import { Token } from "@/types/Token";
-import { Modal } from "@telegram-apps/telegram-ui";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import Image from "next/image";
 import { FC } from "react";
 import { InputSearch } from "../InputSearch/InputSearch";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTrigger,
+} from "../ui/drawer";
 
 export interface SelectTokenProps {
   selectedToken: Token | null;
@@ -22,8 +27,8 @@ export const SelectToken: FC<SelectTokenProps> = ({
   setToken,
 }) => {
   return (
-    <Modal
-      trigger={
+    <Drawer>
+      <DrawerTrigger>
         <div
           className="flex justify-between gap-2 w-40 max-w-44 items-center p-2 bg-grey4 rounded-lg opacity-80"
           onClick={displayTokenList}
@@ -51,20 +56,23 @@ export const SelectToken: FC<SelectTokenProps> = ({
             <Icon20Chevron />
           </div>
         </div>
-      }
-    >
-      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl max-h-[86vh] overflow-hidden">
-        <div className="flex justify-between items-center mx-4 px-2 py-5">
-          <div className="w-3"></div>
+      </DrawerTrigger>
+      <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl max-h-[86vh] overflow-hidden  border-none">
+        <DrawerHeader className="flex justify-between items-center mx-4 px-2 py-5">
+          <div className="w-2"></div>
           <span className="text-base text-white2">Select a token</span>
           <ModalClose>
             <IconClose />
           </ModalClose>
-        </div>
+        </DrawerHeader>
+
         <InputSearch />
         {tokenList.map((option, index) => (
           <ModalClose key={index}>
-            <div className="mx-4 flex py-2 gap-2 px-1 justify-start items-center" onClick={() => setToken(option)}>
+            <div
+              className="mx-4 flex py-2 gap-2 px-1 justify-start items-center"
+              onClick={() => setToken(option)}
+            >
               <Image
                 className="rounded-full ml-1"
                 src={option.token.image}
@@ -79,7 +87,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
             </div>
           </ModalClose>
         ))}
-      </div>
-    </Modal>
+      </DrawerContent>
+    </Drawer>
   );
 };

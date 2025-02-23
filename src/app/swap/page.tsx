@@ -1,11 +1,13 @@
 "use client";
 
 import { Page } from "@/components/Page";
-import { SlippageSetting } from "@/components/SlippageSetting/SlippageSetting";
+import {
+  SLIPPAGE_OPTIONS,
+  SlippageSetting,
+} from "@/components/SlippageSetting/SlippageSetting";
 
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
-import { SLIPPAGE_OPTIONS } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";

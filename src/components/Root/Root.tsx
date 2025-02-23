@@ -99,14 +99,14 @@ function RootInner({ children }: PropsWithChildren) {
             isDark ? "theme-black" : ""
           }`}
           appearance={isDark ? "dark" : "light"}
-          platform={["macos", "ios"].includes(lp.platform) ? "ios" : "base"}
+          platform={"base"}
         >
           <Header />
 
           {children}
 
           <FixedLayout vertical="bottom">
-            <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center ">
+            <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center">
               {TABS.filter((tab) => tab.id !== "welcome").map(
                 ({ id, text, Icon }) => {
                   const selected = id === currentTab;

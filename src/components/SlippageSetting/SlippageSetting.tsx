@@ -1,8 +1,13 @@
 import { Icon24Gear } from "@/icons/24/gear";
 import { IconClose } from "@/icons/fixed/close";
-import { Modal } from "@telegram-apps/telegram-ui";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { FC, useState } from "react";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTrigger,
+} from "../ui/drawer";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -31,15 +36,19 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
   const [isCustom, setIsCustom] = useState<boolean>(false);
 
   return (
-    <Modal trigger={<Icon24Gear />}>
-      <div className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl h-fit overflow-y-hidden">
-        <div className="flex justify-between items-center mx-4 px-2 py-5">
-          <div className="w-3"></div>
+    <Drawer>
+      <DrawerTrigger>
+        <Icon24Gear />
+      </DrawerTrigger>
+      <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl border-none">
+        <DrawerHeader className="flex justify-between items-center mx-4 py-5">
+          <div className="w-2"></div>
           <span className="text-base text-white2">Select a token</span>
-          <ModalClose>
+          <DrawerClose asChild>
             <IconClose />
-          </ModalClose>
-        </div>
+          </DrawerClose>
+        </DrawerHeader>
+
         <div className="mx-4 px-2">
           <span className="text-sm text-white2">Slippage Tolerance</span>
           <div className="mt-2 flex justify-between gap-2 items-center">
@@ -49,7 +58,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
                 className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center  ${
                   slippage === option.value && !isCustom
                     ? "bg-gradient-to-b from-green1 to-green2 border-none text-black2"
-                    : ""
+                    : "text-white2"
                 }`}
                 onClick={() => {
                   setIsCustom(false);
@@ -92,21 +101,22 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
               }}
               onFocus={() => setIsCustom(true)}
             />
-            <h2>%</h2>
+            <span className="text-xs text-white1">%</span>
           </div>
         </div>
 
-        <div className="mx-4 px-2 mt-6">
+        <div className="mx-4 px-2 mt-6 pb-6">
           <span className="text-sm text-white2">Transaction Deadline</span>
           <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
             <input
+              type="number"
               className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
               placeholder="30"
             />
-            <span className="text-sm">minutes</span>
+            <span className="text-xs text-white1">minutes</span>
           </div>
         </div>
-      </div>
-    </Modal>
+      </DrawerContent>
+    </Drawer>
   );
 };
