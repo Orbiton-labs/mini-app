@@ -149,8 +149,6 @@ const fetchTokenBalance = async (
   };
 };
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const createWalletSwapShareSlice: StateCreator<
   PairSlice & TonWalletSlice,
   [],
@@ -277,7 +275,7 @@ export const createWalletSwapShareSlice: StateCreator<
       return;
     }
 
-    console.log(simulateRes)
+    console.log(simulateRes);
 
     set((state) => ({
       token2: {
@@ -298,6 +296,8 @@ export const createWalletSwapShareSlice: StateCreator<
       token1,
       token2,
     }));
+
+    get().displayFilteredListToken();
 
     // fetch token balance
     const sender = get().sender;

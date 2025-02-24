@@ -9,3 +9,5 @@ export type TransactionSwapEstimation = {
   };
   route: string[];
 };
+
+export type TransactionCreatePoolEstimation = {};

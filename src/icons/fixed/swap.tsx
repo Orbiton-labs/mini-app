@@ -21,8 +21,8 @@ export const IconSwap = ({ ...restProps }: Icon) => (
         y2="22"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#07C557" />
-        <stop offset="1" stop-color="#82FA73" />
+        <stop stopColor="#07C557" />
+        <stop offset="1" stopColor="#82FA73" />
       </linearGradient>
     </defs>
   </svg>

@@ -11,26 +11,26 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
-import { useBoundStore } from "@/store";
+import { useSwapStore } from "@/store";
 import { useEffect, useState } from "react";
 
 export default function SwapPage() {
   // TODO: remove this later
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
 
-  const token1 = useBoundStore((state) => state.token1);
-  const token2 = useBoundStore((state) => state.token2);
-  const setToken1 = useBoundStore((state) => state.setToken1);
-  const setToken2 = useBoundStore((state) => state.setToken2);
-  const setAmount1 = useBoundStore((state) => state.setAmount1);
-  const setAmount2 = useBoundStore((state) => state.setAmount2);
-  const reverseOrder = useBoundStore((state) => state.reverseOrder);
-  const filteredTokens = useBoundStore((state) => state.filteredTokens);
-  const displayTokenList = useBoundStore(
+  const token1 = useSwapStore((state) => state.token1);
+  const token2 = useSwapStore((state) => state.token2);
+  const setToken1 = useSwapStore((state) => state.setToken1);
+  const setToken2 = useSwapStore((state) => state.setToken2);
+  const setAmount1 = useSwapStore((state) => state.setAmount1);
+  const setAmount2 = useSwapStore((state) => state.setAmount2);
+  const reverseOrder = useSwapStore((state) => state.reverseOrder);
+  const filteredTokens = useSwapStore((state) => state.filteredTokens);
+  const displayTokenList = useSwapStore(
     (state) => state.displayFilteredListToken
   );
-  const initToken = useBoundStore((state) => state.initToken);
-  const transactionEstimation = useBoundStore(
+  const initToken = useSwapStore((state) => state.initToken);
+  const transactionEstimation = useSwapStore(
     (state) => state.transactionEstimation
   );
 

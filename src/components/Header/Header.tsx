@@ -1,4 +1,3 @@
-import { useBoundStore } from "@/store";
 import { Divider, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@tonconnect/ui-react";
 import { useEffect } from "react";
 import tonSvg from "../../app/_assets/ton.svg";
+import { useSwapStore } from "@/store";
 
 export function Header({ props }: any): JSX.Element {
   const userFriendlyAddress = useTonAddress();
@@ -16,7 +16,7 @@ export function Header({ props }: any): JSX.Element {
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
 
-  const initWallet = useBoundStore((state) => state.initWallet);
+  const initWallet = useSwapStore((state) => state.initWallet);
 
   useEffect(() => {
     initWallet(userFriendlyAddress, rawAddress, wallet, tonConnectUI, {

@@ -8,8 +8,7 @@ export default function ExplorePage() {
   return (
     <Page>
       <div className="flex flex-col pl-4 pr-4 gap-1">
-        Explore Page
-        <p>Current pathname: {pathname}</p>
+        Coming Soon
       </div>
     </Page>
   );

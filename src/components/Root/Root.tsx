@@ -24,7 +24,6 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
-import Head from "next/head";
 import { Header } from "../Header/Header";
 
 const TABS = [
@@ -95,9 +94,7 @@ function RootInner({ children }: PropsWithChildren) {
     <>
       <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
         <AppRoot
-          className={`${
-            isDark ? "theme-black" : ""
-          }`}
+          className={`${isDark ? "theme-black" : ""}`}
           appearance={isDark ? "dark" : "light"}
           platform={"base"}
         >

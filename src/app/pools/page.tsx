@@ -18,7 +18,7 @@ const listPools = [
       image: "https://assets.dedust.io/images/dust.gif",
     },
     feeTier: {
-      fee: "0.3%",
+      fee: "0.3",
       tickSpacing: 100,
     },
     tvl: 764213,
@@ -35,7 +35,7 @@ const listPools = [
       image: "https://assets.dedust.io/images/dust.gif",
     },
     feeTier: {
-      fee: "0.05%",
+      fee: "0.05",
       tickSpacing: 60,
     },
     tvl: 15728,

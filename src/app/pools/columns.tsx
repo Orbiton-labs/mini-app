@@ -35,7 +35,7 @@ export const columns: ColumnDef<Pool>[] = [
           token1Name={original.token1.name}
           token2Name={original.token2.name}
           feeTier={original.feeTier.fee}
-          className="pt-2 pl-2"
+          className="text-xs"
         />
       );
     },
@@ -62,9 +62,9 @@ export const columns: ColumnDef<Pool>[] = [
       }).format(tvl);
 
       return (
-        <div className="flex flex-col pb-2 pl-2">
+        <div className="flex flex-col">
           <p className="text-white1 text-ss">TVL</p>
-          <p>{formatted}</p>
+          <p className="text-xs">{formatted}</p>
         </div>
       );
     },
@@ -91,7 +91,7 @@ export const columns: ColumnDef<Pool>[] = [
       return (
         <div className="flex flex-col text-center">
           <p className="text-white1 text-ss">Volume 24H</p>
-          <p>{formatted}</p>
+          <p className="text-xs">{formatted}</p>
         </div>
       );
     },
@@ -114,7 +114,7 @@ export const columns: ColumnDef<Pool>[] = [
       return (
         <div className="flex flex-col text-right">
           <p className="text-white1 text-ss">APR</p>
-          <p>{apr}%</p>
+          <p className="text-xs">{apr}%</p>
         </div>
       );
     },

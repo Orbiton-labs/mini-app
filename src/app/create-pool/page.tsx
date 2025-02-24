@@ -1,13 +1,14 @@
 "use client";
 
+import { SubPageTitle } from "@/components/ SubPageTitle/SubPageTitle";
 import { Page } from "@/components/Page";
-import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
 import { PoolName } from "@/components/PoolName/PoolName";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
-import { useBoundStore } from "@/store";
+import { useCreatePoolStore } from "@/store";
 import { useEffect } from "react";
 
+// TODO: remove this hardcode to api get fee tiers
 const FEE_TIERS = [
   {
     fee: 0.05,
@@ -18,6 +19,7 @@ const FEE_TIERS = [
     fee: 0.3,
     tickSpacing: 60,
     useWhen: "Best for most pair",
+    selected: true
   },
   {
     fee: 1,
@@ -27,17 +29,17 @@ const FEE_TIERS = [
 ];
 
 export default function CreatePoolPage() {
-  const token1 = useBoundStore((state) => state.token1);
-  const token2 = useBoundStore((state) => state.token2);
-  const setToken1 = useBoundStore((state) => state.setToken1);
-  const setToken2 = useBoundStore((state) => state.setToken2);
-  const setAmount1 = useBoundStore((state) => state.setAmount1);
-  const setAmount2 = useBoundStore((state) => state.setAmount2);
-  const filteredTokens = useBoundStore((state) => state.filteredTokens);
-  const displayTokenList = useBoundStore(
+  const token1 = useCreatePoolStore((state) => state.token1);
+  const token2 = useCreatePoolStore((state) => state.token2);
+  const setToken1 = useCreatePoolStore((state) => state.setToken1);
+  const setToken2 = useCreatePoolStore((state) => state.setToken2);
+  const setAmount1 = useCreatePoolStore((state) => state.setAmount1);
+  const setAmount2 = useCreatePoolStore((state) => state.setAmount2);
+  const filteredTokens = useCreatePoolStore((state) => state.filteredTokens);
+  const displayTokenList = useCreatePoolStore(
     (state) => state.displayFilteredListToken
   );
-  const initToken = useBoundStore((state) => state.initToken);
+  const initToken = useCreatePoolStore((state) => state.initToken);
 
   useEffect(() => {
     initToken();
@@ -46,7 +48,7 @@ export default function CreatePoolPage() {
   return (
     <Page>
       <div className="flex flex-col pl-4 pr-4">
-        <PageTitle title="Pools" />
+        <SubPageTitle title="Create Pool" />
         <div className="w-full flex flex-col gap-4 px-0 py-4">
           <PairInput
             token1={token1}
@@ -61,12 +63,15 @@ export default function CreatePoolPage() {
             displayTokenList={displayTokenList}
             tokenList={filteredTokens}
           />
-          <div className="w-full flex gap-3">
-            {FEE_TIERS.map((e) => {
+          <div className="w-full grid grid-cols-3 gap-2">
+            {FEE_TIERS.map((e, index) => {
               return (
-                <div className="flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey3">
+                <div
+                  key={index}
+                  className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey3 ${e.selected ? 'bg-grey3' : ''}`}
+                >
                   <p className="text-ms text-white2">{e.fee}%</p>
-                  <p className="text-ss text-grey5">{e.useWhen}</p>
+                  <p className={`text-ss text-grey5 ${e.selected ? 'text-white2' : ''}`}>{e.useWhen}</p>
                 </div>
               );
             })}

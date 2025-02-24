@@ -21,19 +21,19 @@ export const PoolName: FC<PoolNameProps> = ({
   return (
     <div className={`flex justify-start items-center gap-2 ${className}`}>
       <AvatarStack className="pools_avatar-stack">
-        <Avatar size={28} src={token1Img} />
+        <Avatar size={20} src={token1Img} />
         <Avatar
           style={{
             marginLeft: -5,
           }}
-          size={28}
+          size={20}
           src={token2Img}
         />
       </AvatarStack>
       <span>
         {token1Name} - {token2Name}
       </span>
-      {feeTier && <span className="fee_tier">{feeTier}</span>}
+      {feeTier && <span className="bg-grey4 py-2 px-3 rounded-lg">{feeTier}%</span>}
     </div>
   );
 };

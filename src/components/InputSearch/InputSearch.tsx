@@ -16,13 +16,17 @@ export const InputSearch: FC<InputSearchProps> = ({
   onChange,
   className,
 }) => (
-  <div className="bg-grey3 gap-2 rounded-lg flex py-3 px-3 mb-2 w-full">
-    <IconFind />
+  <div
+    className={`bg-grey3 gap-2 rounded-lg flex items-center py-3 px-3 w-full ${className}`}
+  >
+    <div>
+      <IconFind />
+    </div>
     <input
       value={value}
       onChange={onChange}
       type={type}
-      className={`text-white1 bg-transparent border-none focus:ring-transparent text-xs ${className}`}
+      className={`text-white1 bg-transparent border-none focus:ring-transparent text-xs `}
       placeholder={placeholder}
     ></input>
   </div>
