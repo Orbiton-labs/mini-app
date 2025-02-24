@@ -66,7 +66,16 @@ export const SelectToken: FC<SelectTokenProps> = ({
           </ModalClose>
         </DrawerHeader>
 
-        <InputSearch />
+        <div className="mx-4">
+          <InputSearch
+            type="text"
+            onChange={(event) => {
+              console.log(event);
+            }}
+            placeholder="Find token by name"
+            value={undefined}
+          />
+        </div>
         {tokenList.map((option, index) => (
           <ModalClose key={index}>
             <div
