@@ -4,18 +4,12 @@ import { SubPageTitle } from "@/components/ SubPageTitle/SubPageTitle";
 import { InputSearch } from "@/components/InputSearch/InputSearch";
 import { Page } from "@/components/Page";
 import { PoolName } from "@/components/PoolName/PoolName";
+import { StatusFilter } from "@/components/StatusFilter/StatusFilter";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
-import { Select } from "@/components/ui/select";
 import { IconCircleInfo } from "@/icons/fixed/circle-info";
 import { TokenType } from "@/types/Token";
-import {
-  SelectContent,
-  SelectIcon,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
-import { ChevronDownIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 enum PositionStatusFilter {
   ALL = "All",
@@ -51,6 +45,10 @@ const POOL = {
 };
 
 export default function PoolDetailPage() {
+  const [status, setStatus] = useState<string>(PositionStatusFilter.ACTIVE);
+
+  const router = useRouter();
+
   return (
     <Page>
       <div className="flex flex-col pl-4 pr-4">
@@ -64,21 +62,16 @@ export default function PoolDetailPage() {
             placeholder="Search by index"
             value={undefined}
           />
-          <Select>
-            <SelectTrigger className="bg-grey3 flex justify-between items-center p-3 text-xs rounded-lg">
-              <SelectValue placeholder={PositionStatusFilter.ACTIVE} />
-              <SelectIcon className="SelectIcon">
-                <ChevronDownIcon />
-              </SelectIcon>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={PositionStatusFilter.ALL}>All</SelectItem>
-              <SelectItem value={PositionStatusFilter.ACTIVE}>
-                Active
-              </SelectItem>
-              <SelectItem value={PositionStatusFilter.CLOSED}>CLose</SelectItem>
-            </SelectContent>
-          </Select>
+          <StatusFilter
+            displayStatusList={() => {}}
+            selectedStatus={status}
+            setStatus={(status) => setStatus(status)}
+            statusFilterList={[
+              PositionStatusFilter.ALL,
+              PositionStatusFilter.ACTIVE,
+              PositionStatusFilter.CLOSED,
+            ]}
+          />
         </div>
 
         <div className="py-4 px-3 bg-grey3 my-3 rounded-lg flex flex-col gap-3">
@@ -117,7 +110,11 @@ export default function PoolDetailPage() {
             </div>
           </div>
         </div>
-        <SubmitButton />
+
+        <SubmitButton
+          onClick={() => router.push("/add-liquidity-1")}
+          content="Create Position"
+        />
 
         <div className="flex flex-col justify-center items-center w-full gap-2 min-h-40">
           <IconCircleInfo />

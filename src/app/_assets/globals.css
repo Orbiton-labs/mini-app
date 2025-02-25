@@ -29,6 +29,7 @@
     --color-grey-5: hsla(0, 0%, 46%, 1);
     --color-green-1: hsl(145, 93%, 40%);
     --color-green-2: hsl(113, 93%, 72%);
+    --color-green-3: hsla(113, 93%, 72%, 0.02);
     --color-green-3: hsla(136, 61%, 48%, 0.18);
     --color-green-4: hsla(145, 91%, 41%, 1);
     --color-white-1: hsl(0, 0%, 70%);

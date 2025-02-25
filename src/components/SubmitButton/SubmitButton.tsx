@@ -1,10 +1,16 @@
 import { FC } from "react";
 
-export interface SubmitButtonProps {}
+export interface SubmitButtonProps {
+  content?: string;
+  onClick?: () => void;
+}
 
-export const SubmitButton: FC<SubmitButtonProps> = ({}) => (
-  <button className="bg-gradient-to-b from-green1 to-green2 text-base text-black2 py-4 rounded-lg">
-    Enter an amount
+export const SubmitButton: FC<SubmitButtonProps> = ({ content, onClick }) => (
+  <button
+    onClick={onClick}
+    className="bg-gradient-to-b from-green1 to-green2 text-base text-black2 py-4 rounded-lg"
+  >
+    {content ? content : "Enter an amount"}
   </button>
 );
 
