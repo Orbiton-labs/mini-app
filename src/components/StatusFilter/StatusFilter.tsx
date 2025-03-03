@@ -36,12 +36,14 @@ export const StatusFilter: FC<StatusFilterProps> = ({
         </div>
       </DrawerTrigger>
       <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl overflow-hidden border-none pb-12">
-        <DrawerHeader className="flex justify-between items-center mx-4 px-2 py-5">
-          <div className="w-2"></div>
-          <span className="text-base text-white2">Select Position Status</span>
-          <ModalClose>
-            <IconClose />
-          </ModalClose>
+        <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
+          <div></div>
+          <span className="col-span-2 text-base text-white2">Select a token</span>
+          <div className="flex justify-end">
+            <ModalClose>
+              <IconClose />
+            </ModalClose>
+          </div>
         </DrawerHeader>
         {statusFilterList.map((option, index) => (
           <ModalClose key={index}>

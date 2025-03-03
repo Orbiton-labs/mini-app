@@ -8,7 +8,7 @@ export interface SubmitButtonProps {
 export const SubmitButton: FC<SubmitButtonProps> = ({ content, onClick }) => (
   <button
     onClick={onClick}
-    className="bg-gradient-to-b from-green1 to-green2 text-base text-black2 py-4 rounded-lg"
+    className="bg-gradient-to-b from-green1 to-green2 text-base text-black2 py-4 rounded-lg w-full"
   >
     {content ? content : "Enter an amount"}
   </button>

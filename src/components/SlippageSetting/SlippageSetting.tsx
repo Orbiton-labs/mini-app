@@ -3,11 +3,11 @@ import { IconClose } from "@/icons/fixed/close";
 import { FC, useState } from "react";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTrigger,
 } from "../ui/drawer";
+import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -41,12 +41,16 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
         <Icon24Gear />
       </DrawerTrigger>
       <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl border-none">
-        <DrawerHeader className="flex justify-between items-center mx-4 py-5">
-          <div className="w-2"></div>
-          <span className="text-base text-white2">Select a token</span>
-          <DrawerClose asChild>
-            <IconClose />
-          </DrawerClose>
+        <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
+          <div></div>
+          <span className="col-span-2 text-base text-white2">
+            Select a token
+          </span>
+          <div className="flex justify-end">
+            <ModalClose>
+              <IconClose />
+            </ModalClose>
+          </div>
         </DrawerHeader>
 
         <div className="mx-4 px-2">

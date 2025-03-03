@@ -12,7 +12,7 @@
 
   html,
   body {
-    @apply overflow-hidden min-h-screen bg-gradient-to-b from-grey1 to-grey2;
+    @apply min-h-screen bg-gradient-to-b from-grey1 to-grey2;
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -27,16 +27,19 @@
     --color-grey-3: hsl(222, 8%, 24%);
     --color-grey-4: hsl(222, 9%, 34%);
     --color-grey-5: hsla(0, 0%, 46%, 1);
+    --color-grey-6: hsla(220, 9%, 32%, 1);
     --color-green-1: hsl(145, 93%, 40%);
     --color-green-2: hsl(113, 93%, 72%);
     --color-green-3: hsla(113, 93%, 72%, 0.02);
     --color-green-3: hsla(136, 61%, 48%, 0.18);
     --color-green-4: hsla(145, 91%, 41%, 1);
+    --color-green-5: hsla(120, 83%, 69%, 1);
     --color-white-1: hsl(0, 0%, 70%);
     --color-white-2: hsl(68, 57%, 97%);
     --color-white-3: hsl(0, 0%, 100%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
+    --color-yellow-1: hsla(72, 71%, 57%, 1);
   }
 
   .theme-black {
@@ -45,15 +48,19 @@
     --color-grey-3: hsl(222, 8%, 24%);
     --color-grey-4: hsl(222, 9%, 34%);
     --color-grey-5: hsla(0, 0%, 46%, 1);
+    --color-grey-6: hsla(220, 9%, 32%, 1);
     --color-green-1: hsl(145, 93%, 40%);
     --color-green-2: hsl(113, 93%, 72%);
+    --color-green-3: hsla(113, 93%, 72%, 0.02);
     --color-green-3: hsla(136, 61%, 48%, 0.18);
     --color-green-4: hsla(145, 91%, 41%, 1);
+    --color-green-5: hsla(120, 83%, 69%, 1);
     --color-white-1: hsl(0, 0%, 70%);
     --color-white-2: hsl(68, 57%, 97%);
     --color-white-3: hsl(0, 0%, 100%);
     --color-black-1: hsl(225, 13%, 12%);
     --color-black-2: hsl(0, 0%, 12%);
+    --color-yellow-1: hsla(72, 71%, 57%, 1);
   }
 
   * {
@@ -65,6 +72,12 @@
     );
     --tgui--secondary_fill: transparent;
     @apply appearance-none outline-none;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
   }
 
   *:focus {

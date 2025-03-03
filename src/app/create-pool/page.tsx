@@ -1,10 +1,10 @@
 "use client";
 
-import { SubPageTitle } from "@/components/ SubPageTitle/SubPageTitle";
 import { Page } from "@/components/Page";
 import { PairInput } from "@/components/PairInput/PairInput";
 import { PoolName } from "@/components/PoolName/PoolName";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
+import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
 import { useCreatePoolStore } from "@/store";
 import { useEffect } from "react";
 
@@ -19,7 +19,7 @@ const FEE_TIERS = [
     fee: 0.3,
     tickSpacing: 60,
     useWhen: "Best for most pair",
-    selected: true
+    selected: true,
   },
   {
     fee: 1,
@@ -47,7 +47,7 @@ export default function CreatePoolPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4">
+      <div className="flex flex-col pl-4 pr-4 mb-32">
         <SubPageTitle title="Create Pool" />
         <div className="w-full flex flex-col gap-4 px-0 py-4">
           <PairInput
@@ -68,10 +68,18 @@ export default function CreatePoolPage() {
               return (
                 <div
                   key={index}
-                  className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey3 ${e.selected ? 'bg-grey3' : ''}`}
+                  className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey3 ${
+                    e.selected ? "bg-grey3" : ""
+                  }`}
                 >
                   <p className="text-ms text-white2">{e.fee}%</p>
-                  <p className={`text-ss text-grey5 ${e.selected ? 'text-white2' : ''}`}>{e.useWhen}</p>
+                  <p
+                    className={`text-ss text-grey5 ${
+                      e.selected ? "text-white2" : ""
+                    }`}
+                  >
+                    {e.useWhen}
+                  </p>
                 </div>
               );
             })}
