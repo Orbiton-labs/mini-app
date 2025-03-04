@@ -8,7 +8,7 @@ import {
 } from "@telegram-apps/sdk-react";
 import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
-import { type PropsWithChildren, useEffect, useState } from "react";
+import { type PropsWithChildren, use, useEffect, useState } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
@@ -84,6 +84,14 @@ function RootInner({ children }: PropsWithChildren) {
   const [currentTab, setCurrentTab] = useState(TABS[0].id);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // preload all the tabs to make the navigation faster
+    TABS.forEach(({ id }) => {
+      router.prefetch(`/${id}`);
+    });
+    console.log("prefetched");
+  }, []);
 
   useEffect(() => {
     // take the first element path of the pathname
