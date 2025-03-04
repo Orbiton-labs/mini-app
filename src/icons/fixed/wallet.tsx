@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Icon } from "../../types/Icon";
 
-export const IconWallet = ({ ...restProps }: Icon) => (
+export const IconWallet = memo(({ ...restProps }: Icon) => (
   <svg
     width="13"
     height="12"
@@ -14,4 +15,5 @@ export const IconWallet = ({ ...restProps }: Icon) => (
       fill="#B3B3B3"
     />
   </svg>
-);
+));
+IconWallet.displayName = "IconWallet";

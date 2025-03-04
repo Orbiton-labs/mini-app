@@ -24,7 +24,7 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
-import { Header } from "../Header/Header";
+import Header from "../Header/Header";
 
 const TABS = [
   {

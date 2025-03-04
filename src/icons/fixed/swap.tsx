@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Icon } from "../../types/Icon";
 
-export const IconSwap = ({ ...restProps }: Icon) => (
+export const IconSwap = memo(({ ...restProps }: Icon) => (
   <svg
     width="65"
     height="24"
@@ -26,4 +27,5 @@ export const IconSwap = ({ ...restProps }: Icon) => (
       </linearGradient>
     </defs>
   </svg>
-);
+));
+IconSwap.displayName = "IconSwap";

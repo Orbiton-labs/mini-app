@@ -1,4 +1,3 @@
-import { logger } from "@/helper/zustand/middleware/logger";
 import { Sender } from "@ton/core";
 import {
   TonConnectUI,
@@ -26,7 +25,7 @@ export interface TonWalletSlice {
 }
 
 export const createTonWalletSlice: StateCreator<TonWalletSlice, [], []> =
-  logger((set, get) => ({
+  (set, get) => ({
     friendlyAddress: null,
     rawAddress: null,
     accounts: [],
@@ -50,4 +49,4 @@ export const createTonWalletSlice: StateCreator<TonWalletSlice, [], []> =
         sender,
       }));
     },
-  }));
+  });

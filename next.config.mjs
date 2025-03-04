@@ -34,6 +34,17 @@ const nextConfig = {
     },
   ],
   reactStrictMode: false,
+  // headers: [
+  //   {
+  //     source: "/:path*",
+  //     headers: [
+  //       {
+  //         key: "Link",
+  //         value: "</public/orbiton.png>; rel=preload; as=image",
+  //       },
+  //     ],
+  //   },
+  // ],
 };
 
 export default withNextIntl(nextConfig);

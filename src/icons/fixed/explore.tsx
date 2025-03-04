@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Icon } from "../../types/Icon";
 
-export const IconExplore = ({ ...restProps }: Icon) => (
+export const IconExplore = memo(({ ...restProps }: Icon) => (
   <svg
     width="65"
     height="24"
@@ -27,4 +28,5 @@ export const IconExplore = ({ ...restProps }: Icon) => (
       </linearGradient>
     </defs>
   </svg>
-);
+));
+IconExplore.displayName = "IconExplore";

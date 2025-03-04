@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Icon } from "../../types/Icon";
 
-export const IconFind = ({ ...restProps }: Icon) => (
+export const IconFind = memo(({ ...restProps }: Icon) => (
   <svg
     width="21"
     height="21"
@@ -14,4 +15,5 @@ export const IconFind = ({ ...restProps }: Icon) => (
       fill="#FBFCF4"
     />
   </svg>
-);
+));
+IconFind.displayName = "IconFind";

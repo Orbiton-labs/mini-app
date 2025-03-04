@@ -1,6 +1,5 @@
-import { logger } from "@/helper/zustand/middleware/logger";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { createCreatePoolSlice, CreatePoolSlice } from "./create-pool";
 import {
   createPairSlice,
@@ -14,20 +13,30 @@ export type SwapStore = PairSlice & TonWalletSlice & WalletSwapShareSlice;
 
 export const useSwapStore = create<SwapStore>()(
   devtools(
-    logger((...a) => ({
-      ...createPairSlice(...a),
-      ...createTonWalletSlice(...a),
-      ...createWalletSwapShareSlice(...a),
-    }))
+    persist(
+      ((...a) => ({
+        ...createPairSlice(...a),
+        ...createTonWalletSlice(...a),
+        ...createWalletSwapShareSlice(...a),
+      })),
+      {
+        name: "swap-store",
+        storage: createJSONStorage(() => sessionStorage), // Use sessionStorage for tab-specific persistence
+      }
+    )
   )
 );
 
-export type CreatePoolStore = CreatePoolSlice;
-
-export const useCreatePoolStore = create<CreatePoolStore>()(
+export const useCreatePoolStore = create<CreatePoolSlice>()(
   devtools(
-    logger((...a) => ({
-      ...createCreatePoolSlice(...a),
-    }))
+    persist(
+      ((...a) => ({
+        ...createCreatePoolSlice(...a),
+      })),
+      {
+        name: "create-pool-store",
+        storage: createJSONStorage(() => sessionStorage),
+      }
+    )
   )
 );

@@ -1,3 +1,4 @@
+import { useSwapStore } from "@/store";
 import { Divider, Image } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
@@ -6,11 +7,10 @@ import {
   useTonConnectUI,
   useTonWallet,
 } from "@tonconnect/ui-react";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import tonSvg from "../../app/_assets/ton.svg";
-import { useSwapStore } from "@/store";
 
-export function Header({ props }: any): JSX.Element {
+const Header = memo(({ props }: any): JSX.Element => {
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
@@ -60,7 +60,9 @@ export function Header({ props }: any): JSX.Element {
       <Divider />
     </div>
   );
-}
+});
+Header.displayName = "Header";
+export default Header;
 
 /*
 font-family: Michroma;
