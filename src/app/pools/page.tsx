@@ -4,6 +4,7 @@ import { DataTable } from "@/app/pools/data-table";
 import { ActionButton } from "@/components/ActionButton/ActionButton";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { columns as newColumns } from "./columns";
 
@@ -52,10 +53,11 @@ export default function PoolsPage() {
       <div className="flex flex-col pl-4 pr-4 mb-32">
         <PageTitle title="Pools" />
         <div className="flex flex-col gap-2 mt-4">
-          <ActionButton
-            onClick={() => router.push(`/create-pool`)}
-            content="Create pool"
-          />
+          <Link href="/create-pool">
+            <ActionButton
+              content="Create pool"
+            />
+          </Link>
           <DataTable columns={newColumns} data={listPools} />
         </div>
       </div>

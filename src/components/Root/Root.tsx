@@ -24,6 +24,7 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
+import Link from "next/link";
 import { Header } from "../Header/Header";
 
 const TABS = [
@@ -109,14 +110,15 @@ function RootInner({ children }: PropsWithChildren) {
                   const selected = id === currentTab;
 
                   return (
-                    <div
+                    <Link
+                      key={id}
+                      href={`/${id}`}
                       className={`${
                         selected
                           ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
                           : "text-white-2"
                       } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
-                      key={id}
-                      onClick={() => router.push(`/${id}`)}
+                      // onClick={() => router.push(`/${id}`)}
                     >
                       <Icon isActive={id === currentTab} />
                       <span
@@ -128,7 +130,7 @@ function RootInner({ children }: PropsWithChildren) {
                       >
                         {text}
                       </span>
-                    </div>
+                    </Link>
                   );
                 }
               )}

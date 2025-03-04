@@ -10,10 +10,11 @@ import { IconCircleInfo } from "@/icons/fixed/circle-info";
 import { Position } from "@/types/Position";
 import { TokenType } from "@/types/Token";
 import { Avatar } from "@telegram-apps/telegram-ui";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import positionImg from "../../app/_assets/position.png";
-import Image from "next/image";
 
 enum PositionStatusFilter {
   ALL = "All",
@@ -180,52 +181,59 @@ export default function PoolDetailPage() {
           </div>
         )}
 
-        <SubmitButton
-          onClick={() => router.push("/add-liquidity")}
-          content="Create Position"
-        />
+        <Link href="/add-liquidity">
+          <SubmitButton content="Create Position" />
+        </Link>
 
         {positions.length > 0 ? (
-          <div
-            onClick={() => router.push("/manage-position")}
-            className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
+          <div className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {positions.map((position) => (
-              <div
-                key={position.id}
-                className="bg-grey3 rounded-lg p-2 flex flex-col gap-2"
-              >
-                <div>
-                  <Image width={156} height={105} src={positionImg.src} alt="Position Image" />
-                </div>
+              <Link href="/manage-position">
+                <div
+                  key={position.id}
+                  className="bg-grey3 rounded-lg p-2 flex flex-col gap-2"
+                >
+                  <div>
+                    <Image
+                      width={156}
+                      height={105}
+                      src={positionImg.src}
+                      alt="Position Image"
+                    />
+                  </div>
 
-                <div className="flex flex-col justify-between items-center gap-1">
-                  <div className="flex justify-between items-center w-full">
-                    <span className="text-ss text-white1">Create on</span>
-                    <span className="text-xs">{position.createdAt}</span>
-                  </div>
-                  <div className="flex justify-between items-center w-full">
-                    <span className="text-ss text-white1">Total</span>
-                    <span className="text-xs bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                      ${position.valueUSD}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center w-full">
-                    <div className="flex gap-1 items-center">
-                      <Avatar size={20} src={position.token0.image} />
-                      <span className="text-xs">{position.token0.symbol}</span>
+                  <div className="flex flex-col justify-between items-center gap-1">
+                    <div className="flex justify-between items-center w-full">
+                      <span className="text-ss text-white1">Create on</span>
+                      <span className="text-xs">{position.createdAt}</span>
                     </div>
-                    <span className="text-xs">{position.amount0}</span>
-                  </div>
-                  <div className="flex justify-between items-center w-full">
-                    <div className="flex gap-1 items-center">
-                      <Avatar size={20} src={position.token1.image} />
-                      <span className="text-xs">{position.token1.symbol}</span>
+                    <div className="flex justify-between items-center w-full">
+                      <span className="text-ss text-white1">Total</span>
+                      <span className="text-xs bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
+                        ${position.valueUSD}
+                      </span>
                     </div>
-                    <span className="text-xs">{position.amount1}</span>
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex gap-1 items-center">
+                        <Avatar size={20} src={position.token0.image} />
+                        <span className="text-xs">
+                          {position.token0.symbol}
+                        </span>
+                      </div>
+                      <span className="text-xs">{position.amount0}</span>
+                    </div>
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex gap-1 items-center">
+                        <Avatar size={20} src={position.token1.image} />
+                        <span className="text-xs">
+                          {position.token1.symbol}
+                        </span>
+                      </div>
+                      <span className="text-xs">{position.amount1}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
