@@ -93,8 +93,8 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody className="flex w-full flex-col gap-2">
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Link href="/pool-detail">
+              table.getRowModel().rows.map((row, index) => (
+                <Link key={index} href="/pool-detail">
                   <TableRow
                     className="w-full md:flex grid grid-cols-3 grid-rows-2 border-none bg-grey3 rounded-lg py-4 px-3"
                     key={row.id}

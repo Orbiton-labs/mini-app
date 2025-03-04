@@ -187,8 +187,8 @@ export default function PoolDetailPage() {
 
         {positions.length > 0 ? (
           <div className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {positions.map((position) => (
-              <Link href="/manage-position">
+            {positions.map((position, index) => (
+              <Link key={index} href="/manage-position">
                 <div
                   key={position.id}
                   className="bg-grey3 rounded-lg p-2 flex flex-col gap-2"
