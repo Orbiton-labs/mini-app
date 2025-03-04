@@ -8,7 +8,7 @@ export const simulateCreatePool = async (
   feeTier: FeeTier
 ): Promise<TransactionCreatePoolEstimation | null> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
     return {};
   } catch (error) {
     console.log(error);

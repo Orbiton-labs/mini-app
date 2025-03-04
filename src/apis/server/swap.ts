@@ -7,7 +7,7 @@ export const simulateSwap = async (
   amountIn: string
 ): Promise<SimulateSwapResponse | null> => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
     return {
       tokenIn: "A",
       tokenOut: "B",
