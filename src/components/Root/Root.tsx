@@ -12,7 +12,6 @@ import { type PropsWithChildren, use, useEffect, useState } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
-import { setLocale } from "@/core/i18n/locale";
 import { init } from "@/core/init";
 import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
@@ -77,9 +76,9 @@ function RootInner({ children }: PropsWithChildren) {
   const initDataUser = useSignal(initData.user);
 
   // Set the user locale.
-  useEffect(() => {
-    initDataUser && setLocale(initDataUser.languageCode);
-  }, [initDataUser]);
+  // useEffect(() => {
+  //   initDataUser && setLocale(initDataUser.languageCode);
+  // }, [initDataUser]);
 
   const [currentTab, setCurrentTab] = useState(TABS[0].id);
 

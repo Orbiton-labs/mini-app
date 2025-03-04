@@ -1,9 +1,6 @@
-import createNextIntlPlugin from "next-intl/plugin";
-
-const withNextIntl = createNextIntlPlugin("./src/core/i18n/i18n.ts");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   images: {
     remotePatterns: [
       {
@@ -25,15 +22,16 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    unoptimized: true,
   },
-  redirects: () => [
-    {
-      source: "/",
-      destination: "/swap",
-      permanent: true,
-    },
-  ],
+  // redirects: () => [
+  //   {
+  //     source: "/",
+  //     destination: "/swap",
+  //     permanent: true,
+  //   },
+  // ],
   reactStrictMode: false,
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

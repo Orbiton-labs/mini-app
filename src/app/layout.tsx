@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { getLocale } from "next-intl/server";
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 import { Root } from "@/components/Root/Root";
 
 import "@telegram-apps/telegram-ui/dist/styles.css";
-import Head from "next/head";
 import "normalize.css/normalize.css";
 import "./_assets/globals.css";
 
@@ -25,10 +23,8 @@ export const viewport: Viewport = {
 
 // Root layout component -> the index.html file will be wrapped with this component
 export default async function RootLayout({ children }: PropsWithChildren) {
-  const locale = await getLocale();
-
   return (
-    <html lang={locale}>
+    <html lang="en">
       <body>
         <Root>{children}</Root>
       </body>
