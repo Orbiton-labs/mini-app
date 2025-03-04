@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { getLocale } from "next-intl/server";
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 import { Root } from "@/components/Root/Root";
 
 import "@telegram-apps/telegram-ui/dist/styles.css";
-import Head from "next/head";
 import "normalize.css/normalize.css";
 import "./_assets/globals.css";
 

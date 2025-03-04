@@ -1,3 +1,5 @@
+'use client'
+
 import { Icon } from "../../types/Icon";
 
 export const IconPool = ({ ...restProps }: Icon) => (

@@ -12,7 +12,6 @@ import { TokenType } from "@/types/Token";
 import { Avatar } from "@telegram-apps/telegram-ui";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import positionImg from "../../app/_assets/position.png";
 
@@ -97,8 +96,6 @@ export default function PoolDetailPage() {
     tvl: "1723",
     fee24h: "20",
   });
-
-  const router = useRouter();
 
   return (
     <Page>
@@ -188,7 +185,7 @@ export default function PoolDetailPage() {
         {positions.length > 0 ? (
           <div className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {positions.map((position, index) => (
-              <Link key={index} href="/manage-position">
+              // <Link key={index} href="/manage-position">
                 <div
                   key={position.id}
                   className="bg-grey3 rounded-lg p-2 flex flex-col gap-2"
@@ -233,7 +230,7 @@ export default function PoolDetailPage() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              // </Link>
             ))}
           </div>
         ) : (

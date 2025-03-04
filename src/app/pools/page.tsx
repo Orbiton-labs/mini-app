@@ -5,7 +5,7 @@ import { ActionButton } from "@/components/ActionButton/ActionButton";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { columns as newColumns } from "./columns";
 
 const listPools = [
@@ -46,7 +46,7 @@ const listPools = [
 ];
 
 export default function PoolsPage() {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <Page>

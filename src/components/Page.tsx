@@ -2,7 +2,7 @@
 
 import { backButton } from '@telegram-apps/sdk-react';
 import { PropsWithChildren, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 export function Page({ children, back = true }: PropsWithChildren<{
   /**
@@ -11,7 +11,7 @@ export function Page({ children, back = true }: PropsWithChildren<{
    */
   back?: boolean
 }>) {
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (back) {
@@ -21,11 +21,11 @@ export function Page({ children, back = true }: PropsWithChildren<{
     }
   }, [back]);
 
-  useEffect(() => {
-    return backButton.onClick(() => {
-      router.back();
-    });
-  }, [router]);
+  // useEffect(() => {
+  //   return backButton.onClick(() => {
+  //     router.back();
+  //   });
+  // }, [router]);
 
   return <>{children}</>;
 }

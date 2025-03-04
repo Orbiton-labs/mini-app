@@ -17,7 +17,7 @@ import { init } from "@/core/init";
 import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
 import { useTelegramMock } from "@/hooks/useTelegramMock";
-import { usePathname, useRouter } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 
 import { Icon36Swap } from "@/icons/36/swap";
 import { IconExplore } from "@/icons/fixed/explore";
@@ -56,7 +56,7 @@ const TABS = [
 ];
 
 function RootInner({ children }: PropsWithChildren) {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const isDev = process.env.NODE_ENV === "development";
 
   // Mock Telegram environment in development mode if needed.
@@ -83,21 +83,21 @@ function RootInner({ children }: PropsWithChildren) {
 
   const [currentTab, setCurrentTab] = useState(TABS[0].id);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     // preload all the tabs to make the navigation faster
     TABS.forEach(({ id }) => {
-      router.prefetch(`/${id}`);
+      // router.prefetch(`/${id}`);
     });
     console.log("prefetched");
   }, []);
 
-  useEffect(() => {
-    // take the first element path of the pathname
-    const id = pathname.split("/")[1];
-    setCurrentTab(id);
-  }, [pathname]);
+  // useEffect(() => {
+  //  // take the first element path of the pathname
+  //   const id = pathname.split("/")[1];
+  //   setCurrentTab(id);
+  // }, [pathname]);
 
   return (
     <>

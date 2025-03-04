@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import React from "react";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 
@@ -37,7 +37,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const router = useRouter();
+  // const router = useRouter();
 
   const table = useReactTable({
     data,
