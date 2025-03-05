@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
   images: {
     remotePatterns: [
       {
@@ -24,14 +23,8 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  // redirects: () => [
-  //   {
-  //     source: "/",
-  //     destination: "/swap",
-  //     permanent: true,
-  //   },
-  // ],
   reactStrictMode: false,
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || "",
 };
 
 export default nextConfig;

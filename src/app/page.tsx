@@ -26,13 +26,13 @@ export default function Home() {
               e.preventDefault();
             }}
             before={<Icon28Exchange />}
-            subtitle={<Link href={""}>Learn more</Link>}
+            subtitle={<Link href={"/"}>Learn more</Link>}
           >
             Exchange assets
           </Cell>
           <Cell
             before={<Icon28ProvideLiquidity />}
-            subtitle={<Link href={""}>Learn more</Link>}
+            subtitle={<Link href={"/"}>Learn more</Link>}
           >
             Provide liquidities
           </Cell>
