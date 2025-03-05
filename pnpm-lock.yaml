@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@telegram-apps/telegram-ui':
-    hash: ojmy4zl4odpm3zxshhk2jqgjuq
-    path: patches/@telegram-apps__telegram-ui.patch
-
 importers:
 
   .:
@@ -33,7 +28,7 @@ importers:
         version: 2.0.5(@types/react@18.3.3)(react@18.3.1)
       '@telegram-apps/telegram-ui':
         specifier: ^2.1.5
-        version: 2.1.5(patch_hash=ojmy4zl4odpm3zxshhk2jqgjuq)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.1.5(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ton/core':
         specifier: ^0.60.0
         version: 0.60.0(@ton/crypto@3.3.0)
@@ -3399,7 +3394,7 @@ snapshots:
 
   '@telegram-apps/signals@1.0.1': {}
 
-  '@telegram-apps/telegram-ui@2.1.5(patch_hash=ojmy4zl4odpm3zxshhk2jqgjuq)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@telegram-apps/telegram-ui@2.1.5(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@swc/helpers': 0.5.5
