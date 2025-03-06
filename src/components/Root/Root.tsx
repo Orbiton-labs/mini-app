@@ -115,7 +115,11 @@ function RootInner({ children }: PropsWithChildren) {
           {children}
 
           <FixedLayout vertical="bottom">
-            {show && <TransactionStatus />}
+            {show && (
+              <div className="w-full flex justify-center items-center">
+                <TransactionStatus />
+              </div>
+            )}
 
             <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center">
               {TABS.filter((tab) => tab.id !== "welcome").map(

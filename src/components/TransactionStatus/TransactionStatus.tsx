@@ -19,7 +19,7 @@ export interface TransactionStatusProps {}
 export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger asChild={true}>
         <div className="flex w-full py-3 px-3 justify-between items-center bg-gradient-to-b from-grey1 to-grey2 rounded-lg border border-solid border-grey5 mb-[125px] mx-4">
           <div className="flex flex-col gap-2 justify-between items-start">
             <p className="text-white2 text-sm">Swap 1 USD for 0.2443 TON</p>
@@ -63,7 +63,7 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
           </div>
           <div className="flex flex-col gap-3 justify-between items-center">
             <IconShieldCheck />
-            <ProgressBar value={100}/>
+            <ProgressBar value={100} />
             <div className="text-xs text-white2 text-center">
               Verifying Jettons
             </div>
