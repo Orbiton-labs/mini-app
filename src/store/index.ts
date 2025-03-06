@@ -2,6 +2,7 @@ import { logger } from "@/helper/zustand/middleware/logger";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { createCreatePoolSlice, CreatePoolSlice } from "./create-pool";
+import { createPendingTransactionSlice, PendingTransactionSlice } from "./pending-tx";
 import {
   createPairSlice,
   createWalletSwapShareSlice,
@@ -28,6 +29,16 @@ export const useCreatePoolStore = create<CreatePoolStore>()(
   devtools(
     logger((...a) => ({
       ...createCreatePoolSlice(...a),
+    }))
+  )
+);
+
+export type PendingTransactionStore = PendingTransactionSlice;
+
+export const usePendingTransactionStore = create<PendingTransactionStore>()(
+  devtools(
+    logger((...a) => ({
+      ...createPendingTransactionSlice(...a),
     }))
   )
 );

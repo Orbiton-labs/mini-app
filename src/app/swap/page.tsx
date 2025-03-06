@@ -11,7 +11,7 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
-import { useSwapStore } from "@/store";
+import { usePendingTransactionStore, useSwapStore } from "@/store";
 import { useEffect, useState } from "react";
 
 export default function SwapPage() {
@@ -34,13 +34,15 @@ export default function SwapPage() {
     (state) => state.transactionEstimation
   );
 
+  const toggle = usePendingTransactionStore((state) => state.toggle);
+
   useEffect(() => {
     initToken();
   }, [initToken]);
 
   return (
     <Page back={false}>
-      <div className="flex flex-col pl-4 pr-4 gap-1  mb-32">
+      <div className="flex flex-col pl-4 pr-4 gap-1 mb-64">
         <PageTitle
           title="Swap"
           after={
@@ -65,8 +67,8 @@ export default function SwapPage() {
             hideBalance={false}
             canSwapOrder={true}
           />
-          <SubmitButton />
-          {token1?.amount && token2?.amount && transactionEstimation && (
+          <SubmitButton onClick={toggle} />
+          {token1?.amount && token2?.amount != "0" && transactionEstimation && (
             <TransactionSimulation
               infos={[
                 {

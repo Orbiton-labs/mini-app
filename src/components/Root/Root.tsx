@@ -8,7 +8,7 @@ import {
 } from "@telegram-apps/sdk-react";
 import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
-import { type PropsWithChildren, use, useEffect, useState } from "react";
+import { type PropsWithChildren, useEffect, useState } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
@@ -23,8 +23,10 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
+import { usePendingTransactionStore } from "@/store";
 import Link from "next/link";
 import { Header } from "../Header/Header";
+import { TransactionStatus } from "../TransactionStatus/TransactionStatus";
 
 const TABS = [
   {
@@ -98,6 +100,8 @@ function RootInner({ children }: PropsWithChildren) {
     setCurrentTab(id);
   }, [pathname]);
 
+  const show = usePendingTransactionStore((state) => state.show);
+
   return (
     <>
       <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
@@ -111,6 +115,8 @@ function RootInner({ children }: PropsWithChildren) {
           {children}
 
           <FixedLayout vertical="bottom">
+            {show && <TransactionStatus />}
+
             <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center">
               {TABS.filter((tab) => tab.id !== "welcome").map(
                 ({ id, text, Icon }) => {

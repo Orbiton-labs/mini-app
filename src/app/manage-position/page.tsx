@@ -3,6 +3,7 @@
 import LiquidityChartRangeInput from "@/components/LiquidityChart";
 import { Bound } from "@/components/LiquidityChart/types";
 import { Page } from "@/components/Page";
+import { Slider } from "@/components/Slider/Slider";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
 import { TokenType } from "@/types/Token";
@@ -55,6 +56,21 @@ const POSITION = {
   createdAt: "2/11",
 };
 
+const PERCENT = [
+  {
+    value: 25,
+  },
+  {
+    value: 50,
+  },
+  {
+    value: 75,
+  },
+  {
+    value: 100,
+  },
+];
+
 const isSorted = true;
 const price = "0.95";
 
@@ -74,9 +90,12 @@ export default function ManagePositionPage() {
     setPriceUpper(parseFloat(typedValue));
   };
 
+  const [percent, setPercent] = useState<number>(PERCENT[0].value);
+  const [isCustom, setIsCustom] = useState<boolean>(false);
+
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4 ">
+      <div className="flex flex-col pl-4 pr-4 mb-64">
         <SubPageTitle title="Manage Position" />
         <div className="flex flex-col gap-2 mt-4 mb-32">
           <div className="grid grid-cols-2 gap-3">
@@ -180,7 +199,7 @@ export default function ManagePositionPage() {
           </div>
 
           {selectedTab === TABS.COLLECT_FEE && (
-            <div className="flex flex-col justify-between items-center gap-1">
+            <div className="flex flex-col justify-between items-center gap-1 mb-2">
               <div className="flex justify-between items-center w-full">
                 <span className="text-ss text-white1">Create on</span>
                 <span className="text-xs">{POSITION.createdAt}</span>
@@ -252,7 +271,62 @@ export default function ManagePositionPage() {
           )}
 
           {selectedTab === TABS.REMOVE_LIQUIDITY && (
-            <div className="flex flex-col justify-between items-center gap-1 w-full">
+            <div className="flex flex-col justify-between items-center gap-1 w-full mb-2">
+              <div className="w-full">
+                <div className="mt-2 flex justify-between gap-2 items-center">
+                  {PERCENT.map((option, index) => (
+                    <div
+                      key={option.value}
+                      className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center text-xs px-2 ${
+                        percent === option.value && !isCustom
+                          ? "bg-gradient-to-b from-green1 to-green2 border-green2 text-black2"
+                          : "text-white2"
+                      }`}
+                      onClick={() => {
+                        setIsCustom(false);
+                        setPercent(option.value);
+                      }}
+                    >
+                      {option.value === 100 ? "Max" : `${option.value}%`}
+                    </div>
+                  ))}
+
+                  <div className="gap-2 rounded-lg flex py-3 px-3 mb-2 mt-2">
+                    <input
+                      className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
+                      placeholder="10"
+                      type="number"
+                      value={
+                        isCustom &&
+                        !PERCENT.map((option) => option.value).includes(percent)
+                          ? percent
+                          : undefined
+                      }
+                      onChange={(e) => {
+                        const value = parseFloat(e.target.value);
+                        if (!isNaN(value)) {
+                          setPercent(value);
+                        } else {
+                          setPercent(PERCENT[0].value);
+                          setIsCustom(false);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const value = parseFloat(e.target.value);
+                        if (isNaN(value)) {
+                          setPercent(PERCENT[0].value);
+                          setIsCustom(false);
+                        }
+                      }}
+                      onFocus={() => setIsCustom(true)}
+                    />
+                    <span className="text-xs text-white1">%</span>
+                  </div>
+                </div>
+
+                <Slider />
+              </div>
+
               <p className="text-sm w-full mb-2">You&apos;ll receive</p>
               <div className="flex justify-between items-center w-full">
                 <div className="flex gap-2 items-center">

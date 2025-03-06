@@ -102,7 +102,7 @@ export default function PoolDetailPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4  mb-32">
+      <div className="flex flex-col pl-4 pr-4 mb-64">
         <SubPageTitle title="Pool Detail" />
         <div className="grid grid-cols-2 gap-2 mt-2 ">
           <InputSearch

@@ -5,8 +5,16 @@ import { Icon28Exchange } from "@/icons/28/exchange";
 import { Icon28ProvideLiquidity } from "@/icons/28/provide-liquidity";
 import { Cell, Image, Placeholder, Section } from "@telegram-apps/telegram-ui";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/swap");
+  }, []);
+
   return (
     <Page back={false}>
       <div>
