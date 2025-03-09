@@ -11,11 +11,10 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { TransactionSimulation } from "@/components/TransactionSimulation/TransactionSimulation";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
-import { usePendingTransactionStore, useSwapStore } from "@/store";
-import { useEffect, useState } from "react";
+import { usePendingTxStore, useSwapStore, useTokenListStore } from "@/store";
+import { useState } from "react";
 
 export default function SwapPage() {
-  // TODO: remove this later
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
 
   const token1 = useSwapStore((state) => state.token1);
@@ -25,20 +24,16 @@ export default function SwapPage() {
   const setAmount1 = useSwapStore((state) => state.setAmount1);
   const setAmount2 = useSwapStore((state) => state.setAmount2);
   const reverseOrder = useSwapStore((state) => state.reverseOrder);
-  const filteredTokens = useSwapStore((state) => state.filteredTokens);
-  const displayTokenList = useSwapStore(
-    (state) => state.displayFilteredListToken
+  const filteredTokens = useTokenListStore((state) => state.filteredTokens);
+  const getFilteredTokens = useTokenListStore(
+    (state) => state.getFilteredTokens
   );
-  const initToken = useSwapStore((state) => state.initToken);
+
   const transactionEstimation = useSwapStore(
     (state) => state.transactionEstimation
   );
 
-  const toggle = usePendingTransactionStore((state) => state.toggle);
-
-  useEffect(() => {
-    initToken();
-  }, [initToken]);
+  const toggle = usePendingTxStore((state) => state.toggle);
 
   return (
     <Page back={false}>
@@ -63,7 +58,7 @@ export default function SwapPage() {
             setAmount2={setAmount2}
             tokenList={filteredTokens}
             reverseOrder={reverseOrder}
-            displayTokenList={displayTokenList}
+            displayTokenList={() => getFilteredTokens([token1, token2])}
             hideBalance={false}
             canSwapOrder={true}
           />

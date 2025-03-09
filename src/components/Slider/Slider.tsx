@@ -1,7 +1,7 @@
 import * as SliderUI from "@radix-ui/react-slider";
 
 export const Slider = () => (
-  <form>
+  <form >
     <SliderUI.Root
       className="relative flex h-10 w-full touch-none select-none items-center"
       defaultValue={[50]}

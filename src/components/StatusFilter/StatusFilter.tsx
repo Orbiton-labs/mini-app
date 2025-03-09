@@ -6,6 +6,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
 
@@ -24,6 +25,7 @@ export const StatusFilter: FC<StatusFilterProps> = ({
 }) => {
   return (
     <Drawer>
+      <DrawerTitle></DrawerTitle>
       <DrawerTrigger>
         <div
           className="flex justify-between gap-2 w-full items-center h-full px-3 bg-grey3 rounded-lg"
@@ -35,10 +37,12 @@ export const StatusFilter: FC<StatusFilterProps> = ({
           </div>
         </div>
       </DrawerTrigger>
-      <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl overflow-hidden border-none pb-12">
+      <DrawerContent aria-describedby={undefined} className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl overflow-hidden border-none pb-12">
         <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
           <div></div>
-          <span className="col-span-2 text-base text-white2">Select a token</span>
+          <span className="col-span-2 text-base text-white2">
+            Select a token
+          </span>
           <div className="flex justify-end">
             <ModalClose>
               <IconClose />

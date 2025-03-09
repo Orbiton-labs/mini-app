@@ -23,6 +23,7 @@
     "@ton/crypto": "^3.3.0",
     "@ton/ton": "^15.2.1",
     "@tonconnect/ui-react": "^2.0.5",
+    "@orbs-network/ton-access": "^2.3.3",
     "axios": "^1.7.9",
     "bignumber.js": "^9.1.2",
     "class-variance-authority": "^0.7.1",

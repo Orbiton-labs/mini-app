@@ -7,7 +7,7 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { IconMinus } from "@/icons/fixed/minus";
 import { IconPlus } from "@/icons/fixed/plus";
-import { useCreatePoolStore } from "@/store";
+import { useCreatePoolStore, useTokenListStore } from "@/store";
 import { useState } from "react";
 
 const isSorted = true;
@@ -20,12 +20,10 @@ export default function AddLiquidityPage() {
   const setToken2 = useCreatePoolStore((state) => state.setToken2);
   const setAmount1 = useCreatePoolStore((state) => state.setAmount1);
   const setAmount2 = useCreatePoolStore((state) => state.setAmount2);
-  const filteredTokens = useCreatePoolStore((state) => state.filteredTokens);
-  const displayTokenList = useCreatePoolStore(
-    (state) => state.displayFilteredListToken
+  const filteredTokens = useTokenListStore((state) => state.filteredTokens);
+  const getFilteredTokens = useTokenListStore(
+    (state) => state.getFilteredTokens
   );
-  const initToken = useCreatePoolStore((state) => state.initToken);
-
   const [priceLower, setPriceLower] = useState(0.9);
   const [priceUpper, setPriceUpper] = useState(1.1);
   const onLeftRangeInput = (typedValue: string) => {
@@ -99,6 +97,7 @@ export default function AddLiquidityPage() {
                 type="number"
                 className="bg-grey3 py-4 w-full rounded-lg text-center text-sm"
                 value={3.6402}
+                onChange={() => {}}
               />
               <div className="p-3 bg-grey3 rounded-full">
                 <IconPlus />
@@ -116,6 +115,7 @@ export default function AddLiquidityPage() {
                 type="number"
                 className="bg-grey3 py-4 w-full rounded-lg text-center text-sm"
                 value={3.6402}
+                onChange={() => {}}
               />
               <div className="p-3 bg-grey3 rounded-full">
                 <IconPlus />
@@ -140,7 +140,7 @@ export default function AddLiquidityPage() {
             reverseOrder={() => {}}
             canSwapOrder={false}
             hideBalance={true}
-            displayTokenList={displayTokenList}
+            displayTokenList={() => getFilteredTokens([token1, token2])}
             tokenList={filteredTokens}
           />
 

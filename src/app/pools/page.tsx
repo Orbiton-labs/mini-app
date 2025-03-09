@@ -54,9 +54,7 @@ export default function PoolsPage() {
         <PageTitle title="Pools" />
         <div className="flex flex-col gap-2 mt-4">
           <Link href="/create-pool">
-            <ActionButton
-              content="Create pool"
-            />
+            <ActionButton content="Create pool" />
           </Link>
           <DataTable columns={newColumns} data={listPools} />
         </div>

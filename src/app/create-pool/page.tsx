@@ -5,8 +5,7 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { PoolName } from "@/components/PoolName/PoolName";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
-import { useCreatePoolStore } from "@/store";
-import { useEffect } from "react";
+import { useCreatePoolStore, useTokenListStore } from "@/store";
 
 // TODO: remove this hardcode to api get fee tiers
 const FEE_TIERS = [
@@ -35,15 +34,10 @@ export default function CreatePoolPage() {
   const setToken2 = useCreatePoolStore((state) => state.setToken2);
   const setAmount1 = useCreatePoolStore((state) => state.setAmount1);
   const setAmount2 = useCreatePoolStore((state) => state.setAmount2);
-  const filteredTokens = useCreatePoolStore((state) => state.filteredTokens);
-  const displayTokenList = useCreatePoolStore(
-    (state) => state.displayFilteredListToken
+  const filteredTokens = useTokenListStore((state) => state.filteredTokens);
+  const getFilteredTokens = useTokenListStore(
+    (state) => state.getFilteredTokens
   );
-  const initToken = useCreatePoolStore((state) => state.initToken);
-
-  useEffect(() => {
-    initToken();
-  }, [initToken]);
 
   return (
     <Page>
@@ -60,7 +54,7 @@ export default function CreatePoolPage() {
             reverseOrder={() => {}}
             canSwapOrder={false}
             hideBalance={true}
-            displayTokenList={displayTokenList}
+            displayTokenList={() => getFilteredTokens([token1, token2])}
             tokenList={filteredTokens}
           />
           <div className="w-full grid grid-cols-3 gap-2">

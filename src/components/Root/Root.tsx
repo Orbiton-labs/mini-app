@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  initData,
-  miniApp,
-  useLaunchParams,
-  useSignal,
-} from "@telegram-apps/sdk-react";
+import { miniApp, useLaunchParams, useSignal } from "@telegram-apps/sdk-react";
 import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { type PropsWithChildren, useEffect, useState } from "react";
@@ -23,7 +18,7 @@ import { IconExplore } from "@/icons/fixed/explore";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/potfolio";
 import { IconSwap } from "@/icons/fixed/swap";
-import { usePendingTransactionStore } from "@/store";
+import { usePendingTxStore } from "@/store";
 import Link from "next/link";
 import { Header } from "../Header/Header";
 import { TransactionStatus } from "../TransactionStatus/TransactionStatus";
@@ -75,7 +70,7 @@ function RootInner({ children }: PropsWithChildren) {
   });
 
   const isDark = useSignal(miniApp.isDark);
-  const initDataUser = useSignal(initData.user);
+  // const initDataUser = useSignal(initData.user);
 
   // Set the user locale.
   // useEffect(() => {
@@ -100,7 +95,7 @@ function RootInner({ children }: PropsWithChildren) {
     setCurrentTab(id);
   }, [pathname]);
 
-  const show = usePendingTransactionStore((state) => state.show);
+  const show = usePendingTxStore((state) => state.show);
 
   return (
     <>

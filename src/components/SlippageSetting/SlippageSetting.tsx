@@ -1,13 +1,14 @@
 import { Icon24Gear } from "@/icons/24/gear";
 import { IconClose } from "@/icons/fixed/close";
+import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { FC, useState } from "react";
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -37,10 +38,11 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
 
   return (
     <Drawer>
+      <DrawerTitle></DrawerTitle>
       <DrawerTrigger>
         <Icon24Gear />
       </DrawerTrigger>
-      <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl border-none">
+      <DrawerContent aria-describedby={undefined} className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl border-none">
         <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
           <div></div>
           <span className="col-span-2 text-base text-white2">
