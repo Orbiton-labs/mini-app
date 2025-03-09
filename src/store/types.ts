@@ -3,9 +3,11 @@ import { FeeTier } from "@/types/FeeTier";
 import { Token } from "@/types/Token";
 import { TransactionCreatePoolEstimation, TransactionSwapEstimation } from "@/types/Transaction";
 import { Sender } from "@ton/core";
+import { TonClient } from "@ton/ton";
 import { TonConnectUI, Wallet, WalletInfoWithOpenMethod } from "@tonconnect/ui-react";
 
 export interface TonWalletState {
+    queryClient: TonClient | null;
     friendlyAddress: string | null;
     rawAddress: string | null;
     wallet: Wallet | (Wallet & WalletInfoWithOpenMethod) | null;
