@@ -16,6 +16,8 @@ export type TokenInfo = {
 
 export type Token = {
   token: TokenInfo;
+  jettonMaster?: string;
+  jettonMinter?: string;
   balance?: string;
   amount?: string;
 };

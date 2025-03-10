@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "set NODE_ENV=development & next dev",
     "dev:https": "next dev --experimental-https",
     "build": "next build",
     "start": "serve out -p 4000",

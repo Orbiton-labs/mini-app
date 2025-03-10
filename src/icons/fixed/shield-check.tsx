@@ -30,8 +30,8 @@ export const IconShieldCheck = ({ ...restProps }: Icon) => (
         y2="19"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#30C558" />
-        <stop offset="1" stop-color="#D8EC14" />
+        <stop stopColor="#30C558" />
+        <stop offset="1" stopColor="#D8EC14" />
       </linearGradient>
       <linearGradient
         id="paint1_linear_195_3204"
@@ -41,8 +41,8 @@ export const IconShieldCheck = ({ ...restProps }: Icon) => (
         y2="19"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#07C557" />
-        <stop offset="1" stop-color="#82FA73" />
+        <stop stopColor="#07C557" />
+        <stop offset="1" stopColor="#82FA73" />
       </linearGradient>
     </defs>
   </svg>

@@ -59,7 +59,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
           </div>
         </div>
       </DrawerTrigger>
-      <DrawerContent aria-describedby={undefined} className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl max-h-[86vh] overflow-hidden border-none">
+      <DrawerContent aria-describedby={undefined} className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl max-h-[86vh] overflow-hidden border-none mb-10">
         <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
           <div></div>
           <span className="col-span-2 text-base text-white2">Select a token</span>

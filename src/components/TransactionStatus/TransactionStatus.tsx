@@ -11,6 +11,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
 
@@ -19,6 +20,7 @@ export interface TransactionStatusProps {}
 export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
   return (
     <Drawer>
+      <DrawerTitle></DrawerTitle>
       <DrawerTrigger asChild={true}>
         <div className="flex w-full py-3 px-3 justify-between items-center bg-gradient-to-b from-grey1 to-grey2 rounded-lg border border-solid border-grey5 mb-[125px] mx-4">
           <div className="flex flex-col gap-2 justify-between items-start">
@@ -31,7 +33,10 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
           </div>
         </div>
       </DrawerTrigger>
-      <DrawerContent className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl overflow-hidden border-none pb-12">
+      <DrawerContent
+        aria-describedby={undefined}
+        className="bg-gradient-to-b from-grey1 to-grey2 rounded-t-2xl overflow-hidden border-none pb-12"
+      >
         <DrawerHeader className="grid-cols-10 grid-rows-1 items-center mx-4 px-2 py-5">
           <div></div>
           <span className="col-span-8 text-sm text-white2">

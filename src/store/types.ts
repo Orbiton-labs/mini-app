@@ -2,12 +2,14 @@
 import { FeeTier } from "@/types/FeeTier";
 import { Token } from "@/types/Token";
 import { TransactionCreatePoolEstimation, TransactionSwapEstimation } from "@/types/Transaction";
+import { TonApiClient } from "@ton-api/client";
 import { Sender } from "@ton/core";
 import { TonClient } from "@ton/ton";
 import { TonConnectUI, Wallet, WalletInfoWithOpenMethod } from "@tonconnect/ui-react";
 
 export interface TonWalletState {
     queryClient: TonClient | null;
+    tonApiClient: TonApiClient | null;
     friendlyAddress: string | null;
     rawAddress: string | null;
     wallet: Wallet | (Wallet & WalletInfoWithOpenMethod) | null;
@@ -19,13 +21,13 @@ export interface TonWalletState {
 }
 
 export interface TokenListState {
-    tokensList: Token[];
+    tokensList: Record<string, Token>;
     filteredTokens: Token[];
 }
 
 export interface SwapState {
-    token1: Token | null;
-    token2: Token | null;
+    token1Key: string | null;
+    token2Key: string | null;
     transactionEstimation?: TransactionSwapEstimation;
 }
 

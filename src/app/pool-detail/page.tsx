@@ -193,10 +193,9 @@ export default function PoolDetailPage() {
                   key={position.id}
                   className="bg-grey3 rounded-lg p-2 flex flex-col gap-2"
                 >
-                  <div>
+                  <div className="relative w-full h-[105px]">
                     <Image
-                      width={156}
-                      height={105}
+                      fill={true}
                       src={positionImg.src}
                       alt="Position Image"
                     />
