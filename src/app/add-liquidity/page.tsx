@@ -37,7 +37,7 @@ export default function AddLiquidityPage() {
 
   return (
     <Page>
-      <div className="flex flex-col gap-3 pl-4 pr-4 mb-64">
+      <div className="flex flex-col gap-3 pl-4 pr-4">
         <div className="flex justify-between item-center">
           <span className="text-base">1. Select Range</span>
           {/* <span className="text-base">Next</span> */}

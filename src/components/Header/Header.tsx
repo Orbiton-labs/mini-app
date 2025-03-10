@@ -10,7 +10,11 @@ import {
 import { useEffect } from "react";
 import tonSvg from "../../app/_assets/ton.svg";
 
-export function Header({ props }: any): JSX.Element {
+export interface HeaderProps {
+  isFullScreen: boolean;
+}
+
+export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
@@ -43,7 +47,11 @@ export function Header({ props }: any): JSX.Element {
   }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI, initWallet]);
 
   return (
-    <div className="flex flex-col items-center gap-2 pt-8 pl-4 pr-4">
+    <div
+      className={`flex flex-col items-center gap-2 ${
+        isFullScreen ? "pt-24" : "pt-8"
+      } pl-4 pr-4`}
+    >
       <div className="flex justify-between w-full border-b-[1px] border-b-grey3 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">
           <Image

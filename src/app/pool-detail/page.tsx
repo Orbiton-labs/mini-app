@@ -102,7 +102,7 @@ export default function PoolDetailPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4 mb-64">
+      <div className="flex flex-col pl-4 pr-4">
         <SubPageTitle title="Pool Detail" />
         <div className="grid grid-cols-2 gap-2 mt-2 ">
           <InputSearch
@@ -186,7 +186,7 @@ export default function PoolDetailPage() {
         </Link>
 
         {positions.length > 0 ? (
-          <div className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid mt-2 w-full gap-4 max-md:grid-cols-3 max-sm:grid-cols-2 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-[130px]">
             {positions.map((position, index) => (
               <Link key={index} href="/manage-position">
                 <div

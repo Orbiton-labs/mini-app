@@ -50,7 +50,7 @@ export default function PoolsPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4 mb-64">
+      <div className="flex flex-col pl-4 pr-4">
         <PageTitle title="Pools" />
         <div className="flex flex-col gap-2 mt-4">
           <Link href="/create-pool">

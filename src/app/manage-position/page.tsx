@@ -95,7 +95,7 @@ export default function ManagePositionPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4 mb-64">
+      <div className="flex flex-col pl-4 pr-4">
         <SubPageTitle title="Manage Position" />
         <div className="flex flex-col gap-2 mt-4 mb-32">
           <div className="grid grid-cols-2 gap-3">

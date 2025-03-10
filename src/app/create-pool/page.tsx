@@ -41,7 +41,7 @@ export default function CreatePoolPage() {
 
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4 mb-64">
+      <div className="flex flex-col pl-4 pr-4">
         <SubPageTitle title="Create Pool" />
         <div className="w-full flex flex-col gap-4 px-0 py-4">
           <PairInput
