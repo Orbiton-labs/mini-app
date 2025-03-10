@@ -2,8 +2,6 @@ import { TokenInfo, TokenType } from "@/types/Token";
 
 export const getTokenList = async (): Promise<TokenInfo[]> => {
   try {
-    // await sleep(3000);
-
     return [
       {
         type: TokenType.NATIVE,
@@ -95,7 +93,6 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
         aliased: true,
         price: "0",
       },
-
     ];
   } catch (error) {
     console.log("getTokenList: ", error);
