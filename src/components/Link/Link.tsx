@@ -1,4 +1,5 @@
-import { classNames, openLink } from "@telegram-apps/sdk-react";
+import { cn } from "@/lib/utils";
+import { openLink } from "@telegram-apps/sdk-react";
 import {
   type LinkProps as NextLinkProps,
   default as NextLink,
@@ -48,7 +49,7 @@ export const Link: FC<LinkProps> = ({
       {...rest}
       href={href}
       onClick={onClick}
-      className={classNames(
+      className={cn(
         className,
         "no-underline text-[color:var(--tg-theme-link-color)]"
       )}
