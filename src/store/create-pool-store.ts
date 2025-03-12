@@ -1,4 +1,3 @@
-// src/store/create-pool-store.ts
 import { simulateCreatePool } from "@/apis/server/pool";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { FeeTier } from "@/types/FeeTier";
@@ -29,8 +28,7 @@ export const useCreatePoolStore = create<
                 transactionEstimation: undefined,
                 init: async () => {
                     const tokenListStore = useTokenListStore.getState();
-                    const tokens = await tokenListStore.getTokenList();
-                    set({ token1: tokens[0] || null, token2: tokens[1] || null });
+                    await tokenListStore.getTokenList();
                 },
                 setToken1: (token) => {
                     set({ token1: token });

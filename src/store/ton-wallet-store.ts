@@ -7,9 +7,8 @@ import { TonConnectUI, Wallet, WalletInfoWithOpenMethod } from "@tonconnect/ui-r
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { autoInit } from "./middlewares/auto-init";
-import { useSwapStore } from "./swap-store";
-import { TonWalletState } from "./types";
 import { useTokenListStore } from "./token-list-store";
+import { TonWalletState } from "./types";
 
 export const useTonWalletStore = create<TonWalletState & {
     init: () => Promise<void>;
@@ -36,15 +35,12 @@ export const useTonWalletStore = create<TonWalletState & {
                 balanceLoading: false,
                 initWallet: async (friendlyAddress, rawAddress, wallet, ui, sender) => {
                     set({ friendlyAddress, rawAddress, wallet, ui, sender })
-
-                    // const swapStore = useSwapStore.getState();
-                    // await swapStore.fetchToken1Amount();
-                    // await swapStore.fetchToken2Amount();
-
                     const tokenListStore = useTokenListStore.getState();
+                    if (!ui?.connected) {
+                        tokenListStore.resetBalance();
+                    }
                     await tokenListStore.fetchAccountData();
-                }
-                ,
+                },
                 init: async () => {
                     const endpoint = await getHttpEndpoint({
                         network: process.env.NEXT_PUBLIC_ENVIRONMENT as Network || "mainnet"

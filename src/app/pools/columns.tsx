@@ -1,20 +1,13 @@
 import { PoolName } from "@/components/PoolName/PoolName";
 import { IconArrowDown } from "@/icons/fixed/arrow-down";
+import { FeeTier } from "@/types/FeeTier";
+import { TokenInfo } from "@/types/Token";
 import { ColumnDef } from "@tanstack/react-table";
 
-type Token = {
-  name: string;
-  image: string;
-};
-
-type FeeTier = {
-  fee: string;
-  tickSpacing: number;
-};
-
 type Pool = {
-  token1: Token;
-  token2: Token;
+  address: string;
+  token1: TokenInfo;
+  token2: TokenInfo;
   feeTier: FeeTier;
   tvl: number;
   volume24h: number;
@@ -22,7 +15,7 @@ type Pool = {
 };
 
 export const columns: ColumnDef<Pool>[] = [
-  {
+  { 
     accessorKey: "token1",
     header: "",
     cell: ({ row }) => {
@@ -32,8 +25,8 @@ export const columns: ColumnDef<Pool>[] = [
         <PoolName
           token1Img={original.token1.image}
           token2Img={original.token2.image}
-          token1Name={original.token1.name}
-          token2Name={original.token2.name}
+          token1Name={original.token1.symbol}
+          token2Name={original.token2.symbol}
           feeTier={original.feeTier.fee}
           className="text-xs"
         />

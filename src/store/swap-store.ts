@@ -1,18 +1,19 @@
-// src/store/swap-store.ts
 import { simulateSwap } from "@/apis/server/swap";
+import { DEFAULT_PAIR_MAINNET, DEFAULT_PAIR_TESTNET } from "@/constants/default-pair";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { autoInit } from "./middlewares/auto-init";
 import { useTokenListStore } from "./token-list-store";
 import { SwapState } from "./types";
 
+const defaultPair = process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" ? DEFAULT_PAIR_MAINNET : DEFAULT_PAIR_TESTNET;
+
 export const useSwapStore = create<
     SwapState & {
-        init: () => Promise<void>;
         setToken1: (token: Token) => Promise<void>;
         setToken2: (token: Token) => Promise<void>;
+        setPair: (token1: Token, token2: Token) => void;
         setAmount1: (amount: string | undefined) => Promise<void>;
         setAmount2: (amount: string | undefined) => Promise<void>;
         reverseOrder: () => Promise<void>;
@@ -20,40 +21,41 @@ export const useSwapStore = create<
 >()(
     devtools(
         logger(
-            autoInit((set, get) => ({
-                token1Key: null,
-                token2Key: null,
-                transactionEstimation: undefined,
-                init: async () => {
-                    const tokenListStore = useTokenListStore.getState();
-                    const tokens = await tokenListStore.getTokenList();
-                    const tokenKeys = Object.keys(tokens);
-                    const token1Key = tokenKeys[0] || null;
-                    const token2Key = tokenKeys[1] || null;
-                    set({ token1Key, token2Key });
+            (set, get) => ({
+                token1: {
+                    token: defaultPair[0]
                 },
+                token2: {
+                    token: defaultPair[1]
+                },
+                transactionEstimation: undefined,
                 setToken1: async (token) => {
-                    const key = token.token.address || token.token.name; // Adjust based on your Token structure
-                    set({ token1Key: key });
+                    set({ token1: token });
                     const tokenListStore = useTokenListStore.getState();
                     tokenListStore.getFilteredTokens([
-                        tokenListStore.getTokenByKey(key) || null,
-                        tokenListStore.getTokenByKey(get().token2Key || "") || null,
+                        token,
+                        get().token2,
                     ]);
                 },
                 setToken2: async (token) => {
-                    const key = token.token.address || token.token.name;
-                    set({ token2Key: key });
+                    set({ token2: token });
                     const tokenListStore = useTokenListStore.getState();
                     tokenListStore.getFilteredTokens([
-                        tokenListStore.getTokenByKey(get().token1Key || "") || null,
-                        tokenListStore.getTokenByKey(key) || null,
+                        get().token1,
+                        token,
+                    ]);
+                },
+                setPair: (token1, token2) => {
+                    set({ token1, token2 });
+                    const tokenListStore = useTokenListStore.getState();
+                    tokenListStore.getFilteredTokens([
+                        token1,
+                        token2,
                     ]);
                 },
                 setAmount1: async (amount) => {
-                    const tokenListStore = useTokenListStore.getState();
-                    const token1 = tokenListStore.getTokenByKey(get().token1Key || "");
-                    const token2 = tokenListStore.getTokenByKey(get().token2Key || "");
+                    const token1 = get().token1;
+                    const token2 = get().token2;
 
                     if (!token2?.token) return;
 
@@ -72,27 +74,16 @@ export const useSwapStore = create<
                 },
                 setAmount2: async (amount) => { },
                 reverseOrder: async () => {
-                    const { token1Key, token2Key } = get();
-                    set({ token1Key: token2Key, token2Key: token1Key });
+                    const { token1, token2 } = get();
+                    set({ token1: token2, token2: token1, transactionEstimation: undefined });
 
-                    const tokenListStore = useTokenListStore.getState();
-                    tokenListStore.getFilteredTokens([
-                        tokenListStore.getTokenByKey(token2Key || "") || null,
-                        tokenListStore.getTokenByKey(token1Key || "") || null,
-                    ]);
+                    if (token2?.amount && token1) {
+                        const simulateRes = await simulateSwap(token1.token, token2.token, token2?.amount);
+                        if (!simulateRes) return;
 
-                    const token1 = tokenListStore.getTokenByKey(token1Key || "");
-                    const token2 = tokenListStore.getTokenByKey(token2Key || "");
-
-                    const amount = token1?.amount;
-                    if (!token2?.token || !amount) return;
-
-                    set({ transactionEstimation: undefined });
-                    const simulateRes = await simulateSwap(token1.token, token2.token, amount);
-                    if (!simulateRes) return;
-
-                    set({ transactionEstimation: simulateRes.txEstimation });
+                        set({ transactionEstimation: simulateRes.txEstimation });
+                    }
                 },
-            })), "swap")
+            }), "swap")
     )
 );

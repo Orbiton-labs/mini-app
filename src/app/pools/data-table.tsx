@@ -19,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
@@ -93,27 +92,32 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody className="flex w-full flex-col gap-2">
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, index) => (
-                <TableRow
-                  className="w-full md:flex grid grid-cols-3 grid-rows-2 border-none bg-grey3 rounded-lg py-4 px-3"
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      className="first:col-span-3 flex-1 first:items-start first:flex"
-                      key={cell.id}
-                    >
-                      <Link key={index} href="/pool-detail">
+              table.getRowModel().rows.map((row, index) => {
+                return (
+                  <TableRow
+                    className="w-full md:flex grid grid-cols-3 grid-rows-2 border-none bg-grey3 rounded-lg py-4 px-3"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    onClick={() =>
+                      router.push(
+                        `/pool-detail?sel-pool=${(row.original as any).address}`
+                      )
+                    }
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        className="first:col-span-3 flex-1 first:items-start first:flex"
+                        key={cell.id}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
-                      </Link>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

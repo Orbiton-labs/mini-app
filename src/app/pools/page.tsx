@@ -4,49 +4,29 @@ import { DataTable } from "@/app/pools/data-table";
 import { ActionButton } from "@/components/ActionButton/ActionButton";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
+import { usePoolStore } from "@/store";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { columns as newColumns } from "./columns";
 
-const listPools = [
-  {
-    token1: {
-      name: "TON",
-      image: "https://assets.dedust.io/images/ton.webp",
-    },
-    token2: {
-      name: "DUST",
-      image: "https://assets.dedust.io/images/dust.gif",
-    },
-    feeTier: {
-      fee: "0.3",
-      tickSpacing: 100,
-    },
-    tvl: 764213,
-    volume24h: 568560,
-    apr: 278,
-  },
-  {
-    token1: {
-      name: "USDT",
-      image: "https://assets.dedust.io/images/usdt.webp",
-    },
-    token2: {
-      name: "DUST",
-      image: "https://assets.dedust.io/images/dust.gif",
-    },
-    feeTier: {
-      fee: "0.05",
-      tickSpacing: 60,
-    },
-    tvl: 15728,
-    volume24h: 23200,
-    apr: 150,
-  },
-];
-
 export default function PoolsPage() {
-  const router = useRouter();
+  const poolList = usePoolStore((state) => state.poolList);
+
+  const data = useMemo(() => {
+    if (!poolList.length) return [];
+
+    return poolList.map((pool) => {
+      return {
+        token1: pool.token1.token,
+        token2: pool.token2.token,
+        feeTier: pool.feeTier,
+        tvl: Number(pool.tvl),
+        volume24h: Number(pool.volume24h),
+        apr: Number(pool.apr),
+        address: pool.address,
+      };
+    });
+  }, [poolList]);
 
   return (
     <Page>
@@ -56,7 +36,7 @@ export default function PoolsPage() {
           <Link href="/create-pool">
             <ActionButton content="Create pool" />
           </Link>
-          <DataTable columns={newColumns} data={listPools} />
+          <DataTable columns={newColumns} data={data} />
         </div>
       </div>
     </Page>

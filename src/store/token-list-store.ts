@@ -1,10 +1,12 @@
 // src/store/token-list-store.ts
 import { getTokenList } from "@/apis/server/tokens";
+import { UnknownToken } from "@/constants/unknown";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { Address } from "@ton/core";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { useSwapStore } from "./swap-store";
 import { useTonWalletStore } from "./ton-wallet-store";
 import { TokenListState } from "./types";
 
@@ -26,7 +28,8 @@ export const useTokenListStore = create<
         getTokenList: () => Promise<Record<string, Token>>;
         getFilteredTokens: (excludedTokens: (Token | null)[]) => Token[];
         fetchAccountData: () => Promise<void>;
-        getTokenByKey: (key: string) => Token | undefined;
+        getTokenByKey: (key: string) => Token;
+        resetBalance: () => void;
     }
 >()(
     devtools(
@@ -37,11 +40,11 @@ export const useTokenListStore = create<
                 const tokenInfos = await getTokenList();
                 const tokensList: Record<string, Token> = {};
                 tokenInfos.forEach((token) => {
-                    // Use token address as the key (assuming it's unique)
                     const key = token.address ? Address.parse(token.address).toRawString() : token.symbol; // Adjust based on your Token structure
                     tokensList[key] = { token };
                 });
-                set({ tokensList, filteredTokens: Object.values(tokensList) });
+                const tokenArr = Object.values(tokensList);
+                set({ tokensList, filteredTokens: tokenArr });
             },
             getTokenList: async () => {
                 const tokenList = get().tokensList;
@@ -56,7 +59,8 @@ export const useTokenListStore = create<
                 return filtered;
             },
             getTokenByKey: (key: string) => {
-                return get().tokensList[key];
+                const token = get().tokensList[key];
+                return token || UnknownToken;
             },
             fetchAccountData: async () => {
                 const walletStore = useTonWalletStore.getState();
@@ -86,8 +90,38 @@ export const useTokenListStore = create<
 
                     const newTokens = Object.fromEntries(addressMap.entries());
                     set({ tokensList: newTokens });
+
+                    const swapStore = useSwapStore.getState();
+                    const token1 = get().getTokenByKey(Address.parse(swapStore.token1?.token.address || "").toRawString())
+                    const token2 = get().getTokenByKey(Address.parse(swapStore.token2?.token.address || "").toRawString())
+                    swapStore.setPair(token1, token2)
+                }
+
+                if (!address) {
+                    Object.keys(tokenList).forEach((tokenAddr) => {
+                        tokenList[tokenAddr] = {
+                            ...tokenList[tokenAddr],
+                            balance: undefined
+                        }
+                    });
+                    set({ tokensList: tokenList })
                 }
             },
+            resetBalance: () => {
+                const tokenList = get().tokensList;
+                Object.keys(tokenList).forEach((tokenAddr) => {
+                    tokenList[tokenAddr] = {
+                        ...tokenList[tokenAddr],
+                        balance: undefined
+                    }
+                });
+                set({ tokensList: tokenList })
+
+                const swapStore = useSwapStore.getState();
+                const token1 = get().getTokenByKey(Address.parse(swapStore.token1?.token.address || "").toRawString())
+                const token2 = get().getTokenByKey(Address.parse(swapStore.token2?.token.address || "").toRawString())
+                swapStore.setPair(token1, token2)
+            }
         }), "token-list")
     )
 );

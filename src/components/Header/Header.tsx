@@ -44,7 +44,12 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
         ? Address.parse(tonConnectUI.account?.address)
         : undefined,
     });
-  }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI, initWallet]);
+  }, [
+    userFriendlyAddress,
+    rawAddress,
+    wallet,
+    tonConnectUI,
+  ]);
 
   return (
     <div

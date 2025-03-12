@@ -1,16 +1,19 @@
-import { FeeTier } from "./FeeTier";
-import { TokenInfo } from "./Token";
+
+export enum PositionFilter {
+    ALL = "All",
+    ACTIVE = "Active",
+    CLOSED = "Closed"
+}
 
 export type Position = {
     id: number;
     pool: string;
-    token0: TokenInfo;
-    token1: TokenInfo;
-    feeTier: FeeTier;
-    priceLower: string;
-    priceUpper: string;
-    amount0: string;
     amount1: string;
-    valueUSD: string;
+    amount2: string;
+    fee1Earned: string;
+    fee2Earned: string;
+    tickLower: string;
+    tickUpper: string;
+    status: PositionFilter;
     createdAt: string;
 }

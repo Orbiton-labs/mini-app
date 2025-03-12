@@ -74,6 +74,12 @@ function RootInner({ children }: PropsWithChildren) {
   useEffect(() => {
     // take the first element path of the pathname
     const id = pathname.split("/")[1];
+
+    if (id === "") {
+      setCurrentTab("swap");
+      return;
+    }
+
     setCurrentTab(id);
   }, [pathname]);
 

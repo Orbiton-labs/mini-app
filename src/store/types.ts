@@ -1,5 +1,6 @@
 // src/store/types.ts
 import { FeeTier } from "@/types/FeeTier";
+import { Pool } from "@/types/Pool";
 import { Token } from "@/types/Token";
 import { TransactionCreatePoolEstimation, TransactionSwapEstimation } from "@/types/Transaction";
 import { TonApiClient } from "@ton-api/client";
@@ -26,8 +27,8 @@ export interface TokenListState {
 }
 
 export interface SwapState {
-    token1Key: string | null;
-    token2Key: string | null;
+    token1: Token | null;
+    token2: Token | null;
     transactionEstimation?: TransactionSwapEstimation;
 }
 
@@ -41,4 +42,9 @@ export interface CreatePoolState {
 
 export interface PendingTxState {
     show: boolean;
+}
+
+export interface PoolState {
+    poolList: Pool[];
+    selectedPool: Pool | null;
 }
