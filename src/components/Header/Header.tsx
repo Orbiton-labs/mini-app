@@ -39,12 +39,13 @@ function Account() {
       >
         <PopoverTrigger className="relative">
           <Wallet
+            stroke="url(#paint0_linear_257_2027)"
             onClick={() =>
               tonConnectUI.connected
                 ? setIsPopoverOpen(true)
                 : tonConnectUI.openModal()
             }
-            size={40}
+            size={36}
             className="cursor-pointer rounded-xl hover:bg-border-light md:hidden"
           />
         </PopoverTrigger>
@@ -121,7 +122,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
         isFullScreen ? "pt-24" : "pt-8"
       } pl-4 pr-4`}
     >
-      <div className="flex justify-between w-full border-b-[1px] border-b-grey3 pt-2 pb-2">
+      <div className="flex justify-between w-full border-b-[1px] border-b-grey7 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">
           <Logo width={40} height={40} />
           <span className="text-xl text-white3">Orbiton</span>
