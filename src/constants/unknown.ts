@@ -12,7 +12,6 @@ export const UnknownToken: Token = {
     symbol: "UNKNOWN",
     image: UNKNOWN_IMAGE_URL,
     decimals: 9,
-    aliased: true,
     price: "0",
   },
 }

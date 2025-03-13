@@ -8,12 +8,13 @@
     "build": "next build",
     "start": "serve out -p 4000",
     "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.ts ",
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.4",
     "@orbs-network/ton-access": "^2.3.3",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-progress": "^1.1.2",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slider": "^1.2.3",
@@ -33,6 +34,7 @@
     "d3": "^7.9.0",
     "eruda": "^3.0.1",
     "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6",
     "immer": "^10.1.1",
     "js-big-decimal": "^2.2.0",
     "lucide-react": "^0.475.0",
@@ -51,6 +53,13 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@0no-co/graphqlsp": "^1.12.16",
+    "@apollo/client": "^3.13.4",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/schema-ast": "^4.1.0",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@parcel/watcher": "^2.5.1",
     "@types/d3": "^7.4.3",
     "@types/lodash.keyby": "^4.6.9",
     "@types/node": "^20.14.9",

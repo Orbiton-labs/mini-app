@@ -23,7 +23,6 @@ const POOL = {
     symbol: "TON",
     image: "https://assets.dedust.io/images/ton.webp",
     decimals: 9,
-    aliased: true,
     price: "3.68",
   },
   token2: {
@@ -33,7 +32,6 @@ const POOL = {
     symbol: "USDT",
     image: "https://assets.dedust.io/images/usdt.webp",
     decimals: 6,
-    aliased: true,
     price: "0.9998",
   },
   feeTier: {

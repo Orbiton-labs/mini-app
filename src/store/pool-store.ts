@@ -17,8 +17,8 @@ export const usePoolStore = create<
                 poolList: [],
                 selectedPool: null,
                 init: async () => {
-                    const poolList = await getPoolList();
-                    set({ poolList });
+                    // const poolList = await getPoolList();
+                    // set({ poolList });
                 },
                 setSelectedPool: (poolAddress) => {
                     const pool = get().poolList.find((pool) => pool.address === poolAddress) || null

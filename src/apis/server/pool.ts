@@ -29,7 +29,6 @@ export const getPoolList = async (): Promise<Pool[]> => {
           symbol: "USDC",
           image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
           decimals: 9,
-          aliased: true,
           price: "1",
         }
       },
@@ -41,7 +40,6 @@ export const getPoolList = async (): Promise<Pool[]> => {
           symbol: "ORB",
           image: "https://pbs.twimg.com/profile_images/1871028225511702528/N23ltPQQ_400x400.jpg",
           decimals: 9,
-          aliased: true,
           price: "0.1",
         }
       },

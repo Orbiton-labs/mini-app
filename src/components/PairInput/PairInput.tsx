@@ -43,12 +43,12 @@ export const PairInput: FC<PairInputProps> = ({
         />
         {canSwapOrder && (
           <div
-            className="absolute z-[1] bg-black1 p-3 rounded-full"
+            className="absolute z-[1] bg-black1 p-3 rounded-full border border-grey7"
             onClick={() => {
               reverseOrder();
             }}
           >
-            <Icon20AnglesUpDown/>
+            <Icon20AnglesUpDown />
           </div>
         )}
         <SelectTokenWithInputAmount

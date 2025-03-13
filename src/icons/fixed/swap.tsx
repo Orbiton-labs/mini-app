@@ -14,15 +14,15 @@ export const IconSwap = ({ isActive, ...restProps }: Icon) => (
     />
     <defs>
       <linearGradient
-        id="paint0_linear_280_2511"
+        id="paint0_linear_257_2027"
         x1="32.7002"
         y1="2"
         x2="32.7002"
         y2="22"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#07C557" />
-        <stop offset="1" stopColor="#82FA73" />
+        <stop stop-color="#836CDE" />
+        <stop offset="1" stop-color="#B866D2" />
       </linearGradient>
     </defs>
   </svg>

@@ -10,7 +10,6 @@ export type TokenInfo = {
   symbol: string;
   image: string;
   decimals: number;
-  aliased: boolean;
   price: string;
 };
 

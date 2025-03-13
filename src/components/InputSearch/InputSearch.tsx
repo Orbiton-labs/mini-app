@@ -17,7 +17,7 @@ export const InputSearch: FC<InputSearchProps> = ({
   className,
 }) => (
   <div
-    className={`bg-grey3 gap-2 rounded-lg flex items-center py-3 px-3 w-full ${className}`}
+    className={`bg-grey8 gap-2 rounded-lg flex items-center py-3 px-3 w-full ${className}`}
   >
     <div>
       <IconFind />

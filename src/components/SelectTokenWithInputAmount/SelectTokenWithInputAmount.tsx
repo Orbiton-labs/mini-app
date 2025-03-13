@@ -22,7 +22,7 @@ export const SelectTokenWithInputAmount: FC<
   tokenList,
   hideBalance,
 }) => (
-  <div className="flex justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg">
+  <div className="flex justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg border border-grey7">
     <SelectTokenWithBalance
       hideBalance={hideBalance}
       tokenList={tokenList}

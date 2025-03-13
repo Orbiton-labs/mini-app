@@ -8,7 +8,7 @@ export interface ActionButtonProps {
 export const ActionButton: FC<ActionButtonProps> = ({ content, onClick }) => (
   <button
     onClick={onClick}
-    className="bg-green3 py-3 text-green4 text-sm rounded-lg w-full"
+    className="bg-green3 py-3 text-white2 text-sm rounded-lg w-full"
   >
     {content}
   </button>

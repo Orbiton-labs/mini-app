@@ -8,7 +8,6 @@ export const DEFAULT_PAIR_TESTNET = [
         symbol: "USDC",
         image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
         decimals: 9,
-        aliased: true,
         price: "1",
     },
     {
@@ -18,7 +17,6 @@ export const DEFAULT_PAIR_TESTNET = [
         symbol: "ORB",
         image: "https://pbs.twimg.com/profile_images/1871028225511702528/N23ltPQQ_400x400.jpg",
         decimals: 9,
-        aliased: true,
         price: "0.1",
     },
 ]
@@ -31,7 +29,6 @@ export const DEFAULT_PAIR_MAINNET = [
         symbol: "TON",
         image: "https://assets.dedust.io/images/ton.webp",
         decimals: 9,
-        aliased: true,
         price: "3.68",
     },
     {
@@ -41,7 +38,6 @@ export const DEFAULT_PAIR_MAINNET = [
         symbol: "USDT",
         image: "https://assets.dedust.io/images/usdt.webp",
         decimals: 6,
-        aliased: true,
         price: "0.9998",
     },
 ]
