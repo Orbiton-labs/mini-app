@@ -12,8 +12,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
             symbol: "TON",
             image: "https://assets.dedust.io/images/ton.webp",
             decimals: 9,
-
-            price: "3.68",
+            price: 3.68,
           },
           {
             type: TokenType.JETTON,
@@ -22,8 +21,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
             symbol: "USDT",
             image: "https://assets.dedust.io/images/usdt.webp",
             decimals: 6,
-
-            price: "0.9998",
+            price: 0.9998,
           },
         ]
       : [
@@ -35,8 +33,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
             image:
               "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
             decimals: 9,
-
-            price: "1",
+            price: 1,
           },
           {
             type: TokenType.JETTON,
@@ -46,8 +43,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
             image:
               "https://pbs.twimg.com/profile_images/1871028225511702528/N23ltPQQ_400x400.jpg",
             decimals: 9,
-
-            price: "0.1",
+            price: 0.1,
           },
         ];
   } catch (error) {

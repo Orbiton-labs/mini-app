@@ -14,12 +14,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import positionImg from "../../app/_assets/position.png";
-
-export enum PositionFilter {
-  ACTIVE = "Active",
-  ALL = "All",
-  CLOSED = "Closed",
-}
+import { PositionFilter } from "@/constants/position";
 
 export default function PoolDetailPage() {
   const searchParams = useSearchParams();
