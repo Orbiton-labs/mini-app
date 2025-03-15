@@ -10,6 +10,7 @@ export interface SelectTokenWithInputAmountProps {
   setAmount: (amount: string | undefined) => void;
   displayTokenList: () => void;
   hideBalance?: boolean;
+  canChangeToken?: boolean;
 }
 
 export const SelectTokenWithInputAmount: FC<
@@ -21,14 +22,16 @@ export const SelectTokenWithInputAmount: FC<
   displayTokenList,
   tokenList,
   hideBalance,
+  canChangeToken,
 }) => (
-  <div className="flex justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg border border-grey7">
+  <div className="flex gap-2 justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg border border-grey7">
     <SelectTokenWithBalance
       hideBalance={hideBalance}
       tokenList={tokenList}
       displayTokenList={displayTokenList}
       selectedToken={selectedToken}
       setToken={setToken}
+      canChangeToken={canChangeToken}
     />
     <InputWithCurrencyValue
       setAmount={setAmount}

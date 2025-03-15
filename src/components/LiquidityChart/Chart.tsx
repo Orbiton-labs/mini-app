@@ -211,11 +211,7 @@ export function Chart({
         xScale={xScale}
         setZoom={setZoom}
         width={innerWidth}
-        height={
-          // allow zooming inside the x-axis
-          height
-        }
-        // resetBrush={handleZoomReset}
+        height={height}
         showResetButton
         zoomLevels={zoomLevels}
         styles={styles}

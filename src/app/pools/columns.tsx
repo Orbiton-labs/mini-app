@@ -1,21 +1,11 @@
 import { PoolName } from "@/components/PoolName/PoolName";
 import { IconArrowDown } from "@/icons/fixed/arrow-down";
-import { FeeTier } from "@/types/FeeTier";
+import { Pool } from "@/types/Pool";
 import { TokenInfo } from "@/types/Token";
 import { ColumnDef } from "@tanstack/react-table";
 
-type Pool = {
-  address: string;
-  token1: TokenInfo;
-  token2: TokenInfo;
-  feeTier: FeeTier;
-  tvl: number;
-  volume24h: number;
-  apr: number;
-};
-
 export const columns: ColumnDef<Pool>[] = [
-  { 
+  {
     accessorKey: "token1",
     header: "",
     cell: ({ row }) => {
@@ -27,7 +17,7 @@ export const columns: ColumnDef<Pool>[] = [
           token2Img={original.token2.image}
           token1Name={original.token1.symbol}
           token2Name={original.token2.symbol}
-          feeTier={original.feeTier.fee}
+          feeTier={original.feeTier}
           className="text-xs"
         />
       );

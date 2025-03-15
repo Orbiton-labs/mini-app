@@ -87,6 +87,7 @@ function RootInner({ children }: PropsWithChildren) {
 
   return (
     <>
+      
       <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
         <AppRoot
           className={`${isDark ? "theme-black" : ""}`}

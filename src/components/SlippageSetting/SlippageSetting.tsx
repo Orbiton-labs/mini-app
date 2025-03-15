@@ -46,16 +46,15 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
         aria-describedby={undefined}
         className="bg-black3 rounded-t-2xl border-none"
       >
-        <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
-          <div></div>
-          <span className="col-span-2 text-base text-white2">
-            Select a token
-          </span>
-          <div className="flex justify-end">
-            <ModalClose>
-              <IconClose />
-            </ModalClose>
+        <DrawerHeader className="flex justify-center items-center mx-4 px-2 py-5">
+          <div>
+            <span className="col-span-8 text-sm text-white2">
+              Slippage Settings
+            </span>
           </div>
+          <ModalClose>
+              <IconClose className="absolute right-6 top-6" />
+          </ModalClose>
         </DrawerHeader>
 
         <div className="mx-4 px-2">

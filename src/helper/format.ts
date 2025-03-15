@@ -14,7 +14,7 @@ export const printBigInt = (
 export const bigIntToUsd = (
   value: string,
   decimals: number,
-  priceUsd: string,
+  priceUsd: number,
   fixed: number = 2
 ): string => {
   if (Number.isNaN(value)) {

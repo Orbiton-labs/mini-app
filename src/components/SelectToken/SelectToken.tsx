@@ -1,13 +1,14 @@
 import { UNKNOWN_IMAGE_URL } from "@/constants/unknown";
-import { Icon20Chevron } from "@/icons/20/chevron-down";
 import { IconClose } from "@/icons/fixed/close";
 import { Token } from "@/types/Token";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
+import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import { FC } from "react";
 import { InputSearch } from "../InputSearch/InputSearch";
+import { Button } from "../ui/button";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -19,6 +20,7 @@ export interface SelectTokenProps {
   tokenList: Token[];
   displayTokenList: () => void;
   setToken: (token: Token) => void;
+  canChangeToken?: boolean;
 }
 
 export const SelectToken: FC<SelectTokenProps> = ({
@@ -26,53 +28,50 @@ export const SelectToken: FC<SelectTokenProps> = ({
   tokenList,
   displayTokenList,
   setToken,
+  canChangeToken = true,
 }) => {
   return (
     <Drawer>
       <DrawerTitle></DrawerTitle>
-      <DrawerTrigger>
-        <div
-          className="flex justify-between gap-2 w-40 max-w-44 items-center p-2 bg-grey4 rounded-lg opacity-80"
-          onClick={displayTokenList}
+      <DrawerTrigger disabled={!canChangeToken} asChild>
+        <Button
+          className="min-w-fit"
+          asChild={false}
+          disabled={!canChangeToken}
         >
-          <div className="flex overflow-hidden w-fit gap-2 justify-between items-center">
+          <div className="p-2 mt-2 bg-grey4 rounded-lg opacity-80 flex gap-2 justify-between items-center">
             <Image
               src={selectedToken?.token.image || UNKNOWN_IMAGE_URL}
               alt="token"
               width={32}
               height={32}
-              className="rounded-full"
+              className="rounded-full flex-none"
             />
-            <span
-              className={`text-base text-white3 ${
-                selectedToken?.token.symbol &&
-                selectedToken?.token.symbol.length > 5
-                  ? "text-xs"
-                  : ""
-              }`}
-            >
+            <p className="flex-1 min-w-0">
               {selectedToken?.token.symbol || "Select token"}
-            </span>
+            </p>
+            {canChangeToken && (
+              <div className="flex-none">
+                <ChevronDownIcon width={20} height={20} />
+              </div>
+            )}
           </div>
-          <div>
-            <Icon20Chevron />
-          </div>
-        </div>
+        </Button>
+        {/* </div> */}
       </DrawerTrigger>
       <DrawerContent
         aria-describedby={undefined}
         className="bg-black3 rounded-t-2xl max-h-[86vh] overflow-hidden border-none mb-10"
       >
-        <DrawerHeader className="grid-cols-4 grid-rows-1 items-center mx-4 px-2 py-5">
-          <div></div>
-          <span className="col-span-2 text-base text-white2">
-            Select a token
-          </span>
-          <div className="flex justify-end">
-            <ModalClose>
-              <IconClose />
-            </ModalClose>
+        <DrawerHeader className="flex justify-center items-center mx-4 px-2 py-5">
+          <div>
+            <span className="col-span-8 text-sm text-white2">
+              Select a token
+            </span>
           </div>
+          <DrawerClose>
+            <IconClose className="absolute right-6 top-6" />
+          </DrawerClose>
         </DrawerHeader>
 
         <div className="mx-4">
@@ -86,7 +85,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
           />
         </div>
         {tokenList.map((option, index) => (
-          <ModalClose key={index}>
+          <DrawerClose key={index}>
             <div
               className="mx-4 flex py-2 gap-2 px-1 justify-start items-center"
               onClick={() => setToken(option)}
@@ -103,7 +102,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
                 {option.token.symbol}
               </span>
             </div>
-          </ModalClose>
+          </DrawerClose>
         ))}
       </DrawerContent>
     </Drawer>

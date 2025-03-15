@@ -37,16 +37,15 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
         aria-describedby={undefined}
         className="bg-black3 rounded-t-2xl overflow-hidden border-none pb-12"
       >
-        <DrawerHeader className="grid-cols-10 grid-rows-1 items-center mx-4 px-2 py-5">
-          <div></div>
-          <span className="col-span-8 text-sm text-white2">
-            Swap 1 USD for 0.2443 TON
-          </span>
-          <div className="flex justify-end">
-            <ModalClose>
-              <IconClose />
-            </ModalClose>
+        <DrawerHeader className="flex justify-center items-center mx-4 px-2 py-5">
+          <div>
+            <span className="col-span-8 text-sm text-white2">
+              Swap 1 USD for 0.2443 TON
+            </span>
           </div>
+          <ModalClose>
+              <IconClose className="absolute right-6 top-6" />
+          </ModalClose>
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 justify-between items-center w-full my-5">

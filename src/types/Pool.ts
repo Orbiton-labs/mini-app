@@ -1,21 +1,19 @@
-import { FeeTier } from "./FeeTier";
-import { Position } from "./Position";
-import { Token } from "./Token";
-
-export type ActiveLiquidity = {
-    price: number;
-    liquidity: number;
-}
+import { TokenInfo } from "./Token";
 
 export type Pool = {
-    token1: Token;
-    token2: Token;
-    address: string;
-    feeTier: FeeTier;
-    tvl: string;
-    volume24h: string;
-    fee24h: string;
-    apr: string;
-    positionList?: Position[];
-    activeLiquidity?: ActiveLiquidity[];
-}
+  address: string;
+  token1: TokenInfo;
+  token2: TokenInfo;
+  feeTier: string;
+  tvl: number;
+  volume24h: number;
+  apr: number;
+  txCount: number;
+  feesUSD: number;
+  jetton0Price: number;
+  jetton1Price: number;
+  tickSpacing: number;
+  tick: number;
+  liquidity: string;
+  sqrtPrice: string;
+};

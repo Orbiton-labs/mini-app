@@ -22,8 +22,8 @@ export const IconPool = ({ isActive, ...restProps }: Icon) => (
         y2="22"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#836CDE" />
-        <stop offset="1" stop-color="#B866D2" />
+        <stop stopColor="#836CDE" />
+        <stop offset="1" stopColor="#B866D2" />
       </linearGradient>
     </defs>
   </svg>

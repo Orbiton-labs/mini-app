@@ -25,6 +25,12 @@ export const PoolListQuery = gql`
       txCount
       feesUSD
       feeTier
+      jetton0Price
+      jetton1Price
+      tickSpacing
+      tick
+      liquidity
+      sqrtPrice
     }
   }
 `;
@@ -42,25 +48,32 @@ export const PoolDetailQuery = gql`
     pool(where: $where) {
       id
       jetton0 {
-        decimals
-        derivedUSD
         id
         image
         name
         symbol
+        derivedUSD
+        decimals
       }
       jetton1 {
-        decimals
-        derivedUSD
         id
         image
         name
         symbol
+        derivedUSD
+        decimals
       }
-      totalValueLockedUSD
       volumeUSD
-      feesUSD
+      totalValueLockedUSD
       txCount
+      feesUSD
+      feeTier
+      jetton0Price
+      jetton1Price
+      tickSpacing
+      tick
+      liquidity
+      sqrtPrice
     }
   }
 `;
@@ -100,6 +113,10 @@ export const PoolInfoToCreatePositionQuery = gql`
       }
       jetton0Price
       jetton1Price
+      tickSpacing
+      tick
+      liquidity
+      sqrtPrice
     }
   }
 `;

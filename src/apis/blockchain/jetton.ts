@@ -1,10 +1,7 @@
 import { Address, OpenedContract, Sender, TonClient } from "@ton/ton";
-import {
-  JettonMinterWrapper,
-  JettonWalletWrapper,
-} from "orbiton-contracts-sdk";
 import client from "./ton-client";
 import { tonCenterClient } from "./ton-indexer-v3";
+import { JettonMinterWrapper, JettonWalletWrapper } from "@orbiton_labs/v3-contracts-sdk";
 
 export const getUserJettonData = async (
   jettonMaster: string | null,

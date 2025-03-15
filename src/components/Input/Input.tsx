@@ -20,9 +20,9 @@ export const Input: FC<InputProps> = ({ value, decimals = 9, setValue }) => {
   return (
     <input
       placeholder="0.0"
-      className={`w-[100%] text-right text-xl bg-transparent  ${
+      className={`w-[100%] text-right text-xl bg-transparent overflow-visible  ${
         value ? "text-white2" : "text-white1"
-      } py-[10px] border-none focus:ring-transparent`}
+      } py-[8px] border-none focus:ring-transparent`}
       type="number"
       value={value ? printBigInt(value, decimals, decimals) : undefined}
       onChange={(e) => handleSetValue(e.target.value)}

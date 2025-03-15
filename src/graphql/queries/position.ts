@@ -50,6 +50,7 @@ export const ListPositionInPool = gql`
   query ListPositionInPool($where: PositionFilters) {
     position(where: $where) {
       id
+      owner
       jetton0 {
         id
         image
@@ -76,6 +77,8 @@ export const ListPositionInPool = gql`
         tick
         sqrtPrice
       }
+      collectedFeeJetton0
+      collectedFeeJetton1
     }
   }
 `;

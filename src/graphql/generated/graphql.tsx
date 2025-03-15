@@ -567,6 +567,8 @@ export type BurnPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -1215,6 +1217,8 @@ export type CollectPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -3450,6 +3454,8 @@ export type MintPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -4373,6 +4379,8 @@ export type PoolDataPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -5103,6 +5111,7 @@ export type PoolFilters = {
   protocolFeesUSD?: InputMaybe<PoolProtocolFeesUsdFilters>;
   sqrtPrice?: InputMaybe<PoolSqrtPriceFilters>;
   tick?: InputMaybe<PoolTickFilters>;
+  tickSpacing?: InputMaybe<PoolTickSpacingFilters>;
   timestamp?: InputMaybe<PoolTimestampFilters>;
   totalValueLockedJetton0?: InputMaybe<PoolTotalValueLockedJetton0Filters>;
   totalValueLockedJetton1?: InputMaybe<PoolTotalValueLockedJetton1Filters>;
@@ -5134,6 +5143,7 @@ export type PoolFiltersOr = {
   protocolFeesUSD?: InputMaybe<PoolProtocolFeesUsdFilters>;
   sqrtPrice?: InputMaybe<PoolSqrtPriceFilters>;
   tick?: InputMaybe<PoolTickFilters>;
+  tickSpacing?: InputMaybe<PoolTickSpacingFilters>;
   timestamp?: InputMaybe<PoolTimestampFilters>;
   totalValueLockedJetton0?: InputMaybe<PoolTotalValueLockedJetton0Filters>;
   totalValueLockedJetton1?: InputMaybe<PoolTotalValueLockedJetton1Filters>;
@@ -5207,6 +5217,8 @@ export type PoolInsertInput = {
   sqrtPrice: Scalars['String']['input'];
   /** BigInt */
   tick: Scalars['String']['input'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['input'];
   /** Date */
   timestamp: Scalars['String']['input'];
   totalValueLockedJetton0: Scalars['String']['input'];
@@ -5243,6 +5255,8 @@ export type PoolItem = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -5551,6 +5565,7 @@ export type PoolOrderBy = {
   protocolFeesUSD?: InputMaybe<InnerOrder>;
   sqrtPrice?: InputMaybe<InnerOrder>;
   tick?: InputMaybe<InnerOrder>;
+  tickSpacing?: InputMaybe<InnerOrder>;
   timestamp?: InputMaybe<InnerOrder>;
   totalValueLockedJetton0?: InputMaybe<InnerOrder>;
   totalValueLockedJetton1?: InputMaybe<InnerOrder>;
@@ -5627,6 +5642,8 @@ export type PoolSelectItem = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -5691,6 +5708,57 @@ export type PoolSqrtPricefiltersOr = {
 
 export type PoolTickFilters = {
   OR?: InputMaybe<Array<PoolTickfiltersOr>>;
+  /** BigInt */
+  eq?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  gt?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  gte?: InputMaybe<Scalars['String']['input']>;
+  ilike?: InputMaybe<Scalars['String']['input']>;
+  /** Array<BigInt> */
+  inArray?: InputMaybe<Array<Scalars['String']['input']>>;
+  isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  like?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  lt?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  lte?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  ne?: InputMaybe<Scalars['String']['input']>;
+  notIlike?: InputMaybe<Scalars['String']['input']>;
+  /** Array<BigInt> */
+  notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
+  notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PoolTickSpacingFilters = {
+  OR?: InputMaybe<Array<PoolTickSpacingfiltersOr>>;
+  /** BigInt */
+  eq?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  gt?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  gte?: InputMaybe<Scalars['String']['input']>;
+  ilike?: InputMaybe<Scalars['String']['input']>;
+  /** Array<BigInt> */
+  inArray?: InputMaybe<Array<Scalars['String']['input']>>;
+  isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  like?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  lt?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  lte?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  ne?: InputMaybe<Scalars['String']['input']>;
+  notIlike?: InputMaybe<Scalars['String']['input']>;
+  /** Array<BigInt> */
+  notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
+  notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PoolTickSpacingfiltersOr = {
   /** BigInt */
   eq?: InputMaybe<Scalars['String']['input']>;
   /** BigInt */
@@ -6047,6 +6115,8 @@ export type PoolUpdateInput = {
   sqrtPrice?: InputMaybe<Scalars['String']['input']>;
   /** BigInt */
   tick?: InputMaybe<Scalars['String']['input']>;
+  /** BigInt */
+  tickSpacing?: InputMaybe<Scalars['String']['input']>;
   /** Date */
   timestamp?: InputMaybe<Scalars['String']['input']>;
   totalValueLockedJetton0?: InputMaybe<Scalars['String']['input']>;
@@ -7564,6 +7634,8 @@ export type PositionPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -9654,6 +9726,8 @@ export type SwapPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -10643,6 +10717,8 @@ export type TickPoolRelation = {
   sqrtPrice: Scalars['String']['output'];
   /** BigInt */
   tick: Scalars['String']['output'];
+  /** BigInt */
+  tickSpacing: Scalars['String']['output'];
   /** Date */
   timestamp: Scalars['String']['output'];
   totalValueLockedJetton0: Scalars['String']['output'];
@@ -11257,7 +11333,7 @@ export type TransactionUpdateInput = {
 export type PoolListQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PoolListQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, volumeUSD: string, totalValueLockedUSD: string, txCount: string, feesUSD: string, feeTier: string, jetton0?: { __typename?: 'PoolJetton0Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null, jetton1?: { __typename?: 'PoolJetton1Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null }> };
+export type PoolListQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, volumeUSD: string, totalValueLockedUSD: string, txCount: string, feesUSD: string, feeTier: string, jetton0Price: string, jetton1Price: string, tickSpacing: string, tick: string, liquidity: string, sqrtPrice: string, jetton0?: { __typename?: 'PoolJetton0Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null, jetton1?: { __typename?: 'PoolJetton1Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null }> };
 
 export type PoolExistQueryQueryVariables = Exact<{
   where?: InputMaybe<PoolFilters>;
@@ -11271,7 +11347,7 @@ export type PoolDetailQueryQueryVariables = Exact<{
 }>;
 
 
-export type PoolDetailQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, totalValueLockedUSD: string, volumeUSD: string, feesUSD: string, txCount: string, jetton0?: { __typename?: 'PoolJetton0Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null, jetton1?: { __typename?: 'PoolJetton1Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null }> };
+export type PoolDetailQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, volumeUSD: string, totalValueLockedUSD: string, txCount: string, feesUSD: string, feeTier: string, jetton0Price: string, jetton1Price: string, tickSpacing: string, tick: string, liquidity: string, sqrtPrice: string, jetton0?: { __typename?: 'PoolJetton0Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null, jetton1?: { __typename?: 'PoolJetton1Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null }> };
 
 export type Pool24HQueryQueryVariables = Exact<{
   where?: InputMaybe<PoolDataFilters>;
@@ -11285,7 +11361,7 @@ export type PoolInfoToCreatePositionQueryQueryVariables = Exact<{
 }>;
 
 
-export type PoolInfoToCreatePositionQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, sqrtPrice: string, tick: string, liquidity: string, jetton0Price: string, jetton1Price: string, jetton0?: { __typename?: 'PoolJetton0Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null, jetton1?: { __typename?: 'PoolJetton1Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null }> };
+export type PoolInfoToCreatePositionQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, sqrtPrice: string, tick: string, liquidity: string, jetton0Price: string, jetton1Price: string, tickSpacing: string, jetton0?: { __typename?: 'PoolJetton0Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null, jetton1?: { __typename?: 'PoolJetton1Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null }> };
 
 export type PositionDetailQueryQueryVariables = Exact<{
   where?: InputMaybe<PositionFilters>;
@@ -11306,7 +11382,7 @@ export type ListPositionInPoolQueryVariables = Exact<{
 }>;
 
 
-export type ListPositionInPoolQuery = { __typename?: 'Query', position: Array<{ __typename?: 'PositionSelectItem', id: string, depositedJetton0: string, depositedJetton1: string, tickLower: string, tickUpper: string, liquidity: string, jetton0?: { __typename?: 'PositionJetton0Relation', id: string, image?: string | null, name: string, symbol: string, decimals: number, derivedUSD: string } | null, jetton1?: { __typename?: 'PositionJetton1Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null, pool?: { __typename?: 'PositionPoolRelation', id: string, tick: string, sqrtPrice: string } | null }> };
+export type ListPositionInPoolQuery = { __typename?: 'Query', position: Array<{ __typename?: 'PositionSelectItem', id: string, owner: string, depositedJetton0: string, depositedJetton1: string, tickLower: string, tickUpper: string, liquidity: string, collectedFeeJetton0: string, collectedFeeJetton1: string, jetton0?: { __typename?: 'PositionJetton0Relation', id: string, image?: string | null, name: string, symbol: string, decimals: number, derivedUSD: string } | null, jetton1?: { __typename?: 'PositionJetton1Relation', decimals: number, derivedUSD: string, id: string, image?: string | null, name: string, symbol: string } | null, pool?: { __typename?: 'PositionPoolRelation', id: string, tick: string, sqrtPrice: string } | null }> };
 
 
 export const PoolListQueryDocument = gql`
@@ -11334,6 +11410,12 @@ export const PoolListQueryDocument = gql`
     txCount
     feesUSD
     feeTier
+    jetton0Price
+    jetton1Price
+    tickSpacing
+    tick
+    liquidity
+    sqrtPrice
   }
 }
     `;
@@ -11414,25 +11496,32 @@ export const PoolDetailQueryDocument = gql`
   pool(where: $where) {
     id
     jetton0 {
-      decimals
-      derivedUSD
       id
       image
       name
       symbol
+      derivedUSD
+      decimals
     }
     jetton1 {
-      decimals
-      derivedUSD
       id
       image
       name
       symbol
+      derivedUSD
+      decimals
     }
-    totalValueLockedUSD
     volumeUSD
-    feesUSD
+    totalValueLockedUSD
     txCount
+    feesUSD
+    feeTier
+    jetton0Price
+    jetton1Price
+    tickSpacing
+    tick
+    liquidity
+    sqrtPrice
   }
 }
     `;
@@ -11536,6 +11625,10 @@ export const PoolInfoToCreatePositionQueryDocument = gql`
     }
     jetton0Price
     jetton1Price
+    tickSpacing
+    tick
+    liquidity
+    sqrtPrice
   }
 }
     `;
@@ -11686,6 +11779,7 @@ export const ListPositionInPoolDocument = gql`
     query ListPositionInPool($where: PositionFilters) {
   position(where: $where) {
     id
+    owner
     jetton0 {
       id
       image
@@ -11712,6 +11806,8 @@ export const ListPositionInPoolDocument = gql`
       tick
       sqrtPrice
     }
+    collectedFeeJetton0
+    collectedFeeJetton1
   }
 }
     `;

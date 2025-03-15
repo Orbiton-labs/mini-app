@@ -10,7 +10,7 @@ export type TokenInfo = {
   symbol: string;
   image: string;
   decimals: number;
-  price: string;
+  price: number;
 };
 
 export type Token = {

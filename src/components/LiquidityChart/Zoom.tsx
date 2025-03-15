@@ -10,8 +10,8 @@ import { Minus, Plus, RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { cn } from "@/lib/utils";
-import { LiquidityChartProps, ZoomLevels } from "./types";
 import { ButtonProps } from "../Button";
+import { LiquidityChartProps, ZoomLevels } from "./types";
 
 export const Presets = {
   SAFE: "SAFE",
@@ -46,7 +46,7 @@ export function Zoom({
   styles,
   currentPrice,
 }: {
-  svg: SVGElement | null;
+  svg: SVGRectElement | null;
   xScale: ScaleLinear<number, number>;
   setZoom: (transform: ZoomTransform) => void;
   width: number;
@@ -58,17 +58,20 @@ export function Zoom({
   currentPrice: number;
 }) {
   const zoomBehavior = useRef<ZoomBehavior<Element, unknown>>();
-  // const { preset } = useMintState();
   const preset = Presets.NORMAL;
 
   const [zoomIn, zoomOut, zoomInitial] = useMemo(
     () => [
-      () =>
-        svg &&
-        zoomBehavior.current &&
-        select(svg as Element)
-          .transition()
-          .call(zoomBehavior.current.scaleBy, 2),
+      () => {
+        console.log(svg);
+        return (
+          svg &&
+          zoomBehavior.current &&
+          select(svg as Element)
+            .transition()
+            .call(zoomBehavior.current.scaleBy, 2)
+        );
+      },
       () =>
         svg &&
         zoomBehavior.current &&
@@ -81,24 +84,12 @@ export function Zoom({
         select(svg as Element)
           .transition()
           .call(zoomBehavior.current.scaleTo, 0.5),
-      // zoom reset
-      // () =>
-      //   svg &&
-      //   zoomBehavior.current &&
-      //   select(svg as Element)
-      //     .call(
-      //       zoomBehavior.current.transform,
-      //       zoomIdentity.translate(0, 0).scale(1),
-      //     )
-      //     .transition()
-      //     .call(zoomBehavior.current.scaleTo, 0.5),
     ],
     [svg]
   );
 
   useEffect(() => {
     if (!svg) return;
-
     zoomBehavior.current = zoom()
       .scaleExtent([zoomLevels.min, zoomLevels.max])
       .extent([
@@ -158,14 +149,7 @@ export function Zoom({
       .transition()
       .duration(500)
       .call(zoomBehavior.current.transform, newTransform);
-  }, [
-    zoomLevels.min,
-    zoomLevels.max,
-    svg,
-    setZoom,
-    currentPrice,
-    width,
-  ]);
+  }, [zoomLevels.min, zoomLevels.max, svg, setZoom, currentPrice, width]);
 
   useEffect(() => {
     console.log("zoom preset", preset);
