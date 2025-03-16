@@ -5,10 +5,17 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { PoolName } from "@/components/PoolName/PoolName";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import { useCreatePool } from "@/hooks/create-pool/useCreatePool";
 import { useCreatePoolStore, useTokenListStore } from "@/store";
+import { useState } from "react";
 
 // TODO: remove this hardcode to api get fee tiers
 const FEE_TIERS = [
+  {
+    fee: 0.01,
+    tickSpacing: 1,
+    useWhen: "Best for stable pair",
+  },
   {
     fee: 0.05,
     tickSpacing: 10,
@@ -34,14 +41,23 @@ export default function CreatePoolPage() {
   const setToken2 = useCreatePoolStore((state) => state.setToken2);
   const setAmount1 = useCreatePoolStore((state) => state.setAmount1);
   const setAmount2 = useCreatePoolStore((state) => state.setAmount2);
-  const filteredTokens = useTokenListStore((state) => state.filteredTokens);
   const getFilteredTokens = useTokenListStore(
     (state) => state.getFilteredTokens
   );
 
+  console.log(token1, token2);
+  const [feeIndex, setFeeIndex] = useState<number>(2);
+
+  const { handleCreatePool, jetton0, jetton1, price } = useCreatePool(
+    token1,
+    token2,
+    FEE_TIERS[feeIndex].fee,
+    FEE_TIERS[feeIndex].tickSpacing
+  );
+
   return (
     <Page>
-      <div className="flex flex-col pl-4 pr-4">
+      <div className="flex flex-col pl-4 pr-4 mb-40">
         <SubPageTitle title="Create Pool" />
         <div className="w-full flex flex-col gap-4 px-0 py-4">
           <PairInput
@@ -55,21 +71,22 @@ export default function CreatePoolPage() {
             canSwapOrder={false}
             hideBalance={true}
             displayTokenList={() => getFilteredTokens([token1, token2])}
-            tokenList={filteredTokens}
+            tokenList={getFilteredTokens([token1, token2])}
           />
-          <div className="w-full grid grid-cols-3 gap-2">
+          <div className="w-full grid grid-cols-2 gap-2">
             {FEE_TIERS.map((e, index) => {
               return (
                 <div
+                  onClick={() => setFeeIndex(index)}
                   key={index}
                   className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey7 ${
-                    e.selected ? "bg-grey8" : ""
+                    feeIndex === index ? "bg-grey8" : ""
                   }`}
                 >
                   <p className="text-ms text-white2">{e.fee}%</p>
                   <p
                     className={`text-ss text-grey5 ${
-                      e.selected ? "text-white2" : ""
+                      feeIndex === index ? "text-white2" : ""
                     }`}
                   >
                     {e.useWhen}
@@ -78,9 +95,9 @@ export default function CreatePoolPage() {
               );
             })}
           </div>
-          <SubmitButton />
+          <SubmitButton onClick={handleCreatePool} />
           {token1 && token2 && (
-            <div className="flex justify-between items-center ">
+            <div className="flex justify-between items-center">
               <PoolName
                 token1Img={token1.token.image}
                 token2Img={token2.token.image}
@@ -89,9 +106,11 @@ export default function CreatePoolPage() {
                 className="text-sm"
               />
 
-              <p className="text-sm">
-                1 {token1.token.symbol} = 5 {token2.token.symbol}
-              </p>
+              {jetton0 && jetton1 && (
+                <p className="text-xs">
+                  1 {jetton0.symbol} = {price} {jetton1?.symbol}
+                </p>
+              )}
             </div>
           )}
         </div>

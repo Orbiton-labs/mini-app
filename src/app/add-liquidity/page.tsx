@@ -7,7 +7,10 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { useAddLiquidity } from "@/hooks/add-liquidity/useAddLiquidity";
 import { useAddLiquidityTransformer } from "@/hooks/add-liquidity/useAddLiquidityTransformer";
-import { useHandleChangeSubmitAmount } from "@/hooks/add-liquidity/useHandleChangeSubmitAmount";
+import {
+  FocusToken,
+  useHandleChangeSubmitAmount,
+} from "@/hooks/add-liquidity/useHandleChangeSubmitAmount";
 import { useHandleRangeChange } from "@/hooks/add-liquidity/useHandleRangeChange";
 import { useMintInfo } from "@/hooks/add-liquidity/useMintInfo";
 import { IconMinus } from "@/icons/fixed/minus";
@@ -54,8 +57,17 @@ export default function AddLiquidityPage() {
     setTickPair
   );
 
-  const { amount0, amount1, handleMint, onChangeAmount0 } =
-    useHandleChangeSubmitAmount(poolDetail, jettons, tickPair);
+  const {
+    amount0,
+    amount1,
+    focusOn,
+    setFocusOn,
+    setAmount0,
+    setAmount1,
+    handleMint,
+    onChangeAmount0,
+    onChangeAmount1,
+  } = useHandleChangeSubmitAmount(poolDetail, jettons, tickPair);
 
   const [inputValue, setInputValue] = useState(
     priceLower
@@ -204,7 +216,7 @@ export default function AddLiquidityPage() {
               setToken1={() => {}}
               setToken2={() => {}}
               setAmount1={onChangeAmount0}
-              setAmount2={() => {}}
+              setAmount2={onChangeAmount1}
               reverseOrder={() => {}}
               canSwapOrder={false}
               hideBalance={false}
@@ -212,6 +224,8 @@ export default function AddLiquidityPage() {
               tokenList={[]}
               canChangeToken0={false}
               canChangeToken1={false}
+              onFocus1={() => setFocusOn(FocusToken.TOKEN_0)}
+              onFocus2={() => setFocusOn(FocusToken.TOKEN_1)}
             />
           )}
 

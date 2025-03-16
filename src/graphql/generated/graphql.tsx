@@ -11330,7 +11330,9 @@ export type TransactionUpdateInput = {
   timestamp?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type PoolListQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type PoolListQueryQueryVariables = Exact<{
+  orderBy?: InputMaybe<PoolOrderBy>;
+}>;
 
 
 export type PoolListQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, volumeUSD: string, totalValueLockedUSD: string, txCount: string, feesUSD: string, feeTier: string, jetton0Price: string, jetton1Price: string, tickSpacing: string, tick: string, liquidity: string, sqrtPrice: string, jetton0?: { __typename?: 'PoolJetton0Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null, jetton1?: { __typename?: 'PoolJetton1Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null }> };
@@ -11386,8 +11388,8 @@ export type ListPositionInPoolQuery = { __typename?: 'Query', position: Array<{ 
 
 
 export const PoolListQueryDocument = gql`
-    query PoolListQuery {
-  pool {
+    query PoolListQuery($orderBy: PoolOrderBy) {
+  pool(orderBy: $orderBy) {
     id
     jetton0 {
       id
@@ -11432,6 +11434,7 @@ export const PoolListQueryDocument = gql`
  * @example
  * const { data, loading, error } = usePoolListQueryQuery({
  *   variables: {
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

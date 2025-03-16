@@ -1,6 +1,6 @@
 import { Icon20AnglesUpDown } from "@/icons/20/angles-up-down";
 import { Token } from "@/types/Token";
-import { FC } from "react";
+import { FC, FocusEventHandler } from "react";
 import { SelectTokenWithInputAmount } from "../SelectTokenWithInputAmount/SelectTokenWithInputAmount";
 
 export interface PairInputProps {
@@ -17,6 +17,8 @@ export interface PairInputProps {
   hideBalance: boolean;
   canChangeToken0?: boolean;
   canChangeToken1?: boolean;
+  onFocus1?: FocusEventHandler<HTMLInputElement>;
+  onFocus2?: FocusEventHandler<HTMLInputElement>;
 }
 
 export const PairInput: FC<PairInputProps> = ({
@@ -33,6 +35,8 @@ export const PairInput: FC<PairInputProps> = ({
   canSwapOrder = true,
   canChangeToken0 = true,
   canChangeToken1 = true,
+  onFocus1,
+  onFocus2,
 }) => {
   return (
     <>
@@ -45,6 +49,7 @@ export const PairInput: FC<PairInputProps> = ({
           setToken={setToken1}
           setAmount={setAmount1}
           canChangeToken={canChangeToken0}
+          onFocus={onFocus1}
         />
         {canSwapOrder && (
           <div
@@ -64,6 +69,7 @@ export const PairInput: FC<PairInputProps> = ({
           setToken={setToken2}
           setAmount={setAmount2}
           canChangeToken={canChangeToken1}
+          onFocus={onFocus2}
         />
       </div>
     </>

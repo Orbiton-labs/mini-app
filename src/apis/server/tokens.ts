@@ -26,6 +26,15 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
         ]
       : [
           {
+            type: TokenType.NATIVE,
+            address: null,
+            name: "Toncoin",
+            symbol: "TON",
+            image: "https://assets.dedust.io/images/ton.webp",
+            decimals: 9,
+            price: 3.68,
+          },
+          {
             type: TokenType.JETTON,
             address: "kQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo14c",
             name: "USD Coin",
@@ -44,6 +53,26 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
               "https://pbs.twimg.com/profile_images/1871028225511702528/N23ltPQQ_400x400.jpg",
             decimals: 9,
             price: 0.1,
+          },
+          {
+            type: TokenType.JETTON,
+            decimals: 9,
+            address: "EQBXJHKfXkPHxs8Ex9yy8gu6DWm9_FgoPCMJfx-tZlDIm_Dk",
+            image:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/23156.png",
+            name: "Dedust Token",
+            symbol: "DUST",
+            price: 0.41064,
+          },
+          {
+            type: TokenType.JETTON,
+            decimals: 9,
+            address: "EQBMX7QVmqvs5Gtx5_eSGm1FF88YPTOou1yKEz8CRX8QTGh-",
+            image:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
+            name: "USDT",
+            symbol: "USDT",
+            price: 0.348,
           },
         ];
   } catch (error) {

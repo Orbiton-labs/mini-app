@@ -1,26 +1,24 @@
 import client from "@/apis/blockchain/ton-client";
 import { FEE_TIER_SCALE } from "@/constants/contract";
+import { FEE_MAP } from "@/constants/corresponding-fee";
+import { PTON_ROUTER_WALLET } from "@/constants/pton";
 import { useTonWalletStore } from "@/store";
 import { Pool } from "@/types/Pool";
 import {
   Jetton,
   JettonAmount,
-  Percent,
   PoolMessageBuilder,
   Pool as PoolSDK,
-  PoolWrapper,
   Position,
   TickMath,
 } from "@orbiton_labs/v3-contracts-sdk";
+import { Chain } from "@orbiton_labs/v3-contracts-sdk/build/constants";
 import { maxLiquidityForAmounts } from "@orbiton_labs/v3-contracts-sdk/build/utils/maxLiquidityForAmounts";
-import {
-  FeeAmount,
-  WalletVersion,
-} from "@orbiton_labs/v3-contracts-sdk/build/@types";
 import { Trace } from "@ton-api/client";
-import { Address, OpenedContract, SenderArguments } from "@ton/core";
+import { SenderArguments } from "@ton/core";
 import Decimal from "decimal.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useDebounce from "../useDebounce";
 
 export enum FocusToken {
   TOKEN_0,
@@ -36,107 +34,126 @@ export const useHandleChangeSubmitAmount = (
   const walletVersion = useTonWalletStore((state) => state.walletVersion);
   const sender = useTonWalletStore((state) => state.sender);
   const queryClient = useTonWalletStore((state) => state.queryClient);
+  const loadWalletVersion = useTonWalletStore(
+    (state) => state.loadWalletVersion
+  );
 
-  const [focusOn, setFocusOn] = useState<FocusToken | null>();
+  const [focusOn, setFocusOn] = useState<FocusToken | null>(null);
   const [amount0, setAmount0] = useState<Decimal>(new Decimal(0));
   const [amount1, setAmount1] = useState<Decimal>(new Decimal(0));
   const [position, setPosition] = useState<Position | null>(null);
-  const [calculatedLiquidity, setCalculatedLiquidity] = useState<bigint>(0n);
-  const [poolContractInfo, setPoolContractInfo] = useState<{
-    fee: bigint;
-    tickSpacing: bigint;
-    tick: bigint;
-    sqrtPriceX96: bigint;
-    liquidity: bigint;
-  } | null>(null);
   const [estimateRes, setEstimateRes] = useState<{
     messages: SenderArguments[];
     result: Trace;
   } | null>(null);
 
-  useEffect(() => {
-    if (!pool || !queryClient) return;
+  const debounceAmount0 = useDebounce(amount0, 1000);
+  const debounceAmount1 = useDebounce(amount1, 1000);
 
-    (async () => {
-      const poolContract = new PoolWrapper.Pool(Address.parse(pool.address));
-      const poolQuery = queryClient.open(
-        poolContract
-      ) as OpenedContract<PoolWrapper.Pool>;
+  const prevPositionRef = useRef<Position | null>(null);
 
-      const info = await poolQuery.getPoolInfo();
-      setPoolContractInfo(info);
-      console.log("got info");
-    })();
-  }, [pool, queryClient]);
-
-  const onChangeAmount0 = async (value: string | undefined) => {
-    if (!pool) {
-      console.log("No pool found");
+  // Function to calculate position based on focus and value
+  const calculatePosition = async (focus: FocusToken, value: Decimal) => {
+    if (!pool || !jettons[0] || !jettons[1] || !client) {
+      console.log("Missing required data");
       return;
     }
 
-    if (!jettons[0] || !jettons[1]) {
-      console.log("No jettons found");
-      return;
-    }
-
-    if (!client) {
-      console.log("No ton client found");
-      return;
-    }
-
-    if (!poolContractInfo) {
-      console.log("no pool contract info");
-      return;
-    }
-
-    const amount0 = new Decimal(value || 0);
-    setAmount0(amount0);
-
-    const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickPair[0]);
-    const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickPair[1]);
-
-    const position = Position.fromAmount0({
-      pool: new PoolSDK(
-        jettons[0],
-        jettons[1],
-        FeeAmount.MEDIUM,
-        poolContractInfo.sqrtPriceX96,
-        poolContractInfo.liquidity,
-        Number(poolContractInfo.tick),
-        Number(poolContractInfo.tickSpacing)
-      ),
-      amount0: amount0.toString(),
-      tickLower: tickPair[0],
-      tickUpper: tickPair[1],
-      useFullPrecision: false,
-    });
-    const { amount0: newAmount0, amount1: newAmount1 } = position;
-    const calculatedLiquidity = maxLiquidityForAmounts(
-      poolContractInfo.sqrtPriceX96,
-      sqrtRatioAX96,
-      sqrtRatioBX96,
-      newAmount0.quotient.toString(),
-      newAmount1.quotient.toString(),
-      false
+    const fee = FEE_MAP.find(
+      (fee) => fee === Number(pool.feeTier) * FEE_TIER_SCALE
     );
-    setCalculatedLiquidity(calculatedLiquidity);
 
-    const res = position.mintAmountsWithSlippage(new Percent(1, 100));
-
-    if (position.liquidity === 0n) {
+    if (!fee) {
+      console.log("Not found fee");
       return;
     }
 
-    setPosition(position);
-    setAmount1(new Decimal(position.amount1.quotient.toString()));
+    let newPosition: Position;
+
+    if (focus === FocusToken.TOKEN_0) {
+      newPosition = Position.fromAmount0({
+        pool: new PoolSDK(
+          jettons[0],
+          jettons[1],
+          fee,
+          pool.sqrtPrice,
+          pool.liquidity,
+          pool.tick,
+          pool.tickSpacing
+        ),
+        amount0: value.toString(),
+        tickLower: tickPair[0],
+        tickUpper: tickPair[1],
+        useFullPrecision: false,
+      });
+    } else {
+      newPosition = Position.fromAmount1({
+        pool: new PoolSDK(
+          jettons[0],
+          jettons[1],
+          fee,
+          pool.sqrtPrice,
+          pool.liquidity,
+          pool.tick,
+          pool.tickSpacing
+        ),
+        amount1: value.toString(),
+        tickLower: tickPair[0],
+        tickUpper: tickPair[1],
+      });
+    }
+
+    if (newPosition.liquidity === 0n) {
+      return;
+    }
+
+    // Only update position if it has changed
+    if (
+      !prevPositionRef.current ||
+      prevPositionRef.current.liquidity !== newPosition.liquidity
+    ) {
+      setPosition(newPosition);
+      prevPositionRef.current = newPosition;
+
+      if (focus === FocusToken.TOKEN_0) {
+        setAmount1(new Decimal(newPosition.amount1.quotient.toString()));
+      } else {
+        setAmount0(new Decimal(newPosition.amount0.quotient.toString()));
+      }
+    }
   };
 
+  // Simplified onChange handlers
+  const onChangeAmount0 = (value: string | undefined) => {
+    const newAmount0 = new Decimal(value || 0);
+    setAmount0(newAmount0);
+    setFocusOn(FocusToken.TOKEN_0);
+  };
+
+  const onChangeAmount1 = (value: string | undefined) => {
+    const newAmount1 = new Decimal(value || 0);
+    setAmount1(newAmount1);
+    setFocusOn(FocusToken.TOKEN_1);
+  };
+
+  // Effect to trigger position calculation with debounced values
   useEffect(() => {
-    (async () => {
-      console.log({ tonApiClient, walletVersion, sender, position });
-      if (!tonApiClient || !walletVersion || !sender?.address || !position)
+    if (focusOn === FocusToken.TOKEN_0 && !debounceAmount0.isZero()) {
+      calculatePosition(FocusToken.TOKEN_0, debounceAmount0);
+    } else if (focusOn === FocusToken.TOKEN_1 && !debounceAmount1.isZero()) {
+      calculatePosition(FocusToken.TOKEN_1, debounceAmount1);
+    }
+  }, [debounceAmount0, debounceAmount1, focusOn, tickPair]);
+
+  // Effect for estimation
+  useEffect(() => {
+    const emulateMint = async () => {
+      if (!tonApiClient || !sender?.address || !position) return;
+
+      if (!walletVersion) {
+        await loadWalletVersion();
         return;
+      }
 
       const jetton0Sender = new Jetton(
         pool.token1.address!,
@@ -148,44 +165,88 @@ export const useHandleChangeSubmitAmount = (
         pool.token2.decimals,
         pool.token2.symbol
       );
+      try {
+        await jetton0Sender.setWalletAddress(queryClient!, sender.address);
+        await jetton1Sender.setWalletAddress(queryClient!, sender.address);
 
-      await jetton0Sender.setWalletAddress(queryClient!, sender.address);
-      await jetton1Sender.setWalletAddress(queryClient!, sender.address);
+        const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickPair[0]);
+        const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickPair[1]);
 
-      const result = await PoolMessageBuilder.createEmulatedMintMessage(
-        tonApiClient,
-        WalletVersion.V4R2,
-        sender?.address,
-        Address.parse(process.env.NEXT_PUBLIC_ROUTER_ADDRESS!),
-        jettons[0]!,
-        jettons[1]!,
-        JettonAmount.fromRawAmount(jetton0Sender, position.amount0.quotient),
-        JettonAmount.fromRawAmount(jetton1Sender, position.amount1.quotient),
-        pool.tickSpacing,
-        Number(pool.feeTier) * FEE_TIER_SCALE,
-        BigInt(tickPair[0]),
-        BigInt(tickPair[1]),
-        calculatedLiquidity,
-        sender?.address
-      );
+        const { amount0: newAmount0, amount1: newAmount1 } = position;
 
-      setEstimateRes(result);
-      console.log("success", result.result.transaction.success);
-    })();
-  }, [tonApiClient, position, pool, sender, walletVersion]);
+        const calculatedLiquidity = maxLiquidityForAmounts(
+          BigInt(pool.sqrtPrice),
+          sqrtRatioAX96,
+          sqrtRatioBX96,
+          newAmount0.quotient.toString(),
+          newAmount1.quotient.toString(),
+          false
+        );
+
+        // @ts-ignore
+        position.liquidity = calculatedLiquidity;
+
+        console.log(
+          tonApiClient,
+          walletVersion,
+          sender?.address,
+          jettons[0]!,
+          jettons[1]!,
+          JettonAmount.fromRawAmount(jetton0Sender, position.amount0.quotient),
+          JettonAmount.fromRawAmount(jetton1Sender, position.amount1.quotient),
+          position,
+          sender?.address,
+          0,
+          Chain.Testnet
+        );
+
+        const result = await PoolMessageBuilder.createEmulatedMintMessage(
+          tonApiClient,
+          walletVersion,
+          sender?.address,
+          jettons[0]!,
+          jettons[1]!,
+          JettonAmount.fromRawAmount(jetton0Sender, position.amount0.quotient),
+          JettonAmount.fromRawAmount(jetton1Sender, position.amount1.quotient),
+          position,
+          sender?.address,
+          0,
+          Chain.Testnet,
+          {
+            ROUTER: process.env.NEXT_PUBLIC_ROUTER_ADDRESS!,
+            PTON_ROUTER_WALLET: PTON_ROUTER_WALLET,
+          }
+          // pool.tickSpacing,
+          // Number(pool.feeTier) * FEE_TIER_SCALE,
+          // BigInt(tickPair[0]),
+          // BigInt(tickPair[1]),
+          // calculatedLiquidity,
+        );
+
+        setEstimateRes(result);
+        console.log("success", result.result.transaction.success);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    emulateMint();
+  }, [position]); // Only depend on position
 
   const handleMint = async () => {
     const res = await sender?.sendMultiple(estimateRes?.messages!);
-
     console.log({ res });
   };
 
   return {
     amount0,
-    setAmount0,
     amount1,
+    focusOn,
+    setFocusOn,
+    setAmount0,
     setAmount1,
     handleMint,
     onChangeAmount0,
+    onChangeAmount1,
   };
 };

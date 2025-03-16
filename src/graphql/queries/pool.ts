@@ -1,8 +1,8 @@
 import { gql } from "graphql-tag";
 
 export const PoolListQuery = gql`
-  query PoolListQuery {
-    pool {
+  query PoolListQuery($orderBy: PoolOrderBy) {
+    pool(orderBy: $orderBy) {
       id
       jetton0 {
         id

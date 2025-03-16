@@ -33,11 +33,12 @@ export const SelectToken: FC<SelectTokenProps> = ({
   return (
     <Drawer>
       <DrawerTitle></DrawerTitle>
-      <DrawerTrigger disabled={!canChangeToken} asChild>
+      <DrawerTrigger style={{
+        opacity: 1
+      }} disabled={!canChangeToken} asChild>
         <Button
-          className="min-w-fit"
+          className="min-w-fit disabled:opacity-1"
           asChild={false}
-          disabled={!canChangeToken}
         >
           <div className="p-2 mt-2 bg-grey4 rounded-lg opacity-80 flex gap-2 justify-between items-center">
             <Image

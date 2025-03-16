@@ -1,4 +1,5 @@
 import { FEE_TIER_SCALE } from "@/constants/contract";
+import { PTON_MASTER } from "@/constants/pton";
 import { UNKNOWN_IMAGE_URL } from "@/constants/unknown";
 import {
   ListPositionInPoolQuery,
@@ -8,6 +9,7 @@ import { checkPositionType } from "@/helper/filter";
 import { Pool } from "@/types/Pool";
 import { Position } from "@/types/Position";
 import { TokenInfo, TokenType } from "@/types/Token";
+import { Address } from "@ton/core";
 
 export const positionTransform = (
   positionList: ListPositionInPoolQuery | undefined
@@ -78,6 +80,18 @@ export const jettonTransform = (jetton: {
   derivedUSD: string;
   decimals: number;
 }): TokenInfo => {
+  if (Address.parse(jetton.id).equals(Address.parse(PTON_MASTER))) {
+    return {
+      type: TokenType.JETTON,
+      address: jetton.id,
+      name: jetton.name,
+      symbol: "TON",
+      image: "https://assets.dedust.io/images/ton.webp",
+      decimals: jetton.decimals,
+      price: Number(jetton.derivedUSD),
+    };
+  }
+
   return {
     type: TokenType.JETTON,
     address: jetton.id,

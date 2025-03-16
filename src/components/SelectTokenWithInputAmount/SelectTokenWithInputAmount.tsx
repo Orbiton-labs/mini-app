@@ -1,5 +1,5 @@
 import { Token } from "@/types/Token";
-import { FC } from "react";
+import { FC, FocusEventHandler } from "react";
 import { InputWithCurrencyValue } from "../InputWithCurrencyValue/InputWithCurrencyValue";
 import { SelectTokenWithBalance } from "../SelectTokenWithBalance/SelectTokenWithBalance";
 
@@ -11,6 +11,7 @@ export interface SelectTokenWithInputAmountProps {
   displayTokenList: () => void;
   hideBalance?: boolean;
   canChangeToken?: boolean;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
 }
 
 export const SelectTokenWithInputAmount: FC<
@@ -23,6 +24,7 @@ export const SelectTokenWithInputAmount: FC<
   tokenList,
   hideBalance,
   canChangeToken,
+  onFocus
 }) => (
   <div className="flex gap-2 justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg border border-grey7">
     <SelectTokenWithBalance
@@ -36,6 +38,7 @@ export const SelectTokenWithInputAmount: FC<
     <InputWithCurrencyValue
       setAmount={setAmount}
       selectedToken={selectedToken}
+      onFocus={onFocus}
     />
   </div>
 );

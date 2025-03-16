@@ -1,3 +1,4 @@
+import { WALLET_VERSION } from "@/constants/wallet-version";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { getHttpEndpoint, Network } from "@orbs-network/ton-access"; // src/store/ton-wallet-store.ts
 import { TonApiClient } from "@ton-api/client";
@@ -28,6 +29,7 @@ export const useTonWalletStore = create<
           })
         | null
     ) => Promise<void>;
+    loadWalletVersion: () => Promise<void>;
   }
 >()(
   devtools(
@@ -53,20 +55,26 @@ export const useTonWalletStore = create<
           await tokenListStore.fetchAccountData();
 
           const tonApiClient = get().tonApiClient;
-          if (tonApiClient && wallet) {
+          console.log("tonApiClient && rawAddress", tonApiClient && rawAddress);
+          if (tonApiClient && rawAddress) {
             const walletRes = await tonApiClient.accounts.getAccount(
-              Address.parse(wallet.account.address)
+              Address.parse(rawAddress)
             );
 
             console.log(
               "interface",
               walletRes.interfaces?.[0].slice(7).toLocaleUpperCase()
             );
-            set({
-              walletVersion: walletRes.interfaces?.[0]
-                .slice(7)
-                .toLocaleUpperCase(),
-            });
+
+            const walletVer = WALLET_VERSION.find(
+              (wallet) => wallet.string === walletRes.interfaces?.[0].slice(7)
+            );
+
+            if (walletVer) {
+              set({
+                walletVersion: walletVer.type,
+              });
+            }
           }
         },
         init: async () => {
@@ -84,6 +92,31 @@ export const useTonWalletStore = create<
           console.log(
             "Initialized Ton Client with orb network & Ton API  Client!"
           );
+        },
+        loadWalletVersion: async () => {
+          const tonApiClient = get().tonApiClient;
+          const rawAddress = get().rawAddress;
+          console.log("tonApiClient && rawAddress", tonApiClient && rawAddress);
+          if (tonApiClient && rawAddress) {
+            const walletRes = await tonApiClient.accounts.getAccount(
+              Address.parse(rawAddress)
+            );
+
+            console.log(
+              "interface",
+              walletRes.interfaces?.[0].slice(7).toLocaleUpperCase()
+            );
+
+            const walletVer = WALLET_VERSION.find(
+              (wallet) => wallet.string === walletRes.interfaces?.[0].slice(7)
+            );
+
+            if (walletVer) {
+              set({
+                walletVersion: walletVer.type,
+              });
+            }
+          }
         },
       })),
       "ton-wallet"

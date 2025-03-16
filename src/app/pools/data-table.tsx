@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
                     style={{
                       borderWidth: '1px'
                     }}
-                    className="w-full md:flex grid grid-cols-3 grid-rows-2 bg-grey3 rounded-lg py-4 px-3 border-grey7"
+                    className="last:mb-40 w-full md:flex grid grid-cols-3 grid-rows-2 bg-grey3 rounded-lg py-4 px-3 border-grey7"
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() =>
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
-                        className="first:col-span-3 flex-1 first:items-start first:flex "
+                        className="first:col-span-3 flex-1 first:items-start first:flex"
                         key={cell.id}
                       >
                         {flexRender(

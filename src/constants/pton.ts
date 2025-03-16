@@ -1,0 +1,3 @@
+export const PTON_ROUTER_WALLET =
+  "EQCSEQal6c4QeuA3J2-sjs5Sw3N9GJQxKsn0pMqW8sYaBm5g";
+export const PTON_MASTER = "kQBnGWMCf3-FZZq1W4IWcWiGAc3PHuZ0_H-7sad2oY00o3ZY";

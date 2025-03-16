@@ -6,6 +6,7 @@ import {
   TransactionCreatePoolEstimation,
   TransactionSwapEstimation,
 } from "@/types/Transaction";
+import { WalletVersion } from "@orbiton_labs/v3-contracts-sdk/build/@types";
 import { TonApiClient } from "@ton-api/client";
 import { Sender, SenderArguments } from "@ton/core";
 import { TonClient } from "@ton/ton";
@@ -30,7 +31,7 @@ export interface TonWalletState {
   balance: number;
   accounts: string[];
   balanceLoading: boolean;
-  walletVersion: string | null;
+  walletVersion: WalletVersion | null;
 }
 
 export interface TokenListState {
