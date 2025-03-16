@@ -110,6 +110,22 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
           console.error(e);
         }
       },
+      sendMultiple: async (args: SenderArguments[]) => {
+        try {
+          tonConnectUI.sendTransaction({
+            messages: args.map((arg) => {
+              return {
+                address: arg.to.toString(),
+                amount: arg.value.toString(),
+                payload: arg.body?.toBoc().toString("base64"),
+              };
+            }),
+            validUntil: Date.now() + 5 * 60 * 1000,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      },
       address: tonConnectUI.account?.address
         ? Address.parse(tonConnectUI.account?.address)
         : undefined,

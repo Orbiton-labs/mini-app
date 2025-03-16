@@ -62,16 +62,12 @@ export function Zoom({
 
   const [zoomIn, zoomOut, zoomInitial] = useMemo(
     () => [
-      () => {
-        console.log(svg);
-        return (
-          svg &&
-          zoomBehavior.current &&
-          select(svg as Element)
-            .transition()
-            .call(zoomBehavior.current.scaleBy, 2)
-        );
-      },
+      () =>
+        svg &&
+        zoomBehavior.current &&
+        select(svg as Element)
+          .transition()
+          .call(zoomBehavior.current.scaleBy, 2),
       () =>
         svg &&
         zoomBehavior.current &&

@@ -1,8 +1,11 @@
 import { Pool } from "@/types/Pool";
-import Decimal from "decimal.js";
+import { Jetton, tickToPrice } from "@orbiton_labs/v3-contracts-sdk";
 import { useMemo, useState } from "react";
 
-export const useAddLiquidityTransformer = (pool: Pool) => {
+export const useAddLiquidityTransformer = (
+  pool: Pool,
+  jettons: [Jetton | null, Jetton | null]
+) => {
   const [isToken0Base, setIsToken0Base] = useState<boolean>(true);
 
   const [base, quote] = useMemo(() => {
@@ -17,11 +20,14 @@ export const useAddLiquidityTransformer = (pool: Pool) => {
   }, [isToken0Base, pool]);
 
   const price = useMemo(() => {
-    if (!pool) return 0;
+    if (!pool || !jettons[0] || !jettons[1]) return 0;
 
-    const price = new Decimal(pool.sqrtPrice).div(2 ** 96).pow(2);
-    return isToken0Base ? price : new Decimal(1).div(price);
-  }, [pool, isToken0Base]);
+    // const price = new Decimal(pool.sqrtPrice).div(2 ** 96).pow(2);
+    const price = tickToPrice(jettons[0], jettons[1], pool.tick);
+    return isToken0Base
+      ? price.toSignificant(6)
+      : price.invert().toSignificant(6);
+  }, [pool, jettons, isToken0Base]);
 
   return {
     base,

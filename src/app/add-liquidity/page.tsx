@@ -7,13 +7,13 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { useAddLiquidity } from "@/hooks/add-liquidity/useAddLiquidity";
 import { useAddLiquidityTransformer } from "@/hooks/add-liquidity/useAddLiquidityTransformer";
+import { useHandleChangeSubmitAmount } from "@/hooks/add-liquidity/useHandleChangeSubmitAmount";
+import { useHandleRangeChange } from "@/hooks/add-liquidity/useHandleRangeChange";
+import { useMintInfo } from "@/hooks/add-liquidity/useMintInfo";
 import { IconMinus } from "@/icons/fixed/minus";
 import { IconPlus } from "@/icons/fixed/plus";
-import { useCreatePoolStore } from "@/store";
 import { useSearchParams } from "next/navigation";
-
-const isSorted = true;
-const price = "0.95";
+import { useState } from "react";
 
 export default function AddLiquidityPage() {
   const searchParams = useSearchParams();
@@ -21,13 +21,49 @@ export default function AddLiquidityPage() {
 
   const { poolDetail, poolDetailLoading } = useAddLiquidity(poolAddr || "");
 
-  const { base, quote, price, isToken0Base, setIsToken0Base } =
-    useAddLiquidityTransformer(poolDetail);
+  const {
+    priceLower,
+    priceUpper,
+    tickPair,
+    minTick,
+    maxTick,
+    jettons,
+    setTickPair,
+  } = useMintInfo(poolDetail);
 
-  const token1 = useCreatePoolStore((state) => state.token1);
-  const token2 = useCreatePoolStore((state) => state.token2);
-  const setAmount1 = useCreatePoolStore((state) => state.setAmount1);
-  const setAmount2 = useCreatePoolStore((state) => state.setAmount2);
+  const { base, quote, price, isToken0Base, setIsToken0Base } =
+    useAddLiquidityTransformer(poolDetail, jettons);
+
+  const {
+    inputMinPrice,
+    inputMaxPrice,
+    setInputMinPrice,
+    setInputMaxPrice,
+    onLeftRangeInput,
+    onRightRangeInput,
+    onDecreaseLeftRange,
+    onIncreaseLeftRange,
+    onDecreaseRightRange,
+    onIncreaseRightRange,
+  } = useHandleRangeChange(
+    jettons,
+    poolDetail?.tickSpacing,
+    isToken0Base,
+    priceLower,
+    priceUpper,
+    setTickPair
+  );
+
+  const { amount0, amount1, handleMint, onChangeAmount0 } =
+    useHandleChangeSubmitAmount(poolDetail, jettons, tickPair);
+
+  const [inputValue, setInputValue] = useState(
+    priceLower
+      ? isToken0Base
+        ? priceLower?.toSignificant(6)
+        : priceLower.invert().toSignificant(6)
+      : 0
+  );
 
   return (
     <Page>
@@ -67,7 +103,7 @@ export default function AddLiquidityPage() {
             {poolDetail && (
               <p className="text-xs py-2 px-3 bg-grey3 rounded-lg">
                 <span className="bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                  {price.toFixed(6)} {quote}
+                  {price} {quote}
                 </span>{" "}
                 per {base}
               </p>
@@ -75,38 +111,49 @@ export default function AddLiquidityPage() {
           </div>
         </div>
 
-        {poolDetail && <div className="relative">
-          <LiquidityChartRangeInput
-            pool={poolDetail}
-            poolAddr={poolDetail.address}
-            ticksAtLimit={{
-              [Bound.LOWER]: false,
-              [Bound.UPPER]: false,
-            }}
-            interactive={true}
-            price={Number(price)}
-            onLeftRangeInput={() => {}}
-            onRightRangeInput={() => {}}
-            variant={"dark"}
-            width={window.innerWidth > 768 ? 600 : 320}
-            isSorted={isToken0Base}
-          />
-        </div>}
+        {poolDetail && priceLower && priceUpper && (
+          <div className="relative">
+            <LiquidityChartRangeInput
+              pool={poolDetail}
+              priceLower={priceLower}
+              priceUpper={priceUpper}
+              poolAddr={poolDetail.address}
+              ticksAtLimit={{
+                [Bound.LOWER]: false,
+                [Bound.UPPER]: false,
+              }}
+              interactive={true}
+              price={Number(price)}
+              onLeftRangeInput={onLeftRangeInput}
+              onRightRangeInput={onRightRangeInput}
+              variant={"dark"}
+              width={window.innerWidth > 768 ? 600 : 320}
+              isSorted={isToken0Base}
+            />
+          </div>
+        )}
 
         <div className="flex flex-col gap-3 text-xs">
           <div className="flex flex-col gap-2 justify-between">
             <p>Min Price</p>
             <div className="flex justify-between items-center gap-6">
-              <div className="p-3 bg-grey3 rounded-full">
+              <div
+                onClick={onDecreaseLeftRange}
+                className="p-3 bg-grey3 rounded-full"
+              >
                 <IconMinus />
               </div>
               <input
                 type="number"
                 className="bg-grey3 py-4 w-full rounded-lg text-center text-sm"
-                value={3.6402}
-                onChange={() => {}}
+                value={inputMinPrice}
+                onChange={(e) => setInputMinPrice(e.target.value)}
+                onBlur={() => onLeftRangeInput(inputMinPrice)}
               />
-              <div className="p-3 bg-grey3 rounded-full">
+              <div
+                onClick={onIncreaseLeftRange}
+                className="p-3 bg-grey3 rounded-full"
+              >
                 <IconPlus />
               </div>
             </div>
@@ -115,16 +162,23 @@ export default function AddLiquidityPage() {
           <div className="flex flex-col gap-2 justify-between">
             <p>Max Price</p>
             <div className="flex justify-between items-center gap-6">
-              <div className="p-3 bg-grey3 rounded-full">
+              <div
+                onClick={onDecreaseRightRange}
+                className="p-3 bg-grey3 rounded-full"
+              >
                 <IconMinus />
               </div>
               <input
                 type="number"
                 className="bg-grey3 py-4 w-full rounded-lg text-center text-sm"
-                value={3.6402}
-                onChange={() => {}}
+                value={inputMaxPrice}
+                onChange={(e) => setInputMaxPrice(e.target.value)}
+                onBlur={() => onRightRangeInput(inputMaxPrice)}
               />
-              <div className="p-3 bg-grey3 rounded-full">
+              <div
+                onClick={onIncreaseRightRange}
+                className="p-3 bg-grey3 rounded-full"
+              >
                 <IconPlus />
               </div>
             </div>
@@ -137,23 +191,31 @@ export default function AddLiquidityPage() {
         </div>
 
         <div className="min-h-[460px] flex flex-col gap-3">
-          <PairInput
-            token1={token1}
-            token2={token2}
-            setToken1={() => {}}
-            setToken2={() => {}}
-            setAmount1={setAmount1}
-            setAmount2={setAmount2}
-            reverseOrder={() => {}}
-            canSwapOrder={false}
-            hideBalance={false}
-            displayTokenList={() => {}}
-            tokenList={[]}
-            canChangeToken0={false}
-            canChangeToken1={false}
-          />
+          {poolDetail && (
+            <PairInput
+              token1={{
+                token: poolDetail.token1,
+                amount: amount0.toString(),
+              }}
+              token2={{
+                token: poolDetail.token2,
+                amount: amount1.toString(),
+              }}
+              setToken1={() => {}}
+              setToken2={() => {}}
+              setAmount1={onChangeAmount0}
+              setAmount2={() => {}}
+              reverseOrder={() => {}}
+              canSwapOrder={false}
+              hideBalance={false}
+              displayTokenList={() => {}}
+              tokenList={[]}
+              canChangeToken0={false}
+              canChangeToken1={false}
+            />
+          )}
 
-          <SubmitButton content="Create Position" />
+          <SubmitButton onClick={handleMint} content="Create Position" />
         </div>
       </div>
     </Page>

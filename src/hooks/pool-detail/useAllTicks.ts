@@ -21,6 +21,9 @@ export async function getAllTicks(
 
   const ticksInfo = await pool.getTicks();
 
+  const liquidity = await pool.getPoolInfo();
+  console.log("liquidity in contract", liquidity);
+
   const ticks = ticksInfo.map(([tickIdx, tickInfo]) => ({
     tickIdx: tickIdx.toString(),
     liquidityGross: tickInfo.liquidity_gross.toString(),
