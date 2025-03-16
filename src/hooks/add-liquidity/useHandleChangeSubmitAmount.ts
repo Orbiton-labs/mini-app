@@ -10,7 +10,9 @@ import {
   Pool as PoolSDK,
   PoolWrapper,
   Position,
+  TickMath,
 } from "@orbiton_labs/v3-contracts-sdk";
+import { maxLiquidityForAmounts } from "@orbiton_labs/v3-contracts-sdk/build/utils/maxLiquidityForAmounts";
 import {
   FeeAmount,
   WalletVersion,
@@ -39,6 +41,7 @@ export const useHandleChangeSubmitAmount = (
   const [amount0, setAmount0] = useState<Decimal>(new Decimal(0));
   const [amount1, setAmount1] = useState<Decimal>(new Decimal(0));
   const [position, setPosition] = useState<Position | null>(null);
+  const [calculatedLiquidity, setCalculatedLiquidity] = useState<bigint>(0n);
   const [poolContractInfo, setPoolContractInfo] = useState<{
     fee: bigint;
     tickSpacing: bigint;
@@ -88,27 +91,10 @@ export const useHandleChangeSubmitAmount = (
     }
 
     const amount0 = new Decimal(value || 0);
-
     setAmount0(amount0);
 
-    console.log({
-      pool,
-    });
-
-    console.log({
-      pool: new PoolSDK(
-        jettons[0],
-        jettons[1],
-        FeeAmount.MEDIUM,
-        poolContractInfo.sqrtPriceX96,
-        poolContractInfo.liquidity,
-        Number(poolContractInfo.tick),
-        Number(poolContractInfo.tickSpacing)
-      ),
-      amount0: amount0.toString(),
-      tickLower: tickPair[0],
-      tickUpper: tickPair[1],
-    });
+    const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickPair[0]);
+    const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickPair[1]);
 
     const position = Position.fromAmount0({
       pool: new PoolSDK(
@@ -125,20 +111,18 @@ export const useHandleChangeSubmitAmount = (
       tickUpper: tickPair[1],
       useFullPrecision: false,
     });
-
-    console.log({
-      liquidity: position.liquidity,
-      amount0: position.amount0.quotient,
-      amount1: position.amount1.quotient,
-    });
+    const { amount0: newAmount0, amount1: newAmount1 } = position;
+    const calculatedLiquidity = maxLiquidityForAmounts(
+      poolContractInfo.sqrtPriceX96,
+      sqrtRatioAX96,
+      sqrtRatioBX96,
+      newAmount0.quotient.toString(),
+      newAmount1.quotient.toString(),
+      false
+    );
+    setCalculatedLiquidity(calculatedLiquidity);
 
     const res = position.mintAmountsWithSlippage(new Percent(1, 100));
-
-    console.log({
-      liquidity: position.liquidity,
-      amount0: res.amount0,
-      amount1: res.amount1,
-    });
 
     if (position.liquidity === 0n) {
       return;
@@ -168,24 +152,6 @@ export const useHandleChangeSubmitAmount = (
       await jetton0Sender.setWalletAddress(queryClient!, sender.address);
       await jetton1Sender.setWalletAddress(queryClient!, sender.address);
 
-      // console.log({
-      //   router0: jettons[0]!.walletAddress?.toString(),
-      //   router1: jettons[1]!.walletAddress?.toString(),
-      //   user0: JettonAmount.fromRawAmount(
-      //     jetton0Sender,
-      //     position.amount0.quotient
-      //   ).jetton.walletAddress?.toString(),
-      //   user1: JettonAmount.fromRawAmount(
-      //     jetton1Sender,
-      //     position.amount1.quotient
-      //   ).jetton.walletAddress?.toString(),
-      //   tS: pool.tickSpacing,
-      //   fee: Number(pool.feeTier) * FEE_TIER_SCALE,
-      //   tL: tickPair[0],
-      //   tU: tickPair[1],
-      //   liquid: position?.liquidity,
-      // });
-
       const result = await PoolMessageBuilder.createEmulatedMintMessage(
         tonApiClient,
         WalletVersion.V4R2,
@@ -199,7 +165,7 @@ export const useHandleChangeSubmitAmount = (
         Number(pool.feeTier) * FEE_TIER_SCALE,
         BigInt(tickPair[0]),
         BigInt(tickPair[1]),
-        position?.liquidity,
+        calculatedLiquidity,
         sender?.address
       );
 
@@ -223,6 +189,3 @@ export const useHandleChangeSubmitAmount = (
     onChangeAmount0,
   };
 };
-
-//25054648172197637616232824832
-//25054648172197637687608393824
