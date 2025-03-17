@@ -45,12 +45,20 @@ export default function ManagePositionPage() {
     setIsToken0Base,
   } = usePositionTransform(position, poolDetail);
 
-  const { percent, amount0, amount1, setPercent } = useHandleRemoveLiquidity(
-    positionAddress,
-    jettons,
-    poolDetail
-  );
+  const {
+    percent,
+    amount0,
+    amount1,
+    inactiveAmount0,
+    inactiveAmount1,
+    pooledAmount0,
+    pooledAmount1,
+    handleRemoveLiquidity,
+    handleCollectFee,
+    setPercent,
+  } = useHandleRemoveLiquidity(positionAddress, jettons, poolDetail, position);
   const [selectedTab, setSelectedTab] = useState(TABS.COLLECT_FEE);
+
   return (
     <Page>
       <div className="flex flex-col pl-4 pr-4">
@@ -212,7 +220,7 @@ export default function ManagePositionPage() {
                     <Avatar size={20} src={position.token0.image} />
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
-                        {position.amount0.toFixed(2)} {position.token0.symbol}
+                        {pooledAmount0} {position.token0.symbol}
                       </span>
                       <span className="text-ss text-grey5">
                         ${amount0Usd.toFixed(2)}
@@ -225,7 +233,7 @@ export default function ManagePositionPage() {
                     <Avatar size={20} src={position.token1.image} />
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
-                        {position.amount1.toFixed(2)} {position.token1.symbol}
+                        {pooledAmount1} {position.token1.symbol}
                       </span>
                       <span className="text-ss text-grey5">
                         ${amount1Usd.toFixed(2)}
@@ -270,29 +278,31 @@ export default function ManagePositionPage() {
 
               <div className="flex flex-col gap-1 justify-between w-full mt-4 text-white">
                 <p className="text-sm">Earn</p>
-                {position && (
+                {position && poolDetail && (
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
                       <Avatar size={20} src={position.token0.image} />
                       <span className="text-xs text-white2">
-                        {position.token0.symbol} Fee Earned
+                        {position.token0.symbol} Inactive Amount
                       </span>
                     </div>
                     <span className="text-xs">
-                      {position.fee1Earned.toFixed(2)}
+                      {inactiveAmount0 &&
+                        toAmount(inactiveAmount0, poolDetail.token1.decimals)}
                     </span>
                   </div>
                 )}
-                {position && (
+                {position && poolDetail && (
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
                       <Avatar size={20} src={position.token1.image} />
                       <span className="text-xs text-white2">
-                        {position.token1.symbol} Fee Earned
+                        {position.token1.symbol} Inactive Amount
                       </span>
                     </div>
                     <span className="text-xs">
-                      {position.fee2Earned.toFixed(2)}
+                      {inactiveAmount1 &&
+                        toAmount(inactiveAmount1, poolDetail.token2.decimals)}
                     </span>
                   </div>
                 )}
@@ -357,7 +367,7 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    {position.amount0}{" "}
+                    {pooledAmount0}{" "}
                     {/* <span className="text-xs text-grey5">($3.12)</span> */}
                   </p>
                 </div>
@@ -371,7 +381,7 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    {position.amount1}{" "}
+                    {pooledAmount1}{" "}
                     {/* <span className="text-xs text-grey5">($3.12)</span> */}
                   </p>
                 </div>
@@ -415,6 +425,11 @@ export default function ManagePositionPage() {
                 ? "Collect Fees"
                 : "Remove Liquidity"
             }`}
+            onClick={
+              selectedTab === TABS.COLLECT_FEE
+                ? handleCollectFee
+                : handleRemoveLiquidity
+            }
           />
         </div>
       </div>

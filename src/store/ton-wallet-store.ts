@@ -25,8 +25,8 @@ export const useTonWalletStore = create<
       ui: TonConnectUI | null,
       sender:
         | (Sender & {
-            sendMultiple: (args: SenderArguments[]) => Promise<void>;
-          })
+          sendMultiple: (args: SenderArguments[]) => Promise<void>;
+        })
         | null
     ) => Promise<void>;
     loadWalletVersion: () => Promise<void>;
@@ -52,7 +52,6 @@ export const useTonWalletStore = create<
           if (!ui?.connected) {
             tokenListStore.resetBalance();
           }
-          await tokenListStore.fetchAccountData();
 
           const tonApiClient = get().tonApiClient;
           console.log("tonApiClient && rawAddress", tonApiClient && rawAddress);
@@ -76,6 +75,7 @@ export const useTonWalletStore = create<
               });
             }
           }
+          await tokenListStore.fetchAccountData();
         },
         init: async () => {
           const endpoint = await getHttpEndpoint({
