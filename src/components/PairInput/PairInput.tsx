@@ -17,6 +17,8 @@ export interface PairInputProps {
   hideBalance: boolean;
   canChangeToken0?: boolean;
   canChangeToken1?: boolean;
+  disable0?: boolean;
+  disable1?: boolean;
   onFocus1?: FocusEventHandler<HTMLInputElement>;
   onFocus2?: FocusEventHandler<HTMLInputElement>;
 }
@@ -35,6 +37,8 @@ export const PairInput: FC<PairInputProps> = ({
   canSwapOrder = true,
   canChangeToken0 = true,
   canChangeToken1 = true,
+  disable0 = false,
+  disable1 = false,
   onFocus1,
   onFocus2,
 }) => {
@@ -50,6 +54,7 @@ export const PairInput: FC<PairInputProps> = ({
           setAmount={setAmount1}
           canChangeToken={canChangeToken0}
           onFocus={onFocus1}
+          disabledInput={disable0}
         />
         {canSwapOrder && (
           <div
@@ -70,7 +75,7 @@ export const PairInput: FC<PairInputProps> = ({
           setAmount={setAmount2}
           canChangeToken={canChangeToken1}
           onFocus={onFocus2}
-          disabledInput={true}
+          disabledInput={disable1}
         />
       </div>
     </>

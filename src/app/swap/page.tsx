@@ -82,6 +82,7 @@ export default function SwapPage() {
             displayTokenList={() => getFilteredTokens([token1, token2])}
             hideBalance={false}
             canSwapOrder={true}
+            disable1={true}
           />
           <SubmitButton onClick={swap} />
           {/* {token2 && token2.amount != "0" && transactionEstimation && (
