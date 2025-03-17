@@ -4,11 +4,18 @@ import { FC, FocusEventHandler } from "react";
 export interface InputProps {
   value: string | undefined;
   decimals: number;
+  disabled?: boolean;
   setValue: (value: string | undefined) => void;
   onFocus?: FocusEventHandler<HTMLInputElement>;
 }
 
-export const Input: FC<InputProps> = ({ value, decimals = 9, setValue, onFocus }) => {
+export const Input: FC<InputProps> = ({
+  value,
+  decimals = 9,
+  disabled = false,
+  setValue,
+  onFocus,
+}) => {
   const handleSetValue = (value: any) => {
     const number = numberToBigInt(value, decimals);
     if (number === "NaN" || number === "0") {
@@ -20,6 +27,7 @@ export const Input: FC<InputProps> = ({ value, decimals = 9, setValue, onFocus }
 
   return (
     <input
+      disabled={disabled}
       onFocus={onFocus}
       placeholder="0.0"
       className={`w-[100%] text-right text-base bg-transparent overflow-visible  ${

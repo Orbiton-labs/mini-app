@@ -7,16 +7,19 @@ import { NationalCurrencyValue } from "../NationCurrencyValue/NationalCurrencyVa
 export interface InputWithCurrencyValueProps {
   selectedToken: Token | null;
   setAmount: (amount: string | undefined) => void;
+  disabled?: boolean;
   onFocus?: FocusEventHandler<HTMLInputElement>;
 }
 
 export const InputWithCurrencyValue: FC<InputWithCurrencyValueProps> = ({
   selectedToken,
+  disabled,
   setAmount,
   onFocus,
 }) => (
   <div className="w-full flex flex-col flex-1 gap-2 justify-between">
     <Input
+      disabled={disabled}
       onFocus={onFocus}
       setValue={setAmount}
       decimals={

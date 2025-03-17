@@ -24,10 +24,10 @@ export interface TonWalletState {
   wallet: Wallet | (Wallet & WalletInfoWithOpenMethod) | null;
   ui: TonConnectUI | null;
   sender:
-    | (Sender & {
-        sendMultiple: (args: SenderArguments[]) => Promise<void>;
-      })
-    | null;
+  | (Sender & {
+    sendMultiple: (args: SenderArguments[]) => Promise<void>;
+  })
+  | null;
   balance: number;
   accounts: string[];
   balanceLoading: boolean;
@@ -42,6 +42,7 @@ export interface TokenListState {
 export interface SwapState {
   token1: Token | null;
   token2: Token | null;
+  swapMessage: SenderArguments[] | null;
   transactionEstimation?: TransactionSwapEstimation;
 }
 

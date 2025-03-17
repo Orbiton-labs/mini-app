@@ -1,10 +1,6 @@
-import { TransactionSwapEstimation } from "./Transaction";
+import { SenderArguments } from "@ton/core";
 
 export type SimulateSwapResponse = {
-  tokenIn: any;
-  tokenOut: any;
-  amountOut: string;
-  route: any;
-  msg: any;
-  txEstimation: TransactionSwapEstimation;
+  messages: SenderArguments[];
+  returnAmount: string;
 };

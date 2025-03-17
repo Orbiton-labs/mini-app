@@ -70,6 +70,7 @@ export const PairInput: FC<PairInputProps> = ({
           setAmount={setAmount2}
           canChangeToken={canChangeToken1}
           onFocus={onFocus2}
+          disabledInput={true}
         />
       </div>
     </>

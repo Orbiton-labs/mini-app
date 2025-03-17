@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@orbiton_labs/v3-contracts-sdk':
-        specifier: ^1.1.41
-        version: 1.1.41(@ton/core@0.60.0(@ton/crypto@3.3.0))
+        specifier: ^1.1.42
+        version: 1.1.42(@ton/core@0.60.0(@ton/crypto@3.3.0))
       '@orbs-network/ton-access':
         specifier: ^2.3.3
         version: 2.3.3
@@ -1068,8 +1068,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@orbiton_labs/v3-contracts-sdk@1.1.41':
-    resolution: {integrity: sha512-6Bp1mPE9rtm6hRpAyGtU2BmVyMh3EqUcuRbaPHXFALBn3rbAheQZZSxCfQPFVnIqgj636LBijJK7ZPxt7Tby5Q==}
+  '@orbiton_labs/v3-contracts-sdk@1.1.42':
+    resolution: {integrity: sha512-vi5Eu8URhZBqXdwrluW4/R9KriNwrNISvmcHtkaF4q3giytxT/RBiCok1qOh78yQhc5IOy0RXoF/LRaxC9Pqmg==}
 
   '@orbs-network/ton-access@2.3.3':
     resolution: {integrity: sha512-b1miCPts7wBG9JKYgzXIRZQm/LMy5Uk1mNK8NzlcXHL3HRHJkkFbuYJGuj3IkWCiIicW3Ipp4sYnn3Fwo4oB0g==}
@@ -5604,7 +5604,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@orbiton_labs/v3-contracts-sdk@1.1.41(@ton/core@0.60.0(@ton/crypto@3.3.0))':
+  '@orbiton_labs/v3-contracts-sdk@1.1.42(@ton/core@0.60.0(@ton/crypto@3.3.0))':
     dependencies:
       '@ton-api/client': 0.3.1(@ton/core@0.60.0(@ton/crypto@3.3.0))
       big.js: 6.2.2

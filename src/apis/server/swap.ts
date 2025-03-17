@@ -1,30 +1,24 @@
 import { SimulateSwapResponse } from "@/types/Swap";
-import { TokenInfo } from "@/types/Token";
+import { Cell } from "@ton/core";
+import axios from "./axios";
 
 export const simulateSwap = async (
-  tokenFrom: TokenInfo,
-  tokenTo: TokenInfo,
-  amountIn: string
+  tokenFrom: string,
+  tokenTo: string,
+  amountIn: string,
+  sender: string
 ): Promise<SimulateSwapResponse | null> => {
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    const res = await axios.get(`/swap/simulate?offerJettonAddress=${tokenFrom}&askJettonAddress=${tokenTo}&offerAmount=${amountIn}&senderAddress=${sender}`)
+    const data = (res.data.data as any)
     return {
-      tokenIn: "A",
-      tokenOut: "B",
-      route: null,
-      amountOut: "9000000",
-      msg: null,
-      txEstimation: {
-        price: "0.2443",
-        priceImpact: "0.01",
-        minimumReceived: "241914",
-        slippageTolerance: "1.03",
-        fee: {
-          rate: "0.3",
-          amount: "30",
-        },
-        route: ["TON", "DUST", "USDT"],
-      },
+      ...data,
+      messages: data.messages.map((message: any) => {
+        return {
+          ...message,
+          body: Cell.fromBoc(Buffer.from(message.body, "hex"))[0]
+        }
+      })
     };
   } catch (error) {
     console.log(error);

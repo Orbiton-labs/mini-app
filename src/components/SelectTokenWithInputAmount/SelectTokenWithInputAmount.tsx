@@ -11,6 +11,7 @@ export interface SelectTokenWithInputAmountProps {
   displayTokenList: () => void;
   hideBalance?: boolean;
   canChangeToken?: boolean;
+  disabledInput?: boolean;
   onFocus?: FocusEventHandler<HTMLInputElement>;
 }
 
@@ -24,7 +25,8 @@ export const SelectTokenWithInputAmount: FC<
   tokenList,
   hideBalance,
   canChangeToken,
-  onFocus
+  disabledInput,
+  onFocus,
 }) => (
   <div className="flex gap-2 justify-between bg-grey3 pt-4 pb-4 pl-3 pr-3 w-full rounded-lg border border-grey7">
     <SelectTokenWithBalance
@@ -36,6 +38,7 @@ export const SelectTokenWithInputAmount: FC<
       canChangeToken={canChangeToken}
     />
     <InputWithCurrencyValue
+      disabled={disabledInput}
       setAmount={setAmount}
       selectedToken={selectedToken}
       onFocus={onFocus}

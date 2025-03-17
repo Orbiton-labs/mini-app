@@ -5,6 +5,7 @@ import { Token } from "@/types/Token";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { useTokenListStore } from "./token-list-store";
+import { useTonWalletStore } from "./ton-wallet-store";
 import { SwapState } from "./types";
 
 const defaultPair = process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" ? DEFAULT_PAIR_MAINNET : DEFAULT_PAIR_TESTNET;
@@ -17,6 +18,8 @@ export const useSwapStore = create<
         setAmount1: (amount: string | undefined) => Promise<void>;
         setAmount2: (amount: string | undefined) => Promise<void>;
         reverseOrder: () => Promise<void>;
+        swap: () => Promise<void>;
+        resetInputSwap: () => void;
     }
 >()(
     devtools(
@@ -28,6 +31,7 @@ export const useSwapStore = create<
                 token2: {
                     token: defaultPair[1]
                 },
+                swapMessage: null,
                 transactionEstimation: undefined,
                 setToken1: async (token) => {
                     set({ token1: token });
@@ -57,19 +61,31 @@ export const useSwapStore = create<
                     const token1 = get().token1;
                     const token2 = get().token2;
 
-                    if (!token2?.token) return;
+                    if (!token2?.token || !token2.token.address) return;
 
                     set({ transactionEstimation: undefined });
-                    if (token1) {
+                    if (token1 && token1.token.address) {
                         if (!amount) {
                             set({ transactionEstimation: undefined });
                             return;
                         }
 
-                        const simulateRes = await simulateSwap(token1.token, token2.token, amount);
+                        const walletStore = useTonWalletStore.getState();
+                        const sender = walletStore.friendlyAddress;
+
+                        if (!sender) return;
+
+                        const simulateRes = await simulateSwap(token1.token.address, token2.token.address, amount, sender);
                         if (!simulateRes) return;
 
-                        set({ transactionEstimation: simulateRes.txEstimation });
+                        set({
+                            swapMessage: simulateRes.messages, token2: {
+                                ...get().token2!,
+                                amount: simulateRes.returnAmount
+                            }
+                        });
+
+                        // set({ transactionEstimation: simulateRes.txEstimation });
                     }
                 },
                 setAmount2: async (amount) => { },
@@ -77,13 +93,40 @@ export const useSwapStore = create<
                     const { token1, token2 } = get();
                     set({ token1: token2, token2: token1, transactionEstimation: undefined });
 
-                    if (token2?.amount && token1) {
-                        const simulateRes = await simulateSwap(token1.token, token2.token, token2?.amount);
+                    if (token2?.amount && token2.token.address && token1 && token1.token.address) {
+
+                        const walletStore = useTonWalletStore.getState();
+                        const sender = walletStore.friendlyAddress;
+                        if (!sender) return;
+
+                        const simulateRes = await simulateSwap(token1.token.address, token2.token.address, token2.amount, sender);
                         if (!simulateRes) return;
 
-                        set({ transactionEstimation: simulateRes.txEstimation });
+                        // set({ transactionEstimation: simulateRes.txEstimation });
                     }
                 },
+                swap: async () => {
+                    const walletStore = useTonWalletStore.getState();
+                    const sender = walletStore.sender;
+                    const swapMsg = get().swapMessage;
+
+                    if (!sender || !swapMsg) {
+                        return
+                    }
+
+                    const res = await sender.sendMultiple(swapMsg);
+
+                    console.log(res);
+                },
+                resetInputSwap: () => {
+                    set({
+                        swapMessage: null,
+                        token2: {
+                            ...get().token2!,
+                            amount: "0"
+                        }
+                    })
+                }
             }), "swap")
     )
 );
