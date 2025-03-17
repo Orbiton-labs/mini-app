@@ -14,6 +14,7 @@ export const usePositionTransform = (position: Position, pool: Pool) => {
   const [prices, setPrices] = useState<
     [Price<Jetton, Jetton> | null, Price<Jetton, Jetton> | null]
   >([null, null]);
+  const [jettons, setJettons] = useState<[Jetton | null, Jetton | null]>([null, null]);
 
   const [base, quote] = useMemo(() => {
     if (!position) return [null, null];
@@ -67,6 +68,8 @@ export const usePositionTransform = (position: Position, pool: Pool) => {
         Address.parse(process.env.NEXT_PUBLIC_ROUTER_ADDRESS || "")
       );
 
+      setJettons([jetton0, jetton1]);
+
       const price0 = tickToPrice(jetton0, jetton1, position.tickLower);
       const price1 = tickToPrice(jetton0, jetton1, position.tickUpper);
 
@@ -96,6 +99,7 @@ export const usePositionTransform = (position: Position, pool: Pool) => {
     price1: prices[1],
     price,
     isToken0Base,
+    jettons,
     setIsToken0Base,
   };
 };

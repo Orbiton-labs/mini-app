@@ -1,12 +1,20 @@
 import * as SliderUI from "@radix-ui/react-slider";
 
-export const Slider = () => (
-  <form >
+export interface SliderProps {
+  defaultValue: number;
+  value: number;
+  onValueChange: (value: number) => void;
+}
+
+export const Slider = ({ defaultValue, value, onValueChange }: SliderProps) => (
+  <form>
     <SliderUI.Root
       className="relative flex h-10 w-full touch-none select-none items-center"
-      defaultValue={[50]}
+      defaultValue={[defaultValue]}
+      value={[value]}
       max={100}
       step={1}
+      onValueChange={([value]) => onValueChange(value)}
     >
       <SliderUI.Track className="relative h-2 grow rounded-full bg-blackA7">
         <SliderUI.Range className="absolute h-full rounded-full bg-yellow1" />

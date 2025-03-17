@@ -6,9 +6,13 @@ import { Page } from "@/components/Page";
 import { Slider } from "@/components/Slider/Slider";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import {
+  PERCENT,
+  useHandleRemoveLiquidity,
+} from "@/hooks/manage-position/useHandleRemoveLiquidity";
 import { usePositionDetail } from "@/hooks/manage-position/usePositionDetail";
 import { usePositionTransform } from "@/hooks/manage-position/usePositionTransform";
-import { cn } from "@/lib/utils";
+import { cn, toAmount } from "@/lib/utils";
 import { Avatar, AvatarStack } from "@telegram-apps/telegram-ui";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -17,21 +21,6 @@ enum TABS {
   COLLECT_FEE = "Collect Fees",
   REMOVE_LIQUIDITY = "Remove Liquidity",
 }
-
-const PERCENT = [
-  {
-    value: 25,
-  },
-  {
-    value: 50,
-  },
-  {
-    value: 75,
-  },
-  {
-    value: 100,
-  },
-];
 
 export default function ManagePositionPage() {
   const searchParams = useSearchParams();
@@ -52,14 +41,16 @@ export default function ManagePositionPage() {
     price1,
     price,
     isToken0Base,
+    jettons,
     setIsToken0Base,
   } = usePositionTransform(position, poolDetail);
 
+  const { percent, amount0, amount1, setPercent } = useHandleRemoveLiquidity(
+    positionAddress,
+    jettons,
+    poolDetail
+  );
   const [selectedTab, setSelectedTab] = useState(TABS.COLLECT_FEE);
-
-  const [percent, setPercent] = useState<number>(PERCENT[0].value);
-  const [isCustom, setIsCustom] = useState<boolean>(false);
-
   return (
     <Page>
       <div className="flex flex-col pl-4 pr-4">
@@ -315,18 +306,17 @@ export default function ManagePositionPage() {
                 <div className="mt-2 flex justify-between gap-2 items-center">
                   {PERCENT.map((option, index) => (
                     <div
-                      key={option.value}
+                      key={option}
                       className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center text-xs px-2 ${
-                        percent === option.value && !isCustom
+                        percent === option
                           ? "bg-gradient-to-b from-green1 to-green2 border-green2 text-black2"
                           : "text-white2"
                       }`}
                       onClick={() => {
-                        setIsCustom(false);
-                        setPercent(option.value);
+                        setPercent(option);
                       }}
                     >
-                      {option.value === 100 ? "Max" : `${option.value}%`}
+                      {option === 100 ? "Max" : `${option}%`}
                     </div>
                   ))}
 
@@ -335,35 +325,26 @@ export default function ManagePositionPage() {
                       className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
                       placeholder="10"
                       type="number"
-                      value={
-                        isCustom &&
-                        !PERCENT.map((option) => option.value).includes(percent)
-                          ? percent
-                          : undefined
-                      }
+                      value={percent}
                       onChange={(e) => {
                         const value = parseFloat(e.target.value);
                         if (!isNaN(value)) {
-                          setPercent(value);
+                          setPercent(
+                            value >= 0 ? (value <= 100 ? value : 100) : 0
+                          );
                         } else {
-                          setPercent(PERCENT[0].value);
-                          setIsCustom(false);
+                          setPercent(PERCENT[0]);
                         }
                       }}
-                      onBlur={(e) => {
-                        const value = parseFloat(e.target.value);
-                        if (isNaN(value)) {
-                          setPercent(PERCENT[0].value);
-                          setIsCustom(false);
-                        }
-                      }}
-                      onFocus={() => setIsCustom(true)}
                     />
-                    <span className="text-xs text-white1">%</span>
                   </div>
                 </div>
 
-                <Slider />
+                <Slider
+                  defaultValue={PERCENT[0]}
+                  value={percent >= 0 ? percent : 0}
+                  onValueChange={setPercent}
+                />
               </div>
 
               <p className="text-sm w-full mb-2">You&apos;ll receive</p>
@@ -376,7 +357,8 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    1.0123 <span className="text-xs text-grey5">($3.12)</span>
+                    {position.amount0}{" "}
+                    {/* <span className="text-xs text-grey5">($3.12)</span> */}
                   </p>
                 </div>
               )}
@@ -389,7 +371,8 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    1.0123 <span className="text-xs text-grey5">($3.12)</span>
+                    {position.amount1}{" "}
+                    {/* <span className="text-xs text-grey5">($3.12)</span> */}
                   </p>
                 </div>
               )}
@@ -398,10 +381,14 @@ export default function ManagePositionPage() {
                   <div className="flex gap-2 items-center">
                     <Avatar size={20} src={position.token0.image} />
                     <span className="text-xs text-white2">
-                      {position.token0.symbol} Fee Earned
+                      {position.token0.symbol} Fee Generated
                     </span>
                   </div>
-                  <span className="text-xs">0</span>
+                  {amount0 && (
+                    <span className="text-xs">
+                      {toAmount(amount0, poolDetail.token1.decimals)}
+                    </span>
+                  )}
                 </div>
               )}
               {position && (
@@ -409,10 +396,14 @@ export default function ManagePositionPage() {
                   <div className="flex gap-2 items-center">
                     <Avatar size={20} src={position.token1.image} />
                     <span className="text-xs text-white2">
-                      {position.token1.symbol} Fee Earned
+                      {position.token1.symbol} Fee Generated
                     </span>
                   </div>
-                  <span className="text-xs">0</span>
+                  {amount0 && (
+                    <span className="text-xs">
+                      {toAmount(amount1, poolDetail.token2.decimals)}
+                    </span>
+                  )}
                 </div>
               )}
             </div>

@@ -19,6 +19,7 @@ import { SenderArguments } from "@ton/core";
 import Decimal from "decimal.js";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "../useDebounce";
+import { JettonMaster } from "@ton/ton";
 
 export enum FocusToken {
   TOKEN_0,
@@ -165,6 +166,16 @@ export const useHandleChangeSubmitAmount = (
         pool.token2.decimals,
         pool.token2.symbol
       );
+
+      console.log({
+        poolAddress: pool.address,
+        jettonMaster0: pool.token1.address,
+        JettonMaster1: pool.token2.address,
+        jettonWallet0: jettons[0]!.address.toString(),
+        jettonWallet1: jettons[1]!.address.toString(),
+        router: 'EQBkY8koHBO51KvkrKEc_f4weiATV-4I-1pwDGxPNT1fUyIt'
+      })
+
       try {
         await jetton0Sender.setWalletAddress(queryClient!, sender.address);
         await jetton1Sender.setWalletAddress(queryClient!, sender.address);
@@ -183,7 +194,6 @@ export const useHandleChangeSubmitAmount = (
           false
         );
 
-        // @ts-ignore
         position.liquidity = calculatedLiquidity;
 
         console.log(
@@ -216,11 +226,6 @@ export const useHandleChangeSubmitAmount = (
             ROUTER: process.env.NEXT_PUBLIC_ROUTER_ADDRESS!,
             PTON_ROUTER_WALLET: PTON_ROUTER_WALLET,
           }
-          // pool.tickSpacing,
-          // Number(pool.feeTier) * FEE_TIER_SCALE,
-          // BigInt(tickPair[0]),
-          // BigInt(tickPair[1]),
-          // calculatedLiquidity,
         );
 
         setEstimateRes(result);
