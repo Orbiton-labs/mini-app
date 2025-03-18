@@ -6,6 +6,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
+import {
+  retrieveLaunchParams
+} from "@telegram-apps/sdk-react";
 import { Divider } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
@@ -89,6 +92,9 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
+  const lp = retrieveLaunchParams();
+  const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
+  const returnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
 
   const initWallet = useTonWalletStore((state) => state.initWallet);
 
@@ -105,7 +111,9 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
               },
             ],
             validUntil: Date.now() + 5 * 60 * 1000,
-          });
+          }, returnUrl ? {
+            returnStrategy: returnUrl
+          } : undefined);
         } catch (e) {
           console.error(e);
         }
@@ -121,7 +129,9 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
               };
             }),
             validUntil: Date.now() + 5 * 60 * 1000,
-          });
+          }, returnUrl ? {
+            returnStrategy: returnUrl
+          } : undefined);
         } catch (e) {
           console.error(e);
         }
@@ -134,9 +144,8 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
   return (
     <div
-      className={`flex flex-col items-center gap-2 ${
-        isFullScreen ? "pt-24" : "pt-8"
-      } pl-4 pr-4`}
+      className={`flex flex-col items-center gap-2 ${isFullScreen ? "pt-24" : "pt-8"
+        } pl-4 pr-4`}
     >
       <div className="flex justify-between w-full border-b-[1px] border-b-grey7 pt-2 pb-2">
         <div className="flex items-center justify-between gap-2">

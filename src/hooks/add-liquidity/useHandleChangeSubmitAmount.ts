@@ -45,6 +45,8 @@ export const useHandleChangeSubmitAmount = (
 
   // Function to calculate position based on focus and value
   const calculatePosition = async (focus: FocusToken, value: Decimal) => {
+    console.log(value);
+
     if (!pool || !jettons[0] || !jettons[1] || !client) {
       console.log("Missing required data");
       return;
@@ -118,11 +120,21 @@ export const useHandleChangeSubmitAmount = (
 
   // Simplified onChange handlers
   const onChangeAmount0 = (value: string | undefined) => {
+    if (!value) {
+      addLiquidityStore.setAmount0(undefined);
+      return;
+    }
+
     const newAmount0 = new Decimal(value || 0);
     addLiquidityStore.setAmount0(newAmount0.toString());
   };
 
   const onChangeAmount1 = (value: string | undefined) => {
+    if (!value) {
+      addLiquidityStore.setAmount1(undefined);
+      return;
+    }
+
     const newAmount1 = new Decimal(value || 0);
     addLiquidityStore.setAmount1(newAmount1.toString());
   };
@@ -130,15 +142,20 @@ export const useHandleChangeSubmitAmount = (
   // Effect to trigger position calculation with debounced values
   useEffect(() => {
     if (debounceAmount0 !== "0") {
-      calculatePosition(FocusToken.TOKEN_0, new Decimal(debounceAmount0));
+      if (debounceAmount0) {
+        calculatePosition(FocusToken.TOKEN_0, new Decimal(debounceAmount0));
+      }
     } else if (debounceAmount1 !== "0") {
-      calculatePosition(FocusToken.TOKEN_1, new Decimal(debounceAmount1));
+      if (debounceAmount1) {
+        calculatePosition(FocusToken.TOKEN_1, new Decimal(debounceAmount1));
+      }
     }
   }, [debounceAmount0, debounceAmount1, tickPair]);
 
   // Effect for estimation
   useEffect(() => {
     const emulateMint = async () => {
+      console.log("emulateMint", { tonApiClient, sender, prevPositionRef });
       if (!tonApiClient || !sender?.address || !prevPositionRef.current) return;
 
       if (!walletVersion) {
@@ -177,17 +194,31 @@ export const useHandleChangeSubmitAmount = (
 
         prevPositionRef.current.liquidity = calculatedLiquidity;
 
-        const result = await PoolMessageBuilder.createEmulatedMintMessage(
-          tonApiClient,
-          walletVersion,
-          sender?.address,
+        // const result = await PoolMessageBuilder.createEmulatedMintMessage(
+        //   tonApiClient,
+        //   walletVersion,
+        //   sender?.address,
+        //   jettons[0]!,
+        //   jettons[1]!,
+        //   JettonAmount.fromRawAmount(jetton0Sender, prevPositionRef.current.amount0.quotient),
+        //   JettonAmount.fromRawAmount(jetton1Sender, prevPositionRef.current.amount1.quotient),
+        //   prevPositionRef.current,
+        //   sender?.address,
+        //   0,
+        //   Chain.Testnet,
+        //   {
+        //     ROUTER: process.env.NEXT_PUBLIC_ROUTER_ADDRESS!,
+        //     PTON_ROUTER_WALLET: PTON_ROUTER_WALLET,
+        //   }
+        // );
+
+        const message = PoolMessageBuilder.createMintMessage(
           jettons[0]!,
           jettons[1]!,
           JettonAmount.fromRawAmount(jetton0Sender, prevPositionRef.current.amount0.quotient),
           JettonAmount.fromRawAmount(jetton1Sender, prevPositionRef.current.amount1.quotient),
           prevPositionRef.current,
           sender?.address,
-          0,
           Chain.Testnet,
           {
             ROUTER: process.env.NEXT_PUBLIC_ROUTER_ADDRESS!,
@@ -195,7 +226,7 @@ export const useHandleChangeSubmitAmount = (
           }
         );
 
-        addLiquidityStore.setMessages(result.messages);
+        addLiquidityStore.setMessages(message);
         addLiquidityStore.setStatus(AddLiquidityStatus.ADD_LIQUIDITY_READY);
       } catch (err) {
         console.log(err);
@@ -207,7 +238,7 @@ export const useHandleChangeSubmitAmount = (
     if (prevPositionRef.current) {
       emulateMint();
     }
-  }, [prevPositionRef.current]);
+  }, [prevPositionRef.current, walletVersion]);
 
   return {
     onChangeAmount0,

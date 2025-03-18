@@ -57,9 +57,7 @@ export const useTokenListStore = create<
           return get().tokensList;
         },
         displayFilteredTokens: (excludedTokens) => {
-          console.log(get().tokensList);
           const filtered = filterTokens(get().tokensList, excludedTokens);
-          console.log(filtered);
           set({ filteredTokens: filtered });
         },
         getTokenByKey: (key: string) => {
@@ -73,7 +71,6 @@ export const useTokenListStore = create<
           const tokenList = get().tokensList;
 
           if (client && address && Object.keys(tokenList).length > 0) {
-            console.log("called");
             const accountJettonBalances =
               await client.accounts.getAccountJettonsBalances(
                 Address.parse(address),

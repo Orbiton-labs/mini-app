@@ -30,7 +30,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
             <span>Processing...</span>
           </div>
         ) : error ? (
-          <span className="text-red-500">{error}</span>
+          <span className="text-white2">{error}</span>
         ) : (
           content
         )}

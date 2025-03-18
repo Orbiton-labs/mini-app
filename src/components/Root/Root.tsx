@@ -51,9 +51,11 @@ function RootInner({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const lp = retrieveLaunchParams();
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
+  const twaReturnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
 
   useEffect(() => {
-    if (lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android") {
+    if (isTelegramMiniApp) {
       postEvent("web_app_request_fullscreen");
       postEvent("web_app_request_content_safe_area");
       postEvent("web_app_request_safe_area");
@@ -63,7 +65,7 @@ function RootInner({ children }: PropsWithChildren) {
       postEvent("web_app_expand");
       setIsFullScreen(true);
     }
-  }, [lp]);
+  }, [lp, isTelegramMiniApp]);
 
   useClientOnce(() => {
     init();
@@ -87,8 +89,13 @@ function RootInner({ children }: PropsWithChildren) {
 
   return (
     <>
-      
-      <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json">
+
+      <TonConnectUIProvider
+        manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json"
+        actionsConfiguration={{
+          twaReturnUrl
+        }}
+      >
         <AppRoot
           className={`${isDark ? "theme-black" : ""}`}
           appearance={isDark ? "dark" : "light"}
@@ -114,20 +121,18 @@ function RootInner({ children }: PropsWithChildren) {
                     <Link
                       key={id}
                       href={`/${id}`}
-                      className={`${
-                        selected
-                          ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
-                          : "text-white-2"
-                      } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
-                      // onClick={() => router.push(`/${id}`)}
+                      className={`${selected
+                        ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
+                        : "text-white-2"
+                        } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
+                    // onClick={() => router.push(`/${id}`)}
                     >
                       <Icon isActive={id === currentTab} />
                       <span
-                        className={`${
-                          selected
-                            ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
-                            : ""
-                        } text-xs`}
+                        className={`${selected
+                          ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
+                          : ""
+                          } text-xs`}
                       >
                         {text}
                       </span>

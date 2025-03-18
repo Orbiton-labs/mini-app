@@ -178,7 +178,7 @@ export default function LiquidityChartRangeInput({
           },
           brush: {
             handleStroke: variant === "dark" ? "#FBFCF4" : "#FBFCF4",
-            handleAccent: variant === "dark" ? "E0E8DD" : "#121212",
+            handleAccent: variant === "dark" ? "#E0E8DD" : "#121212",
             handleBg: variant === "dark" ? "#C0DF42" : "#C0DF42",
           },
           tooltip: {

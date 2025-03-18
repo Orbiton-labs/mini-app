@@ -20,15 +20,15 @@ export enum AddLiquidityStatus {
 
 interface AddLiquidityState {
     pool: Pool | null;
-    amount0: string;
-    amount1: string;
+    amount0: string | undefined;
+    amount1: string | undefined;
     status: AddLiquidityStatus;
     error: string | null;
     priceImpact: number;
     messages: SenderArguments[] | null;
     setPool: (pool: Pool) => void;
-    setAmount0: (amount: string) => void;
-    setAmount1: (amount: string) => void;
+    setAmount0: (amount: string | undefined) => void;
+    setAmount1: (amount: string | undefined) => void;
     setStatus: (status: AddLiquidityStatus) => void;
     setError: (error: string | null) => void;
     setPriceImpact: (impact: number) => void;
@@ -44,8 +44,8 @@ export const useAddLiquidityStore = create<AddLiquidityState>()(
         logger(
             (set, get) => ({
                 pool: null,
-                amount0: "0",
-                amount1: "0",
+                amount0: undefined,
+                amount1: undefined,
                 status: AddLiquidityStatus.IDLE,
                 error: null,
                 priceImpact: 0,
@@ -60,8 +60,8 @@ export const useAddLiquidityStore = create<AddLiquidityState>()(
                 setMessages: (messages) => set({ messages }),
 
                 resetState: () => set({
-                    amount0: "0",
-                    amount1: "0",
+                    amount0: undefined,
+                    amount1: undefined,
                     status: AddLiquidityStatus.IDLE,
                     error: null,
                     priceImpact: 0,
@@ -127,8 +127,8 @@ export const useAddLiquidityStore = create<AddLiquidityState>()(
                         setTimeout(() => {
                             set({
                                 messages: null,
-                                amount0: "0",
-                                amount1: "0",
+                                amount0: undefined,
+                                amount1: undefined,
                                 status: AddLiquidityStatus.IDLE,
                                 error: null,
                                 priceImpact: 0

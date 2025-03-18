@@ -24,11 +24,11 @@ export const Area = ({
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop
               offset="0%"
-              style={{ stopColor: '#07C557', stopOpacity: 1 }}
+              style={{ stopColor: '#B466D3', stopOpacity: 1 }}
             />
             <stop
               offset="100%"
-              style={{ stopColor: '#82FA73', stopOpacity: 0.02 }}
+              style={{ stopColor: '#856BDD', stopOpacity: 0.2 }}
             />
           </linearGradient>
         </defs>

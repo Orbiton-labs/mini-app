@@ -100,10 +100,7 @@ export const useHandleRemoveLiquidity = (positionAddress: string | null, jettons
             useManagePositionStore.getState().setStatus(ManagePositionStatus.REMOVING_LIQUIDITY);
             useManagePositionStore.getState().setError(null);
 
-            const emulateRes = await PoolMessageBuilder.createEmulatedBurnMessage(
-                tonApiClient,
-                walletVersion,
-                sender?.address,
+            const emulateRes = await PoolMessageBuilder.createBurnMessage(
                 new PositionSDK(
                     {
                         pool: new PoolSDK(
@@ -121,10 +118,11 @@ export const useHandleRemoveLiquidity = (positionAddress: string | null, jettons
                     }
                 ),
                 Address.parse(position.owner),
-                Address.parse(pool.address)
+                Address.parse(pool.address),
+                BigInt(correspondingLiquidity)
             );
 
-            const res = await sender.sendMultiple(emulateRes.messages);
+            const res = await sender.sendMultiple(emulateRes);
 
             useManagePositionStore.getState().setStatus(ManagePositionStatus.REMOVE_LIQUIDITY_SUCCESS);
 
