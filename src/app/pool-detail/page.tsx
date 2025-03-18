@@ -41,11 +41,11 @@ export default function PoolDetailPage() {
                 console.log(event);
               }}
               type="text"
-              placeholder="Search by index"
+              placeholder="Search"
               value={undefined}
             />
             <StatusFilter
-              displayStatusList={() => {}}
+              displayStatusList={() => { }}
               selectedStatus={status}
               setStatus={(status) => setStatus(status)}
               statusFilterList={[
@@ -113,7 +113,7 @@ export default function PoolDetailPage() {
           )}
 
           <Link href={`/add-liquidity?pool=${poolAddress}`}>
-            <SubmitButton content="Create Position" onClick={async () => {}} />
+            <SubmitButton content="Create Position" onClick={async () => { }} />
           </Link>
 
           {positionList.length > 0 ? (
@@ -174,7 +174,7 @@ export default function PoolDetailPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col justify-center items-center w-full gap-2 min-h-40">
+            <div className="flex flex-col justify-center items-center w-full gap-2 min-h-96">
               <IconCircleInfo />
               <p className="text-base text-white2">No Position Found</p>
               <div className="flex flex-col justify-center items-center gap-1">

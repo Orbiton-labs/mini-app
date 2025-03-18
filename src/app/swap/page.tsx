@@ -27,8 +27,8 @@ export default function SwapPage() {
   const resetInputSwap = useSwapStore((state) => state.resetInputSwap);
   const swap = useSwapStore((state) => state.swap);
   const filteredTokens = useTokenListStore((state) => state.filteredTokens);
-  const getFilteredTokens = useTokenListStore(
-    (state) => state.getFilteredTokens
+  const displayFilteredTokens = useTokenListStore(
+    (state) => state.displayFilteredTokens
   );
   const transactionEstimation = useSwapStore(
     (state) => state.transactionEstimation
@@ -84,7 +84,7 @@ export default function SwapPage() {
             setAmount2={setAmount2}
             tokenList={filteredTokens}
             reverseOrder={reverseOrder}
-            displayTokenList={() => getFilteredTokens([token1, token2])}
+            displayTokenList={() => displayFilteredTokens([token1, token2])}
             hideBalance={false}
             canSwapOrder={true}
             disable1={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
@@ -119,7 +119,7 @@ export default function SwapPage() {
               slippage={slippage}
             />
           )} */}
-          <SubmitButton 
+          <SubmitButton
             onClick={swap}
             isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
             isDisabled={isButtonDisabled()}

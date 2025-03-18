@@ -1,3 +1,4 @@
+import { IconLoading } from "@/icons/fixed/loading";
 import { FC } from "react";
 import { Button } from "../ui/button";
 
@@ -21,11 +22,11 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
       <Button
         onClick={onClick}
         disabled={isLoading || isDisabled}
-        className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-gradient-to-b from-green1 to-green2 py-8 text-base text-black2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <IconLoading />
             <span>Processing...</span>
           </div>
         ) : error ? (
@@ -34,7 +35,6 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
           content
         )}
       </Button>
-      {error && <p className="text-sm text-red-500 text-center">{error}</p>}
     </div>
   );
 };

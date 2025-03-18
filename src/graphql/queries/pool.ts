@@ -36,11 +36,19 @@ export const PoolListQuery = gql`
 `;
 
 export const PoolExistQuery = gql`
-  query PoolExistQuery($where: PoolFilters) {
-    pool(where: $where) {
-      id
+  query Pools($token0: String!, $token1: String!) {
+  pool(where: {
+    jetton0Id: {
+      inArray: [$token0, $token1]
     }
+    jetton1Id: {
+      inArray: [$token0, $token1]
+    }
+  }) {
+    feeTier
+    tickSpacing
   }
+}
 `;
 
 export const PoolDetailQuery = gql`

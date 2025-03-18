@@ -1,10 +1,18 @@
+import { makeClient } from "@/app/ApolloWrapper";
+import { FEE_TIER_SCALE } from "@/constants/contract";
+import { PoolExistQuery } from "@/graphql/queries/pool";
+import { parseJetton } from "@/helper/transform";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { FeeTier } from "@/types/FeeTier";
 import { Token } from "@/types/Token";
+import { RouterWrapper, encodeSqrtRatioX96 } from "@orbiton_labs/v3-contracts-sdk";
+import { OpCreatePool } from "@orbiton_labs/v3-contracts-sdk/build/tlbs/router";
+import { Address, toNano } from "@ton/core";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { autoInit } from "./middlewares/auto-init";
 import { useTokenListStore } from "./token-list-store";
+import { useTonWalletStore } from "./ton-wallet-store";
 import { CreatePoolState } from "./types";
 
 export enum CreatePoolStatus {
@@ -29,12 +37,13 @@ export const useCreatePoolStore = create<
         setAmount1: (amount: string | undefined) => void;
         setAmount2: (amount: string | undefined) => void;
         setFeeTier: (feeTier: FeeTier) => void;
-        status: CreatePoolStatus;
-        error: string | null;
         setStatus: (status: CreatePoolStatus) => void;
         setError: (error: string | null) => void;
         getButtonText: () => string;
         isButtonDisabled: () => boolean;
+        handlePoolCreation: (price: number | null) => Promise<void>;
+        getExistedFeeTier: () => Promise<void>;
+        processPoolCreation: (price: number | null) => Promise<void>;
     }
 >()(
     devtools(
@@ -47,23 +56,27 @@ export const useCreatePoolStore = create<
                 transactionEstimation: undefined,
                 status: CreatePoolStatus.IDLE,
                 error: null,
-
                 init: async () => {
                     const tokenListStore = useTokenListStore.getState();
                     await tokenListStore.getTokenList();
                 },
                 setToken1: (token) => {
                     set({ token1: token, error: null, status: CreatePoolStatus.IDLE });
-                    useTokenListStore.getState().getFilteredTokens([token, get().token2]);
+
+                    if (get().token2) {
+                        get().getExistedFeeTier();
+                    }
                 },
                 setToken2: (token) => {
                     set({ token2: token, error: null, status: CreatePoolStatus.IDLE });
-                    useTokenListStore.getState().getFilteredTokens([get().token1, token]);
+
+                    if (get().token1) {
+                        get().getExistedFeeTier();
+                    }
                 },
                 setFeeTier: (feeTier) => set({ feeTier }),
                 setStatus: (status) => set({ status }),
                 setError: (error) => set({ error }),
-
                 setAmount1: (amount) => {
                     const { token1 } = get();
                     if (token1) {
@@ -82,7 +95,6 @@ export const useCreatePoolStore = create<
                         });
                     }
                 },
-
                 getButtonText: () => {
                     const { status, error } = get();
                     switch (status) {
@@ -110,7 +122,6 @@ export const useCreatePoolStore = create<
                             return "Enter amounts";
                     }
                 },
-
                 isButtonDisabled: () => {
                     const { status } = get();
                     return [
@@ -123,6 +134,130 @@ export const useCreatePoolStore = create<
                         CreatePoolStatus.PRICE_IMPACT_TOO_HIGH,
                         CreatePoolStatus.NO_PRICE
                     ].includes(status);
+                },
+                handlePoolCreation: async (price) => {
+                    const { token1, token2, feeTier } = get();
+                    if (!token1 || !token2 || !feeTier || !price) {
+                        return;
+                    }
+
+                    const walletStore = useTonWalletStore.getState();
+                    const sender = walletStore.sender;
+                    const queryClient = walletStore.queryClient;
+
+                    if (!queryClient) {
+                        return;
+                    }
+
+                    if (!process.env.NEXT_PUBLIC_ROUTER_ADDRESS) {
+                        return;
+                    }
+
+                    const routerAddress = Address.parse(process.env.NEXT_PUBLIC_ROUTER_ADDRESS);
+
+                    const jetton0 = parseJetton(token1.token);
+                    const jetton1 = parseJetton(token2.token);
+
+                    await jetton0.setWalletAddress(queryClient, routerAddress);
+                    await jetton1.setWalletAddress(queryClient, routerAddress);
+
+                    const isSorted = jetton0.sortsBefore(jetton1);
+
+                    if (!sender) {
+                        return;
+                    }
+
+                    const priceNumerator = Math.floor(price * 10 ** 9);
+                    const priceDenominator = 10 ** 9;
+
+                    const router = queryClient.open(
+                        RouterWrapper.Router.createFromAddress(routerAddress)
+                    );
+
+                    const createPoolParams = {
+                        kind: "OpCreatePool",
+                        query_id: 0,
+                        jetton0_wallet: jetton0.walletAddress,
+                        jetton1_wallet: jetton1.walletAddress,
+                        fee: Number(get().feeTier?.fee) * FEE_TIER_SCALE,
+                        sqrt_price_x96: isSorted ? encodeSqrtRatioX96(
+                            BigInt(priceNumerator),
+                            BigInt(priceDenominator),
+                        ) : encodeSqrtRatioX96(
+                            BigInt(priceDenominator),
+                            BigInt(priceNumerator)
+                        ),
+                        tick_spacing: Number(get().feeTier?.tickSpacing),
+                        jetton_master_ref: {
+                            kind: "JettonMasterRef",
+                            jetton0_master: jetton0.address,
+                            jetton1_master: jetton1.address,
+                        },
+                    };
+
+                    try {
+                        const res = await router.sendCreatePool(
+                            sender,
+                            createPoolParams as OpCreatePool,
+                            {
+                                value: toNano("0.1"),
+                            }
+                        );
+                        return res;
+                    } catch (error) {
+                        console.error(error);
+                        throw new Error("Failed to create pool");
+                    }
+                },
+                getExistedFeeTier: async () => {
+                    const { token1, token2 } = get();
+                    if (!token1 || !token2) {
+                        return;
+                    }
+
+                    const address0 = Address.parse(token1.token.address!).toString();
+                    const address1 = Address.parse(token2.token.address!).toString();
+
+                    console.log(address0, address1);
+
+                    const client = makeClient();
+                    const pools = await client.query({
+                        query: PoolExistQuery,
+                        variables: {
+                            token0: address0,
+                            token1: address1
+                        }
+                    });
+
+                    console.log(pools);
+
+                    if (pools.data.pool.length > 0) {
+                        set({
+                            existPoolFeeTier: pools.data.pool.map((pool: any): FeeTier => ({
+                                fee: (pool.feeTier / FEE_TIER_SCALE).toString(),
+                                tickSpacing: pool.tickSpacing
+                            }))
+                        });
+                    }
+                },
+                processPoolCreation: async (price) => {
+                    const { token1, token2 } = get();
+                    if (!token1 || !token2) {
+                        return;
+                    }
+
+                    const { feeTier } = get();
+
+                    if (!feeTier) {
+                        return;
+                    }
+
+                    if (!price) {
+                        set({ status: CreatePoolStatus.NO_PRICE });
+                        return;
+                    }
+
+                    set({ status: CreatePoolStatus.CREATE_POOL_READY });
                 }
             })), "create-pool")
     )

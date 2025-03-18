@@ -26,7 +26,7 @@ export const useTokenListStore = create<
   TokenListState & {
     fetchTokens: () => Promise<void>;
     getTokenList: () => Promise<Record<string, Token>>;
-    getFilteredTokens: (excludedTokens: (Token | null)[]) => Token[];
+    displayFilteredTokens: (excludedTokens: (Token | null)[]) => void;
     fetchAccountData: () => Promise<void>;
     getTokenByKey: (key: string) => Token;
     resetBalance: () => void;
@@ -56,12 +56,11 @@ export const useTokenListStore = create<
           }
           return get().tokensList;
         },
-        getFilteredTokens: (excludedTokens) => {
+        displayFilteredTokens: (excludedTokens) => {
           console.log(get().tokensList);
           const filtered = filterTokens(get().tokensList, excludedTokens);
           console.log(filtered);
           set({ filteredTokens: filtered });
-          return filtered;
         },
         getTokenByKey: (key: string) => {
           const token = get().tokensList[key];

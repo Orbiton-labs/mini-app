@@ -37,6 +37,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
         opacity: 1
       }} disabled={!canChangeToken} asChild>
         <Button
+          onClick={displayTokenList}
           className="min-w-fit disabled:opacity-1"
           asChild={false}
         >

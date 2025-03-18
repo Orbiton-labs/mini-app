@@ -11337,12 +11337,13 @@ export type PoolListQueryQueryVariables = Exact<{
 
 export type PoolListQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string, volumeUSD: string, totalValueLockedUSD: string, txCount: string, feesUSD: string, feeTier: string, jetton0Price: string, jetton1Price: string, tickSpacing: string, tick: string, liquidity: string, sqrtPrice: string, jetton0?: { __typename?: 'PoolJetton0Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null, jetton1?: { __typename?: 'PoolJetton1Relation', id: string, image?: string | null, name: string, symbol: string, derivedUSD: string, decimals: number } | null }> };
 
-export type PoolExistQueryQueryVariables = Exact<{
-  where?: InputMaybe<PoolFilters>;
+export type PoolsQueryVariables = Exact<{
+  token0: Scalars['String']['input'];
+  token1: Scalars['String']['input'];
 }>;
 
 
-export type PoolExistQueryQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', id: string }> };
+export type PoolsQuery = { __typename?: 'Query', pool: Array<{ __typename?: 'PoolSelectItem', feeTier: string, tickSpacing: string }> };
 
 export type PoolDetailQueryQueryVariables = Exact<{
   where?: InputMaybe<PoolFilters>;
@@ -11454,46 +11455,50 @@ export type PoolListQueryQueryHookResult = ReturnType<typeof usePoolListQueryQue
 export type PoolListQueryLazyQueryHookResult = ReturnType<typeof usePoolListQueryLazyQuery>;
 export type PoolListQuerySuspenseQueryHookResult = ReturnType<typeof usePoolListQuerySuspenseQuery>;
 export type PoolListQueryQueryResult = Apollo.QueryResult<PoolListQueryQuery, PoolListQueryQueryVariables>;
-export const PoolExistQueryDocument = gql`
-    query PoolExistQuery($where: PoolFilters) {
-  pool(where: $where) {
-    id
+export const PoolsDocument = gql`
+    query Pools($token0: String!, $token1: String!) {
+  pool(
+    where: {jetton0Id: {inArray: [$token0, $token1]}, jetton1Id: {inArray: [$token0, $token1]}}
+  ) {
+    feeTier
+    tickSpacing
   }
 }
     `;
 
 /**
- * __usePoolExistQueryQuery__
+ * __usePoolsQuery__
  *
- * To run a query within a React component, call `usePoolExistQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `usePoolExistQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePoolsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePoolsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePoolExistQueryQuery({
+ * const { data, loading, error } = usePoolsQuery({
  *   variables: {
- *      where: // value for 'where'
+ *      token0: // value for 'token0'
+ *      token1: // value for 'token1'
  *   },
  * });
  */
-export function usePoolExistQueryQuery(baseOptions?: Apollo.QueryHookOptions<PoolExistQueryQuery, PoolExistQueryQueryVariables>) {
+export function usePoolsQuery(baseOptions: Apollo.QueryHookOptions<PoolsQuery, PoolsQueryVariables> & ({ variables: PoolsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PoolExistQueryQuery, PoolExistQueryQueryVariables>(PoolExistQueryDocument, options);
+        return Apollo.useQuery<PoolsQuery, PoolsQueryVariables>(PoolsDocument, options);
       }
-export function usePoolExistQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PoolExistQueryQuery, PoolExistQueryQueryVariables>) {
+export function usePoolsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PoolsQuery, PoolsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PoolExistQueryQuery, PoolExistQueryQueryVariables>(PoolExistQueryDocument, options);
+          return Apollo.useLazyQuery<PoolsQuery, PoolsQueryVariables>(PoolsDocument, options);
         }
-export function usePoolExistQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PoolExistQueryQuery, PoolExistQueryQueryVariables>) {
+export function usePoolsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PoolsQuery, PoolsQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PoolExistQueryQuery, PoolExistQueryQueryVariables>(PoolExistQueryDocument, options);
+          return Apollo.useSuspenseQuery<PoolsQuery, PoolsQueryVariables>(PoolsDocument, options);
         }
-export type PoolExistQueryQueryHookResult = ReturnType<typeof usePoolExistQueryQuery>;
-export type PoolExistQueryLazyQueryHookResult = ReturnType<typeof usePoolExistQueryLazyQuery>;
-export type PoolExistQuerySuspenseQueryHookResult = ReturnType<typeof usePoolExistQuerySuspenseQuery>;
-export type PoolExistQueryQueryResult = Apollo.QueryResult<PoolExistQueryQuery, PoolExistQueryQueryVariables>;
+export type PoolsQueryHookResult = ReturnType<typeof usePoolsQuery>;
+export type PoolsLazyQueryHookResult = ReturnType<typeof usePoolsLazyQuery>;
+export type PoolsSuspenseQueryHookResult = ReturnType<typeof usePoolsSuspenseQuery>;
+export type PoolsQueryResult = Apollo.QueryResult<PoolsQuery, PoolsQueryVariables>;
 export const PoolDetailQueryDocument = gql`
     query PoolDetailQuery($where: PoolFilters) {
   pool(where: $where) {

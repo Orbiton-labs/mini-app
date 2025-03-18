@@ -5,97 +5,44 @@ import { PairInput } from "@/components/PairInput/PairInput";
 import { PoolName } from "@/components/PoolName/PoolName";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
-import { useCreatePool } from "@/hooks/create-pool/useCreatePool";
+import { FEE_TIERS } from "@/constants/fee-tier";
 import { useTokenListStore } from "@/store";
 import { CreatePoolStatus, useCreatePoolStore } from "@/store/create-pool-store";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 // TODO: remove this hardcode to api get fee tiers
-const FEE_TIERS = [
-  {
-    fee: "0.01",
-    tickSpacing: "1",
-    useWhen: "Best for stable pair",
-  },
-  {
-    fee: "0.05",
-    tickSpacing: "10",
-    useWhen: "Best for stable pair",
-  },
-  {
-    fee: "0.3",
-    tickSpacing: "60",
-    useWhen: "Best for most pair",
-    selected: true,
-  },
-  {
-    fee: "1",
-    tickSpacing: "200",
-    useWhen: "Best for exotic pairs",
-  },
-];
+
 
 export default function CreatePoolPage() {
   const {
     token1,
     token2,
+    error,
+    status,
+    feeTier,
+    existPoolFeeTier,
     setToken1,
     setToken2,
     setAmount1,
     setAmount2,
     setFeeTier,
-    status,
-    error,
-    getButtonText,
     isButtonDisabled,
-    setStatus,
-    setError
+    getButtonText,
+    handlePoolCreation,
+    processPoolCreation,
   } = useCreatePoolStore();
 
-  const getFilteredTokens = useTokenListStore((state) => state.getFilteredTokens);
-  const [feeIndex, setFeeIndex] = useState<number>(2);
+  const {
+    filteredTokens,
+    displayFilteredTokens,
+  } = useTokenListStore();
 
-  const { handleCreatePool, jetton0, jetton1, price } = useCreatePool(
-    token1,
-    token2,
-    Number(FEE_TIERS[feeIndex].fee),
-    Number(FEE_TIERS[feeIndex].tickSpacing)
-  );
-
-  const handleFeeIndexChange = (index: number) => {
-    setFeeIndex(index);
-    setFeeTier(FEE_TIERS[index]);
-  };
-
-  // Check if we have a valid price when amounts change
-  useEffect(() => {
-    if (token1?.amount && token2?.amount) {
-      if (Number(token1.amount) > 0 && Number(token2.amount) > 0) {
-        setStatus(CreatePoolStatus.CREATE_POOL_READY);
-      } else {
-        setStatus(CreatePoolStatus.NO_PRICE);
-      }
-    }
-  }, [token1?.amount, token2?.amount, setStatus]);
-
-  const handlePoolCreation = async () => {
-    try {
-      setStatus(CreatePoolStatus.CREATING_POOL);
-      await handleCreatePool();
-      setStatus(CreatePoolStatus.CREATE_POOL_SUCCESS);
-      
-      // Reset form after success
-      setTimeout(() => {
-        setAmount1("0");
-        setAmount2("0");
-        setStatus(CreatePoolStatus.IDLE);
-        setError(null);
-      }, 2000);
-    } catch (error) {
-      setError("Failed to create pool");
-      setStatus(CreatePoolStatus.CREATE_POOL_ERROR);
-    }
-  };
+  const price = useMemo(() => {
+    if (!token1 || !token2 || !token1.amount || !token2.amount) return null;
+    const price = Number(token2.amount) / Number(token1.amount);
+    processPoolCreation(price);
+    return price;
+  }, [token1, token2]);
 
   return (
     <Page>
@@ -109,36 +56,36 @@ export default function CreatePoolPage() {
             setToken2={setToken2}
             setAmount1={setAmount1}
             setAmount2={setAmount2}
-            reverseOrder={() => {}}
+            reverseOrder={() => { }}
             canSwapOrder={false}
             hideBalance={true}
-            displayTokenList={() => getFilteredTokens([token1, token2])}
-            tokenList={getFilteredTokens([token1, token2])}
+            displayTokenList={() => displayFilteredTokens([token1, token2])}
+            tokenList={filteredTokens}
           />
-          <div className="w-full grid grid-cols-2 gap-2">
+          {token1 && token2 && <div className="w-full grid grid-cols-2 gap-2">
             {FEE_TIERS.map((e, index) => {
+              const isExist = existPoolFeeTier.some((feeTier) => feeTier.fee === e.fee);
+
               return (
                 <div
-                  onClick={() => handleFeeIndexChange(index)}
+                  onClick={() => !isExist && setFeeTier(FEE_TIERS[index])}
                   key={index}
-                  className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey7 ${
-                    feeIndex === index ? "bg-grey8" : ""
-                  }`}
+                  className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey7 
+                    ${FEE_TIERS[index].fee === feeTier?.fee ? "bg-grey8" : ""}
+                    ${isExist ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   <p className="text-ms text-white2">{e.fee}%</p>
                   <p
-                    className={`text-ss text-grey5 ${
-                      feeIndex === index ? "text-white2" : ""
-                    }`}
+                    className={`text-ss text-grey5 ${FEE_TIERS[index].fee === feeTier?.fee ? "text-white2" : ""}`}
                   >
-                    {e.useWhen}
+                    {isExist ? "Already exists" : e.useWhen}
                   </p>
                 </div>
               );
             })}
-          </div>
-          <SubmitButton 
-            onClick={handlePoolCreation} 
+          </div>}
+          <SubmitButton
+            onClick={() => handlePoolCreation(price)}
             isDisabled={isButtonDisabled()}
             content={getButtonText()}
           />
@@ -152,9 +99,9 @@ export default function CreatePoolPage() {
                 className="text-sm"
               />
 
-              {token1.amount && token2.amount && status === CreatePoolStatus.CREATE_POOL_READY && (
+              {price && token1.amount && token2.amount && status === CreatePoolStatus.CREATE_POOL_READY && (
                 <p className="text-xs">
-                  1 {token1.token.symbol} = {Number(token2.amount) / Number(token1.amount)} {token2.token.symbol}
+                  1 {token1.token.symbol} = {price} {token2.token.symbol}
                 </p>
               )}
             </div>

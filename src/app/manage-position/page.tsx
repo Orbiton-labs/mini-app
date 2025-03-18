@@ -13,14 +13,9 @@ import {
 import { usePositionDetail } from "@/hooks/manage-position/usePositionDetail";
 import { usePositionTransform } from "@/hooks/manage-position/usePositionTransform";
 import { cn, toAmount } from "@/lib/utils";
+import { ManagePositionTab, useManagePositionStore } from "@/store/manage-position-store";
 import { Avatar, AvatarStack } from "@telegram-apps/telegram-ui";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-
-enum TABS {
-  COLLECT_FEE = "Collect Fees",
-  REMOVE_LIQUIDITY = "Remove Liquidity",
-}
 
 export default function ManagePositionPage() {
   const searchParams = useSearchParams();
@@ -46,7 +41,6 @@ export default function ManagePositionPage() {
   } = usePositionTransform(position, poolDetail);
 
   const {
-    percent,
     amount0,
     amount1,
     inactiveAmount0,
@@ -57,7 +51,15 @@ export default function ManagePositionPage() {
     handleCollectFee,
     setPercent,
   } = useHandleRemoveLiquidity(positionAddress, jettons, poolDetail, position);
-  const [selectedTab, setSelectedTab] = useState(TABS.COLLECT_FEE);
+
+  const { 
+    selectedTab, 
+    setSelectedTab, 
+    status, 
+    error,
+    getButtonText,
+    isButtonDisabled
+  } = useManagePositionStore();
 
   return (
     <Page>
@@ -65,7 +67,7 @@ export default function ManagePositionPage() {
         <SubPageTitle title="Manage Position" />
         <div className="flex flex-col gap-2 mt-4 mb-32">
           <div className="grid grid-cols-2 gap-3">
-            {Object.values(TABS).map((tab) => (
+            {Object.values(ManagePositionTab).map((tab) => (
               <button
                 onClick={() => setSelectedTab(tab)}
                 key={tab}
@@ -142,7 +144,7 @@ export default function ManagePositionPage() {
                     {price0 &&
                       (isToken0Base
                         ? price0?.toSignificant(4)
-                        : price0?.invert().toSignificant(4))}
+                        : price1?.invert().toSignificant(4))}
                   </p>
                   <p className="text-center text-ss text-grey5">
                     {quote} per {base}
@@ -154,7 +156,7 @@ export default function ManagePositionPage() {
                     {price1 &&
                       (isToken0Base
                         ? price1?.toSignificant(4)
-                        : price1?.invert().toSignificant(4))}
+                        : price0?.invert().toSignificant(4))}
                   </p>
                   <p className="text-center text-ss text-grey5">
                     {quote} per {base}
@@ -198,7 +200,7 @@ export default function ManagePositionPage() {
             </div>
           )}
 
-          {selectedTab === TABS.COLLECT_FEE && position && (
+          {selectedTab === ManagePositionTab.COLLECT_FEE && position && (
             <div className="flex flex-col justify-between items-center gap-1 mb-2">
               {position && (
                 <div className="flex justify-between items-center w-full">
@@ -310,7 +312,7 @@ export default function ManagePositionPage() {
             </div>
           )}
 
-          {selectedTab === TABS.REMOVE_LIQUIDITY && position && (
+          {selectedTab === ManagePositionTab.REMOVE_LIQUIDITY && position && (
             <div className="flex flex-col justify-between items-center gap-1 w-full mb-2">
               <div className="w-full">
                 <div className="mt-2 flex justify-between gap-2 items-center">
@@ -318,7 +320,7 @@ export default function ManagePositionPage() {
                     <div
                       key={option}
                       className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center text-xs px-2 ${
-                        percent === option
+                        useManagePositionStore.getState().percent === option
                           ? "bg-gradient-to-b from-green1 to-green2 border-green2 text-black2"
                           : "text-white2"
                       }`}
@@ -335,7 +337,7 @@ export default function ManagePositionPage() {
                       className="text-white1 bg-transparent border-none focus:ring-transparent text-xs w-full"
                       placeholder="10"
                       type="number"
-                      value={percent}
+                      value={useManagePositionStore.getState().percent}
                       onChange={(e) => {
                         const value = parseFloat(e.target.value);
                         if (!isNaN(value)) {
@@ -352,7 +354,7 @@ export default function ManagePositionPage() {
 
                 <Slider
                   defaultValue={PERCENT[0]}
-                  value={percent >= 0 ? percent : 0}
+                  value={useManagePositionStore.getState().percent >= 0 ? useManagePositionStore.getState().percent : 0}
                   onValueChange={setPercent}
                 />
               </div>
@@ -367,8 +369,7 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    {pooledAmount0}{" "}
-                    {/* <span className="text-xs text-grey5">($3.12)</span> */}
+                    {pooledAmount0}
                   </p>
                 </div>
               )}
@@ -381,8 +382,7 @@ export default function ManagePositionPage() {
                     </span>
                   </div>
                   <p className="text-xs">
-                    {pooledAmount1}{" "}
-                    {/* <span className="text-xs text-grey5">($3.12)</span> */}
+                    {pooledAmount1}
                   </p>
                 </div>
               )}
@@ -420,16 +420,14 @@ export default function ManagePositionPage() {
           )}
 
           <SubmitButton
-            content={`${
-              selectedTab === TABS.COLLECT_FEE
-                ? "Collect Fees"
-                : "Remove Liquidity"
-            }`}
+            content={getButtonText()}
             onClick={
-              selectedTab === TABS.COLLECT_FEE
+              selectedTab === ManagePositionTab.COLLECT_FEE
                 ? handleCollectFee
                 : handleRemoveLiquidity
             }
+            isDisabled={isButtonDisabled()}
+            error={error || undefined}
           />
         </div>
       </div>

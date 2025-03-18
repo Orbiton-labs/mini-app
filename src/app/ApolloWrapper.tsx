@@ -9,7 +9,7 @@ import {
 } from "@apollo/experimental-nextjs-app-support";
 
 // have a function to create a client for you
-function makeClient() {
+export function makeClient() {
   const httpLink = new HttpLink({
     // this needs to be an absolute url, as relative urls cannot be used in SSR
     uri:

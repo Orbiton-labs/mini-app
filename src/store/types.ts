@@ -15,6 +15,7 @@ import {
   Wallet,
   WalletInfoWithOpenMethod,
 } from "@tonconnect/ui-react";
+import { CreatePoolStatus } from "./create-pool-store";
 
 export interface TonWalletState {
   queryClient: TonClient | null;
@@ -67,6 +68,8 @@ export interface SwapState {
 export interface CreatePoolState {
   token1: Token | null;
   token2: Token | null;
+  status: CreatePoolStatus;
+  error: string | null;
   feeTier: FeeTier | null;
   existPoolFeeTier: FeeTier[];
   transactionEstimation?: TransactionCreatePoolEstimation;

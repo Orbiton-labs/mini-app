@@ -4,7 +4,6 @@ import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { useTokenListStore } from "./token-list-store";
 import { useTonWalletStore } from "./ton-wallet-store";
 import { SwapState, SwapStatus } from "./types";
 
@@ -41,27 +40,12 @@ export const useSwapStore = create<
                 slippage: 0,
                 setToken1: async (token) => {
                     set({ token1: token, error: null, status: SwapStatus.IDLE });
-                    const tokenListStore = useTokenListStore.getState();
-                    tokenListStore.getFilteredTokens([
-                        token,
-                        get().token2,
-                    ]);
                 },
                 setToken2: async (token) => {
                     set({ token2: token, error: null, status: SwapStatus.IDLE });
-                    const tokenListStore = useTokenListStore.getState();
-                    tokenListStore.getFilteredTokens([
-                        get().token1,
-                        token,
-                    ]);
                 },
                 setPair: (token1, token2) => {
                     set({ token1, token2, error: null, status: SwapStatus.IDLE });
-                    const tokenListStore = useTokenListStore.getState();
-                    tokenListStore.getFilteredTokens([
-                        token1,
-                        token2,
-                    ]);
                 },
                 setAmount1: async (amount) => {
                     const token1 = get().token1;
