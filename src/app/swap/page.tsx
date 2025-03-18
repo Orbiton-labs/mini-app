@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function SwapPage() {
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
-  const [inputAmount1, setInputAmount1] = useState<string | undefined>(""); // Local state for input
+  const [inputAmount1, setInputAmount1] = useState<string | undefined>("");
 
   const token1 = useSwapStore((state) => state.token1);
   const token2 = useSwapStore((state) => state.token2);
@@ -33,6 +33,11 @@ export default function SwapPage() {
   const transactionEstimation = useSwapStore(
     (state) => state.transactionEstimation
   );
+  const status = useSwapStore((state) => state.status);
+  const error = useSwapStore((state) => state.error);
+  const priceImpact = useSwapStore((state) => state.priceImpact);
+  const buttonMessage = useSwapStore((state) => state.getButtonText());
+  const isButtonDisabled = useSwapStore((state) => state.isButtonDisabled);
 
   const toggle = usePendingTxStore((state) => state.toggle);
 
@@ -82,35 +87,45 @@ export default function SwapPage() {
             displayTokenList={() => getFilteredTokens([token1, token2])}
             hideBalance={false}
             canSwapOrder={true}
-            disable1={true}
+            disable1={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
           />
-          <SubmitButton onClick={swap} />
-          {/* {token2 && token2.amount != "0" && transactionEstimation && (
+          {/* {token2 && token2.amount !== "0" && (
             <TransactionSimulation
               infos={[
                 {
                   key: "Price",
-                  data: "= 0.2443 TON / USDT",
+                  data: `= ${token2.amount} ${token2.token.symbol} / ${token1.amount} ${token1.token.symbol}`,
                 },
                 {
                   key: "Price impact",
-                  data: "0.00 %",
+                  data: `${priceImpact.toFixed(2)}%`,
+                  warning: priceImpact > 5,
                 },
                 {
                   key: "Minimum received",
-                  data: "0.241914 TON",
+                  data: `${token2.amount} ${token2.token.symbol}`,
                 },
                 {
                   key: "Slippage tolerance",
-                  data: "1.00 %",
+                  data: `${slippage.toFixed(2)}%`,
+                  warning: slippage > 1,
                 },
                 {
                   key: "Fee",
-                  data: "0.3% / 0.003 TON",
+                  data: "0.3%",
                 },
               ]}
+              priceImpact={priceImpact}
+              slippage={slippage}
             />
           )} */}
+          <SubmitButton 
+            onClick={swap}
+            isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
+            isDisabled={isButtonDisabled()}
+            error={error || undefined}
+            content={buttonMessage}
+          />
         </div>
       </div>
     </Page>

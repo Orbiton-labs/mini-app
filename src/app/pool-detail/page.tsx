@@ -6,6 +6,7 @@ import { PoolName } from "@/components/PoolName/PoolName";
 import { StatusFilter } from "@/components/StatusFilter/StatusFilter";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import { PositionFilter } from "@/constants/position";
 import { usePoolDetail } from "@/hooks/pool-detail/usePoolDetail";
 import { IconCircleInfo } from "@/icons/fixed/circle-info";
 import { Avatar } from "@telegram-apps/telegram-ui";
@@ -14,7 +15,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import positionImg from "../../app/_assets/position.png";
-import { PositionFilter } from "@/constants/position";
 
 export default function PoolDetailPage() {
   const searchParams = useSearchParams();
@@ -113,7 +113,7 @@ export default function PoolDetailPage() {
           )}
 
           <Link href={`/add-liquidity?pool=${poolAddress}`}>
-            <SubmitButton content="Create Position" />
+            <SubmitButton content="Create Position" onClick={async () => {}} />
           </Link>
 
           {positionList.length > 0 ? (

@@ -39,11 +39,29 @@ export interface TokenListState {
   filteredTokens: Token[];
 }
 
+export enum SwapStatus {
+  IDLE = 'IDLE',
+  FINDING_ROUTES = 'FINDING_ROUTES',
+  NO_ROUTE_FOUND = 'NO_ROUTE_FOUND',
+  INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE',
+  INSUFFICIENT_LIQUIDITY = 'INSUFFICIENT_LIQUIDITY',
+  PRICE_IMPACT_TOO_HIGH = 'PRICE_IMPACT_TOO_HIGH',
+  SWAP_READY = 'SWAP_READY',
+  SWAPPING = 'SWAPPING',
+  SWAP_SUCCESS = 'SWAP_SUCCESS',
+  SWAP_ERROR = 'SWAP_ERROR',
+  CONNECT_WALLET = 'CONNECT_WALLET'
+}
+
 export interface SwapState {
   token1: Token | null;
   token2: Token | null;
   swapMessage: SenderArguments[] | null;
   transactionEstimation?: TransactionSwapEstimation;
+  status: SwapStatus;
+  error: string | null;
+  priceImpact: number;
+  slippage: number;
 }
 
 export interface CreatePoolState {
