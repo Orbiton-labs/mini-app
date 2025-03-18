@@ -8,21 +8,22 @@ import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { useAddLiquidity } from "@/hooks/add-liquidity/useAddLiquidity";
 import { useAddLiquidityTransformer } from "@/hooks/add-liquidity/useAddLiquidityTransformer";
 import {
-  FocusToken,
   useHandleChangeSubmitAmount,
 } from "@/hooks/add-liquidity/useHandleChangeSubmitAmount";
 import { useHandleRangeChange } from "@/hooks/add-liquidity/useHandleRangeChange";
 import { useMintInfo } from "@/hooks/add-liquidity/useMintInfo";
 import { IconMinus } from "@/icons/fixed/minus";
 import { IconPlus } from "@/icons/fixed/plus";
+import { useAddLiquidityStore } from "@/store/add-liquidity-store";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 
 export default function AddLiquidityPage() {
   const searchParams = useSearchParams();
   const poolAddr = searchParams.get("pool");
 
   const { poolDetail, poolDetailLoading } = useAddLiquidity(poolAddr || "");
+  const addLiquidityStore = useAddLiquidityStore();
 
   const {
     priceLower,
@@ -58,34 +59,23 @@ export default function AddLiquidityPage() {
   );
 
   const {
-    amount0,
-    amount1,
-    focusOn,
-    setFocusOn,
-    setAmount0,
-    setAmount1,
-    handleMint,
     onChangeAmount0,
     onChangeAmount1,
   } = useHandleChangeSubmitAmount(poolDetail, jettons, tickPair);
 
-  const [inputValue, setInputValue] = useState(
-    priceLower
-      ? isToken0Base
-        ? priceLower?.toSignificant(6)
-        : priceLower.invert().toSignificant(6)
-      : 0
-  );
+  useEffect(() => {
+    if (poolDetail) {
+      addLiquidityStore.setPool(poolDetail);
+    }
+  }, [poolDetail]);
 
   return (
     <Page>
       <div className="flex flex-col gap-3 pl-4 pr-4">
         <div className="flex justify-between item-center">
           <span className="text-base">1. Select Range</span>
-          {/* <span className="text-base">Next</span> */}
         </div>
 
-        {/* TODO: should become components */}
         <div className="flex flex-col gap-2 justify-between">
           <div className="flex justify-between items-center">
             <span className="text-xs">Choose base</span>
@@ -199,7 +189,6 @@ export default function AddLiquidityPage() {
 
         <div className="flex justify-between item-center">
           <span className="text-base">2. Enter Amount</span>
-          {/* <span className="text-base">Next</span> */}
         </div>
 
         <div className="min-h-[460px] flex flex-col gap-3">
@@ -207,11 +196,11 @@ export default function AddLiquidityPage() {
             <PairInput
               token1={{
                 token: poolDetail.token1,
-                amount: amount0.toString(),
+                amount: addLiquidityStore.amount0,
               }}
               token2={{
                 token: poolDetail.token2,
-                amount: amount1.toString(),
+                amount: addLiquidityStore.amount1,
               }}
               setToken1={() => {}}
               setToken2={() => {}}
@@ -224,12 +213,14 @@ export default function AddLiquidityPage() {
               tokenList={[]}
               canChangeToken0={false}
               canChangeToken1={false}
-              onFocus1={() => setFocusOn(FocusToken.TOKEN_0)}
-              onFocus2={() => setFocusOn(FocusToken.TOKEN_1)}
             />
           )}
 
-          <SubmitButton onClick={handleMint} content="Create Position" />
+          <SubmitButton 
+            onClick={addLiquidityStore.addLiquidity} 
+            content={addLiquidityStore.getButtonText()}
+            isDisabled={addLiquidityStore.isButtonDisabled()}
+          />
         </div>
       </div>
     </Page>

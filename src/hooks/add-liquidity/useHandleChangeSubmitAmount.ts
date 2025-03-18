@@ -3,6 +3,7 @@ import { FEE_TIER_SCALE } from "@/constants/contract";
 import { FEE_MAP } from "@/constants/corresponding-fee";
 import { PTON_ROUTER_WALLET } from "@/constants/pton";
 import { useTonWalletStore } from "@/store";
+import { AddLiquidityStatus, useAddLiquidityStore } from "@/store/add-liquidity-store";
 import { Pool } from "@/types/Pool";
 import {
   Jetton,
@@ -14,12 +15,9 @@ import {
 } from "@orbiton_labs/v3-contracts-sdk";
 import { Chain } from "@orbiton_labs/v3-contracts-sdk/build/constants";
 import { maxLiquidityForAmounts } from "@orbiton_labs/v3-contracts-sdk/build/utils/maxLiquidityForAmounts";
-import { Trace } from "@ton-api/client";
-import { SenderArguments } from "@ton/core";
 import Decimal from "decimal.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useDebounce from "../useDebounce";
-import { JettonMaster } from "@ton/ton";
 
 export enum FocusToken {
   TOKEN_0,
@@ -39,19 +37,11 @@ export const useHandleChangeSubmitAmount = (
     (state) => state.loadWalletVersion
   );
 
-  const [focusOn, setFocusOn] = useState<FocusToken | null>(null);
-  const [amount0, setAmount0] = useState<Decimal>(new Decimal(0));
-  const [amount1, setAmount1] = useState<Decimal>(new Decimal(0));
-  const [position, setPosition] = useState<Position | null>(null);
-  const [estimateRes, setEstimateRes] = useState<{
-    messages: SenderArguments[];
-    result: Trace;
-  } | null>(null);
-
-  const debounceAmount0 = useDebounce(amount0, 1000);
-  const debounceAmount1 = useDebounce(amount1, 1000);
-
+  const addLiquidityStore = useAddLiquidityStore();
   const prevPositionRef = useRef<Position | null>(null);
+
+  const debounceAmount0 = useDebounce(addLiquidityStore.amount0, 1000);
+  const debounceAmount1 = useDebounce(addLiquidityStore.amount1, 1000);
 
   // Function to calculate position based on focus and value
   const calculatePosition = async (focus: FocusToken, value: Decimal) => {
@@ -68,6 +58,8 @@ export const useHandleChangeSubmitAmount = (
       console.log("Not found fee");
       return;
     }
+
+    addLiquidityStore.setStatus(AddLiquidityStatus.CALCULATING);
 
     let newPosition: Position;
 
@@ -105,6 +97,7 @@ export const useHandleChangeSubmitAmount = (
     }
 
     if (newPosition.liquidity === 0n) {
+      addLiquidityStore.setStatus(AddLiquidityStatus.IDLE);
       return;
     }
 
@@ -113,13 +106,12 @@ export const useHandleChangeSubmitAmount = (
       !prevPositionRef.current ||
       prevPositionRef.current.liquidity !== newPosition.liquidity
     ) {
-      setPosition(newPosition);
       prevPositionRef.current = newPosition;
 
       if (focus === FocusToken.TOKEN_0) {
-        setAmount1(new Decimal(newPosition.amount1.quotient.toString()));
+        addLiquidityStore.setAmount1(new Decimal(newPosition.amount1.quotient.toString()).toString());
       } else {
-        setAmount0(new Decimal(newPosition.amount0.quotient.toString()));
+        addLiquidityStore.setAmount0(new Decimal(newPosition.amount0.quotient.toString()).toString());
       }
     }
   };
@@ -127,29 +119,27 @@ export const useHandleChangeSubmitAmount = (
   // Simplified onChange handlers
   const onChangeAmount0 = (value: string | undefined) => {
     const newAmount0 = new Decimal(value || 0);
-    setAmount0(newAmount0);
-    setFocusOn(FocusToken.TOKEN_0);
+    addLiquidityStore.setAmount0(newAmount0.toString());
   };
 
   const onChangeAmount1 = (value: string | undefined) => {
     const newAmount1 = new Decimal(value || 0);
-    setAmount1(newAmount1);
-    setFocusOn(FocusToken.TOKEN_1);
+    addLiquidityStore.setAmount1(newAmount1.toString());
   };
 
   // Effect to trigger position calculation with debounced values
   useEffect(() => {
-    if (focusOn === FocusToken.TOKEN_0 && !debounceAmount0.isZero()) {
-      calculatePosition(FocusToken.TOKEN_0, debounceAmount0);
-    } else if (focusOn === FocusToken.TOKEN_1 && !debounceAmount1.isZero()) {
-      calculatePosition(FocusToken.TOKEN_1, debounceAmount1);
+    if (debounceAmount0 !== "0") {
+      calculatePosition(FocusToken.TOKEN_0, new Decimal(debounceAmount0));
+    } else if (debounceAmount1 !== "0") {
+      calculatePosition(FocusToken.TOKEN_1, new Decimal(debounceAmount1));
     }
-  }, [debounceAmount0, debounceAmount1, focusOn, tickPair]);
+  }, [debounceAmount0, debounceAmount1, tickPair]);
 
   // Effect for estimation
   useEffect(() => {
     const emulateMint = async () => {
-      if (!tonApiClient || !sender?.address || !position) return;
+      if (!tonApiClient || !sender?.address || !prevPositionRef.current) return;
 
       if (!walletVersion) {
         await loadWalletVersion();
@@ -167,15 +157,6 @@ export const useHandleChangeSubmitAmount = (
         pool.token2.symbol
       );
 
-      console.log({
-        poolAddress: pool.address,
-        jettonMaster0: pool.token1.address,
-        JettonMaster1: pool.token2.address,
-        jettonWallet0: jettons[0]!.address.toString(),
-        jettonWallet1: jettons[1]!.address.toString(),
-        router: 'EQBkY8koHBO51KvkrKEc_f4weiATV-4I-1pwDGxPNT1fUyIt'
-      })
-
       try {
         await jetton0Sender.setWalletAddress(queryClient!, sender.address);
         await jetton1Sender.setWalletAddress(queryClient!, sender.address);
@@ -183,7 +164,7 @@ export const useHandleChangeSubmitAmount = (
         const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickPair[0]);
         const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickPair[1]);
 
-        const { amount0: newAmount0, amount1: newAmount1 } = position;
+        const { amount0: newAmount0, amount1: newAmount1 } = prevPositionRef.current;
 
         const calculatedLiquidity = maxLiquidityForAmounts(
           BigInt(pool.sqrtPrice),
@@ -194,21 +175,7 @@ export const useHandleChangeSubmitAmount = (
           false
         );
 
-        position.liquidity = calculatedLiquidity;
-
-        console.log(
-          tonApiClient,
-          walletVersion,
-          sender?.address,
-          jettons[0]!,
-          jettons[1]!,
-          JettonAmount.fromRawAmount(jetton0Sender, position.amount0.quotient),
-          JettonAmount.fromRawAmount(jetton1Sender, position.amount1.quotient),
-          position,
-          sender?.address,
-          0,
-          Chain.Testnet
-        );
+        prevPositionRef.current.liquidity = calculatedLiquidity;
 
         const result = await PoolMessageBuilder.createEmulatedMintMessage(
           tonApiClient,
@@ -216,9 +183,9 @@ export const useHandleChangeSubmitAmount = (
           sender?.address,
           jettons[0]!,
           jettons[1]!,
-          JettonAmount.fromRawAmount(jetton0Sender, position.amount0.quotient),
-          JettonAmount.fromRawAmount(jetton1Sender, position.amount1.quotient),
-          position,
+          JettonAmount.fromRawAmount(jetton0Sender, prevPositionRef.current.amount0.quotient),
+          JettonAmount.fromRawAmount(jetton1Sender, prevPositionRef.current.amount1.quotient),
+          prevPositionRef.current,
           sender?.address,
           0,
           Chain.Testnet,
@@ -228,29 +195,21 @@ export const useHandleChangeSubmitAmount = (
           }
         );
 
-        setEstimateRes(result);
-        console.log("success", result.result.transaction.success);
+        addLiquidityStore.setMessages(result.messages);
+        addLiquidityStore.setStatus(AddLiquidityStatus.ADD_LIQUIDITY_READY);
       } catch (err) {
         console.log(err);
+        addLiquidityStore.setError("Failed to calculate position");
+        addLiquidityStore.setStatus(AddLiquidityStatus.IDLE);
       }
     };
 
-    emulateMint();
-  }, [position]); // Only depend on position
-
-  const handleMint = async () => {
-    const res = await sender?.sendMultiple(estimateRes?.messages!);
-    console.log({ res });
-  };
+    if (prevPositionRef.current) {
+      emulateMint();
+    }
+  }, [prevPositionRef.current]);
 
   return {
-    amount0,
-    amount1,
-    focusOn,
-    setFocusOn,
-    setAmount0,
-    setAmount1,
-    handleMint,
     onChangeAmount0,
     onChangeAmount1,
   };
