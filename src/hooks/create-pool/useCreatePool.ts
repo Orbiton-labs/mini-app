@@ -9,6 +9,7 @@ import {
   Jetton,
   RouterWrapper,
 } from "@orbiton_labs/v3-contracts-sdk";
+import { OpCreatePool } from "@orbiton_labs/v3-contracts-sdk/build/tlbs/router";
 import { Address, toNano } from "@ton/core";
 import { useEffect, useMemo, useState } from "react";
 
@@ -26,7 +27,6 @@ export const useCreatePool = (
 
   const isSorted = useMemo(() => {
     if (!jetton0 || !jetton1) return true;
-
     return jetton0.sortsBefore(jetton1);
   }, [jetton0, jetton1]);
 
@@ -51,12 +51,8 @@ export const useCreatePool = (
       const jetton0 = parseJetton(token1.token);
       const jetton1 = parseJetton(token2.token);
 
-      console.log(jetton0, jetton1);
-
       await jetton0.setWalletAddress(queryClient, routerAddress);
       await jetton1.setWalletAddress(queryClient, routerAddress);
-
-      console.log({ jetton0, jetton1 });
 
       const [jetton0Sorted, jetton1Sorted] = jetton0.sortsBefore(jetton1)
         ? [jetton0, jetton1]
@@ -71,7 +67,6 @@ export const useCreatePool = (
       );
 
       setPoolAddress(poolAddress);
-
       setJetton0(jetton0Sorted);
       setJetton1(jetton1Sorted);
     })();
@@ -89,48 +84,46 @@ export const useCreatePool = (
 
   const handleCreatePool = async () => {
     if (!token1?.amount || !token2?.amount) {
-      console.log("no amount");
-      return;
+      throw new Error("Please enter amounts");
     }
 
     if (loading) {
-      console.log("is loading");
-      return;
+      throw new Error("Loading pool data");
     }
 
     if (!data?.pool) {
-      console.log("no pool data");
-      return;
+      throw new Error("No pool data");
     }
 
     if (data?.pool.length > 0) {
-      console.log("Pool existed");
+      throw new Error("Pool already exists");
     }
 
     if (!queryClient) {
-      console.log("no client");
-      return;
+      throw new Error("No client");
+    }
+
+    if (!sender) {
+      throw new Error("Please connect your wallet");
+    }
+
+    if (!jetton0 || !jetton1) {
+      throw new Error("No jetton data");
+    }
+
+    if (!jetton0.walletAddress || !jetton1.walletAddress) {
+      throw new Error("No wallet addresses");
     }
 
     const router = queryClient.open(
       RouterWrapper.Router.createFromAddress(routerAddress)
     );
 
-    if (!sender) {
-      console.log("no sender");
-      return;
-    }
-
-    if (!jetton0 || !jetton1) {
-      console.log("no jetton");
-      return;
-    }
-
-    console.log({
+    const createPoolParams = {
       kind: "OpCreatePool",
       query_id: 0,
-      jetton0_wallet: jetton0.walletAddress?.toString(),
-      jetton1_wallet: jetton1.walletAddress?.toString(),
+      jetton0_wallet: jetton0.walletAddress,
+      jetton1_wallet: jetton1.walletAddress,
       fee: fee * FEE_TIER_SCALE,
       sqrt_price_x96: encodeSqrtRatioX96(
         BigInt(token1.amount),
@@ -142,39 +135,20 @@ export const useCreatePool = (
         jetton0_master: jetton0.address,
         jetton1_master: jetton1.address,
       },
-    });
-
-    if (!jetton0.walletAddress || !jetton1.walletAddress) {
-      return;
-    }
+    };
 
     try {
       const res = await router.sendCreatePool(
         sender,
-        {
-          kind: "OpCreatePool",
-          query_id: 0,
-          jetton0_wallet: jetton0.walletAddress,
-          jetton1_wallet: jetton1.walletAddress,
-          fee: fee * FEE_TIER_SCALE,
-          sqrt_price_x96: encodeSqrtRatioX96(
-            BigInt(token1.amount),
-            BigInt(token2.amount)
-          ),
-          tick_spacing: tickSpacing,
-          jetton_master_ref: {
-            kind: "JettonMasterRef",
-            jetton0_master: jetton0.address,
-            jetton1_master: jetton1.address,
-          },
-        },
+        createPoolParams as OpCreatePool,
         {
           value: toNano("0.1"),
         }
       );
-      console.log(res);
+      return res;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      throw new Error("Failed to create pool");
     }
   };
 
