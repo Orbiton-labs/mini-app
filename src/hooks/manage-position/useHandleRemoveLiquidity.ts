@@ -90,7 +90,7 @@ export const useHandleRemoveLiquidity = (positionAddress: string | null, jettons
     }, [debouncePercent, position]);
 
     const handleRemoveLiquidity = async () => {
-        if (!pool || !position || !tonApiClient || !walletVersion || !sender?.address) {
+        if (!pool || !position || !tonApiClient || !sender?.address) {
             useManagePositionStore.getState().setError("Missing required data");
             useManagePositionStore.getState().setStatus(ManagePositionStatus.REMOVE_LIQUIDITY_ERROR);
             return;
@@ -138,7 +138,7 @@ export const useHandleRemoveLiquidity = (positionAddress: string | null, jettons
     };
 
     const handleCollectFee = async () => {
-        if (!pool || !position || !tonApiClient || !walletVersion || !sender?.address) {
+        if (!pool || !position || !tonApiClient || !sender?.address) {
             useManagePositionStore.getState().setError("Missing required data");
             useManagePositionStore.getState().setStatus(ManagePositionStatus.COLLECT_FEE_ERROR);
             return;
