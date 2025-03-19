@@ -1,5 +1,6 @@
 // src/store/token-list-store.ts
 import { getTokenList } from "@/apis/server/tokens";
+import { PTON_MASTER } from "@/constants/pton";
 import { UnknownToken } from "@/constants/unknown";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
@@ -15,10 +16,12 @@ const filterTokens = (
   excludedTokens: (Token | null)[]
 ) => {
   const excludedNames = excludedTokens
-    .filter(Boolean)
-    .map((t) => t!.token.name);
+    .filter((t): t is Token => t !== null)
+    .map((t) => t.token.address);
+
+  console.log("tokensList", tokensList)
   return Object.values(tokensList).filter(
-    (t) => !excludedNames.includes(t.token.name)
+    (t) => t?.token?.address && !excludedNames.includes(t.token.address)
   );
 };
 
@@ -91,6 +94,17 @@ export const useTokenListStore = create<
                 });
               }
             }
+
+            // get ton balance
+            const account = await client.accounts.getAccount(Address.parse(address))
+            const balance = account.balance
+
+            console.log("balance", addressMap)
+
+            addressMap.set(Address.parse(PTON_MASTER).toRawString(), {
+              ...addressMap.get(Address.parse(PTON_MASTER).toRawString())!,
+              balance: balance.toString(),
+            });
 
             const newTokens = Object.fromEntries(addressMap.entries());
             set({ tokensList: newTokens });

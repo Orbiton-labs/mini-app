@@ -88,7 +88,8 @@ export default function PoolDetailPage() {
               <div className="flex flex-col items-start gap-1">
                 <p className="text-ss text-white1">APR</p>
                 <p className="text-xs bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                  {poolDetail.apr}%
+                  {/* {poolDetail.apr}% */}
+                  99.99%
                 </p>
               </div>
             </div>

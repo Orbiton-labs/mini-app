@@ -36,7 +36,7 @@ export const useCreatePoolStore = create<
         setToken2: (token: Token) => void;
         setAmount1: (amount: string | undefined) => void;
         setAmount2: (amount: string | undefined) => void;
-        setFeeTier: (feeTier: FeeTier) => void;
+        setFeeTier: (feeTier: FeeTier, price: number | null) => void;
         setStatus: (status: CreatePoolStatus) => void;
         setError: (error: string | null) => void;
         getButtonText: () => string;
@@ -74,7 +74,11 @@ export const useCreatePoolStore = create<
                         get().getExistedFeeTier();
                     }
                 },
-                setFeeTier: (feeTier) => set({ feeTier }),
+                setFeeTier: (feeTier, price) => {
+                    set({ feeTier });
+
+                    get().processPoolCreation(price);
+                },
                 setStatus: (status) => set({ status }),
                 setError: (error) => set({ error }),
                 setAmount1: (amount) => {

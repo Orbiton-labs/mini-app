@@ -4,6 +4,7 @@ import { DataTable } from "@/app/pools/data-table";
 import { ActionButton } from "@/components/ActionButton/ActionButton";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
+import { CardSkeleton, ListSkeleton } from "@/components/ui/card-skeleton";
 import { usePoolList } from "@/hooks/pools/usePoolList";
 import Link from "next/link";
 import { columns as newColumns } from "./columns";
@@ -19,7 +20,14 @@ export default function PoolsPage() {
           <Link href="/create-pool">
             <ActionButton content="Create pool" />
           </Link>
-          <DataTable columns={newColumns} data={poolList} />
+          {loading ? (
+            <div className="mt-4 space-y-4">
+              <CardSkeleton hasHeader={false} rows={1} />
+              <ListSkeleton rows={5} />
+            </div>
+          ) : (
+            <DataTable columns={newColumns} data={poolList} />
+          )}
         </div>
       </div>
     </Page>

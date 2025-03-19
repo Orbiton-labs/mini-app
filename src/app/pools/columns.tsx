@@ -1,7 +1,6 @@
 import { PoolName } from "@/components/PoolName/PoolName";
 import { IconArrowDown } from "@/icons/fixed/arrow-down";
 import { Pool } from "@/types/Pool";
-import { TokenInfo } from "@/types/Token";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<Pool>[] = [
@@ -56,10 +55,10 @@ export const columns: ColumnDef<Pool>[] = [
     accessorKey: "volume24h",
     header: ({ column }) => (
       <div
-        className="flex justify-center items-center gap-2 text-xs"
+        className="flex justify-center items-center gap-1 text-xs"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        <span className="w-full">Volume 24H</span>
+        <span className="text-[9.5px]">Volume 24H</span>
         <IconArrowDown />
       </div>
     ),
@@ -97,7 +96,10 @@ export const columns: ColumnDef<Pool>[] = [
       return (
         <div className="flex flex-col text-right">
           <p className="text-white1 text-ss">APR</p>
-          <p className="text-xs">{apr}%</p>
+          <p className="text-xs">
+            {/* {apr}% */}
+            99.99%
+          </p>
         </div>
       );
     },

@@ -7,6 +7,7 @@ import { init } from "@/core/init";
 import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
 import { IconExplore } from "@/icons/fixed/explore";
+import { IconLoading } from "@/icons/fixed/loading";
 import { IconPool } from "@/icons/fixed/pool";
 import { IconPortfolio } from "@/icons/fixed/portfolio";
 import { IconSwap } from "@/icons/fixed/swap";
@@ -24,6 +25,7 @@ import { usePathname } from "next/navigation";
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { Header } from "../Header/Header";
 import { TransactionStatus } from "../TransactionStatus/TransactionStatus";
+import { Skeleton } from "../ui/skeleton";
 
 const TABS = [
   {
@@ -209,8 +211,13 @@ export function Root(props: PropsWithChildren) {
       <RootInner {...props} />
     </ErrorBoundary>
   ) : (
-    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-      Loading
+    <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black3 gap-4">
+      <IconLoading className="w-12 h-12" />
+      <div className="flex flex-col gap-2 w-3/4 max-w-md">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+        <Skeleton className="h-4 w-4/6" />
+      </div>
     </div>
   );
 }

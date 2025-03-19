@@ -47,6 +47,11 @@ export const useHandleChangeSubmitAmount = (
   const calculatePosition = async (focus: FocusToken, value: Decimal) => {
     console.log(value);
 
+    if (tickPair[0] > pool.tick && tickPair[1] <= pool.tick) {
+      addLiquidityStore.setStatus(AddLiquidityStatus.ADD_LIQUIDITY_ERROR);
+      return;
+    }
+
     if (!pool || !jettons[0] || !jettons[1] || !client) {
       console.log("Missing required data");
       return;

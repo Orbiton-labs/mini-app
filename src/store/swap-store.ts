@@ -11,8 +11,8 @@ const defaultPair = process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" ? DEFAULT_
 
 export const useSwapStore = create<
     SwapState & {
-        setToken1: (token: Token) => Promise<void>;
-        setToken2: (token: Token) => Promise<void>;
+        setToken1: (token: Token, amount?: string) => Promise<void>;
+        setToken2: (token: Token, amount?: string) => Promise<void>;
         setPair: (token1: Token, token2: Token) => void;
         setAmount1: (amount: string | undefined) => Promise<void>;
         setAmount2: (amount: string | undefined) => Promise<void>;
@@ -38,16 +38,25 @@ export const useSwapStore = create<
                 error: null,
                 priceImpact: 0,
                 slippage: 0,
-                setToken1: async (token) => {
+                setToken1: async (token, amount?: string) => {
                     set({ token1: token, error: null, status: SwapStatus.IDLE });
+                    console.log(amount);
+                    await get().setAmount1(amount)
                 },
-                setToken2: async (token) => {
+                setToken2: async (token, amount?: string) => {
                     set({ token2: token, error: null, status: SwapStatus.IDLE });
+
+                    await get().setAmount1(amount);
                 },
                 setPair: (token1, token2) => {
                     set({ token1, token2, error: null, status: SwapStatus.IDLE });
                 },
                 setAmount1: async (amount) => {
+                    if (!amount) {
+                        set({ token1: { ...get().token1!, amount: undefined }, error: null, status: SwapStatus.IDLE });
+                        return;
+                    }
+
                     const token1 = get().token1;
                     const token2 = get().token2;
 
@@ -79,7 +88,11 @@ export const useSwapStore = create<
                             if (!simulateRes) {
                                 set({
                                     error: "No route found",
-                                    status: SwapStatus.NO_ROUTE_FOUND
+                                    status: SwapStatus.NO_ROUTE_FOUND,
+                                    token2: {
+                                        ...get().token2!,
+                                        amount: undefined
+                                    }
                                 });
                                 return;
                             }
@@ -115,9 +128,36 @@ export const useSwapStore = create<
                 setAmount2: async (amount) => { },
                 reverseOrder: async () => {
                     const { token1, token2 } = get();
-                    set({ token1: token2, token2: token1, transactionEstimation: undefined, error: null, status: SwapStatus.IDLE });
 
-                    if (token2?.amount && token2.token.address && token1 && token1.token.address) {
+                    if (!token1 || !token2) return;
+
+                    // When reversing, we need to swap the tokens and their amounts
+                    const newToken1 = {
+                        token: token2.token,
+                        amount: token2.amount,
+                        jettonMaster: token2.jettonMaster,
+                        jettonMinter: token2.jettonMinter,
+                        balance: token2.balance
+                    };
+
+                    const newToken2 = {
+                        token: token1.token,
+                        amount: token1.amount,
+                        jettonMaster: token1.jettonMaster,
+                        jettonMinter: token1.jettonMinter,
+                        balance: token1.balance
+                    };
+
+                    set({
+                        token1: newToken1,
+                        token2: newToken2,
+                        transactionEstimation: undefined,
+                        error: null,
+                        status: SwapStatus.IDLE
+                    });
+
+                    // If we have an amount to simulate with
+                    if (newToken1.amount && newToken1.token.address) {
                         const walletStore = useTonWalletStore.getState();
                         const sender = walletStore.friendlyAddress;
                         if (!sender) {
@@ -127,14 +167,28 @@ export const useSwapStore = create<
 
                         try {
                             set({ status: SwapStatus.FINDING_ROUTES });
-                            const simulateRes = await simulateSwap(token1.token.address, token2.token.address, token2.amount, sender);
+                            const simulateRes = await simulateSwap(
+                                newToken1.token.address,
+                                newToken2.token.address,
+                                newToken1.amount,
+                                sender
+                            );
                             if (!simulateRes) {
                                 set({ error: "Failed to simulate swap", status: SwapStatus.SWAP_ERROR });
                                 return;
                             }
 
+                            // Update the output amount
+                            set({
+                                token2: {
+                                    ...newToken2,
+                                    amount: simulateRes.returnAmount
+                                },
+                                swapMessage: simulateRes.messages
+                            });
+
                             // Calculate price impact
-                            const priceImpact = calculatePriceImpact(token1, token2, token2.amount, simulateRes.returnAmount);
+                            const priceImpact = calculatePriceImpact(newToken1, newToken2, newToken1.amount, simulateRes.returnAmount);
                             set({ priceImpact });
 
                             if (priceImpact > 5) {
@@ -174,11 +228,11 @@ export const useSwapStore = create<
                                 transactionEstimation: undefined,
                                 token1: {
                                     ...get().token1!,
-                                    amount: "0"
+                                    amount: undefined
                                 },
                                 token2: {
                                     ...get().token2!,
-                                    amount: "0"
+                                    amount: undefined
                                 },
                                 status: SwapStatus.IDLE,
                                 error: null,

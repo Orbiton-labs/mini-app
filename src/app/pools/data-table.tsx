@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
                     style={{
                       borderWidth: '1px'
                     }}
-                    className="last:mb-40 w-full md:flex grid grid-cols-3 grid-rows-2 bg-grey3 rounded-lg py-4 px-3 border-grey7"
+                    className="last:mb-40 w-full md:flex grid grid-cols-3 grid-rows-2 bg-grey3 rounded-lg py-4 px-3 border-grey7 hover:cursor-pointer"
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() =>

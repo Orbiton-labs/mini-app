@@ -11,7 +11,7 @@ import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
 import { usePendingTxStore, useSwapStore, useTokenListStore } from "@/store";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SwapPage() {
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
@@ -22,7 +22,6 @@ export default function SwapPage() {
   const setToken1 = useSwapStore((state) => state.setToken1);
   const setToken2 = useSwapStore((state) => state.setToken2);
   const setAmount1 = useSwapStore((state) => state.setAmount1);
-  const setAmount2 = useSwapStore((state) => state.setAmount2);
   const reverseOrder = useSwapStore((state) => state.reverseOrder);
   const resetInputSwap = useSwapStore((state) => state.resetInputSwap);
   const swap = useSwapStore((state) => state.swap);
@@ -54,12 +53,12 @@ export default function SwapPage() {
     if (debouncedAmount1) {
       setAmount1(debouncedAmount1);
     }
-  }, [debouncedAmount1, setAmount1]);
+  }, [debouncedAmount1, setAmount1, resetInputSwap]);
 
   // Handle amount1 change from PairInput
-  const handleAmount1Change = useCallback((amount: string | undefined) => {
+  const handleAmount1Change = (amount: string | undefined) => {
     setInputAmount1(amount);
-  }, []);
+  };
 
   return (
     <Page back={false}>
@@ -76,18 +75,25 @@ export default function SwapPage() {
 
         <div className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}>
           <PairInput
-            token1={token1}
+            token1={{
+              token: token1?.token!,
+              balance: token1?.balance,
+              amount: inputAmount1
+            }}
             token2={token2}
-            setToken1={setToken1}
-            setToken2={setToken2}
+            setToken1={(token) => setToken1(token, debouncedAmount1)}
+            setToken2={(token) => setToken2(token, debouncedAmount1)}
             setAmount1={handleAmount1Change}
-            setAmount2={setAmount2}
+            setAmount2={() => { }}
             tokenList={filteredTokens}
-            reverseOrder={reverseOrder}
+            reverseOrder={() => {
+              reverseOrder();
+              setInputAmount1(token2?.amount);
+            }}
             displayTokenList={() => displayFilteredTokens([token1, token2])}
             hideBalance={false}
             canSwapOrder={true}
-            disable1={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
+            disable1={true}
           />
           {/* {token2 && token2.amount !== "0" && (
             <TransactionSimulation

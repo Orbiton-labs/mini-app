@@ -8,7 +8,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
       ? [
         {
           type: TokenType.NATIVE,
-          address: null,
+          address: PTON_MASTER, 
           name: "Toncoin",
           symbol: "TON",
           image: "https://assets.dedust.io/images/ton.webp",

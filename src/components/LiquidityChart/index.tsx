@@ -4,6 +4,7 @@ import { IconLoading } from "@/icons/fixed/loading";
 import { formatDelta } from "@/lib/formatDelta";
 import { Pool } from "@/types/Pool";
 import { Jetton, Price } from "@orbiton_labs/v3-contracts-sdk";
+import { Skeleton } from "../ui/skeleton";
 import { Chart } from "./Chart";
 import { useDensityChartData } from "./hooks";
 import { Bound, ChartVariant, ZoomLevels } from "./types";
@@ -157,8 +158,13 @@ export default function LiquidityChartRangeInput({
         <InfoBox icon={<Spinner size="l" />} />
       ) : ( */}
       {isChartLoading && (
-        <div className="absolute w-full h-[110%] flex items-center justify-center bg-black3 z-10">
+        <div className="absolute w-full h-[110%] flex flex-col items-center justify-center bg-black3 z-10 gap-4 p-4">
           <IconLoading />
+          <div className="flex flex-col w-full gap-3">
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-5/6" />
+            <Skeleton className="h-3 w-4/6" />
+          </div>
         </div>
       )}
       <Chart

@@ -5,7 +5,7 @@ export enum TokenType {
 
 export type TokenInfo = {
   type: TokenType;
-  address: string | null; // native is null
+  address: string;
   name: string;
   symbol: string;
   image: string;

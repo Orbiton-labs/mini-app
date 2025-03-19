@@ -2,10 +2,11 @@ import {
   OrderDirection,
   usePoolListQueryQuery,
 } from "@/graphql/generated/graphql";
+import { PoolListQuery } from "@/graphql/queries/pool";
 import { poolTransform } from "@/pipelines/transformer";
 
 export const usePoolList = () => {
-  const { data, loading } = usePoolListQueryQuery({
+  const { data, loading, client } = usePoolListQueryQuery({
     variables: {
       orderBy: {
         totalValueLockedUSD: {
@@ -14,6 +15,19 @@ export const usePoolList = () => {
         },
       },
     },
+    onCompleted: () => {
+      client.query({
+        query: PoolListQuery,
+        variables: {
+          orderBy: {
+            totalValueLockedUSD: {
+              direction: OrderDirection.Desc,
+              priority: 1,
+            },
+          },
+        },
+      });
+    }
   });
 
   //   const testData: PoolListQueryQuery = {

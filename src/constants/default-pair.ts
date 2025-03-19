@@ -1,4 +1,5 @@
 import { TokenType } from "@/types/Token";
+import { PTON_MASTER } from "./pton";
 
 export const DEFAULT_PAIR_TESTNET = [
   {
@@ -25,7 +26,7 @@ export const DEFAULT_PAIR_TESTNET = [
 export const DEFAULT_PAIR_MAINNET = [
   {
     type: TokenType.NATIVE,
-    address: null,
+    address: PTON_MASTER,
     name: "Toncoin",
     symbol: "TON",
     image: "https://assets.dedust.io/images/ton.webp",

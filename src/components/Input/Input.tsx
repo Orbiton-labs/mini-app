@@ -25,16 +25,18 @@ export const Input: FC<InputProps> = ({
     setValue(number);
   };
 
+  // Always use a string value for the input to ensure it stays controlled
+  const displayValue = value ? printBigInt(value, decimals, decimals) : "";
+
   return (
     <input
       disabled={disabled}
       onFocus={onFocus}
       placeholder="0.0"
-      className={`w-[100%] text-right text-base bg-transparent overflow-visible  ${
-        value ? "text-white2" : "text-white1"
-      } py-[8px] border-none focus:ring-transparent`}
+      className={`w-[100%] text-right text-base bg-transparent overflow-visible  ${value ? "text-white2" : "text-white1"
+        } py-[8px] border-none focus:ring-transparent ${disabled ? "opacity-50" : ""}`}
       type="number"
-      value={value ? printBigInt(value, decimals, decimals) : undefined}
+      value={displayValue}
       onChange={(e) => handleSetValue(e.target.value)}
     ></input>
   );

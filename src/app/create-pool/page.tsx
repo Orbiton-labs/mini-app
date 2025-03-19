@@ -68,7 +68,7 @@ export default function CreatePoolPage() {
 
               return (
                 <div
-                  onClick={() => !isExist && setFeeTier(FEE_TIERS[index])}
+                  onClick={() => !isExist && setFeeTier(FEE_TIERS[index], price)}
                   key={index}
                   className={`flex flex-col border border-solid rounded-xl justify-center text-center py-3 px-6 gap-2 border-grey7 
                     ${FEE_TIERS[index].fee === feeTier?.fee ? "bg-grey8" : ""}

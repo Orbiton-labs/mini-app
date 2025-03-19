@@ -14,7 +14,9 @@ import { useHandleRangeChange } from "@/hooks/add-liquidity/useHandleRangeChange
 import { useMintInfo } from "@/hooks/add-liquidity/useMintInfo";
 import { IconMinus } from "@/icons/fixed/minus";
 import { IconPlus } from "@/icons/fixed/plus";
+import { useTokenListStore } from "@/store";
 import { useAddLiquidityStore } from "@/store/add-liquidity-store";
+import { Address } from "@ton/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -24,6 +26,8 @@ export default function AddLiquidityPage() {
 
   const { poolDetail, poolDetailLoading } = useAddLiquidity(poolAddr || "");
   const addLiquidityStore = useAddLiquidityStore();
+
+  const tokensList = useTokenListStore((state) => state.tokensList);
 
   const {
     priceLower,
@@ -83,17 +87,15 @@ export default function AddLiquidityPage() {
               <div className="flex gap-2">
                 <span
                   onClick={() => setIsToken0Base(true)}
-                  className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${
-                    isToken0Base && "bg-gradient-to-b from-green1 to-green2"
-                  }`}
+                  className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${isToken0Base && "bg-gradient-to-b from-green1 to-green2"
+                    }`}
                 >
                   {poolDetail.token1.symbol}
                 </span>
                 <span
                   onClick={() => setIsToken0Base(false)}
-                  className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${
-                    !isToken0Base && "bg-gradient-to-b from-green1 to-green2"
-                  }`}
+                  className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${!isToken0Base && "bg-gradient-to-b from-green1 to-green2"
+                    }`}
                 >
                   {poolDetail.token2.symbol}
                 </span>
@@ -197,27 +199,29 @@ export default function AddLiquidityPage() {
               token1={{
                 token: poolDetail.token1,
                 amount: addLiquidityStore.amount0,
+                balance: tokensList[Address.parse(poolDetail.token1.address).toRawString()]?.balance,
               }}
               token2={{
                 token: poolDetail.token2,
                 amount: addLiquidityStore.amount1,
+                balance: tokensList[Address.parse(poolDetail.token2.address).toRawString()]?.balance,
               }}
-              setToken1={() => {}}
-              setToken2={() => {}}
+              setToken1={() => { }}
+              setToken2={() => { }}
               setAmount1={onChangeAmount0}
               setAmount2={onChangeAmount1}
-              reverseOrder={() => {}}
+              reverseOrder={() => { }}
               canSwapOrder={false}
               hideBalance={false}
-              displayTokenList={() => {}}
+              displayTokenList={() => { }}
               tokenList={[]}
               canChangeToken0={false}
               canChangeToken1={false}
             />
           )}
 
-          <SubmitButton 
-            onClick={addLiquidityStore.addLiquidity} 
+          <SubmitButton
+            onClick={addLiquidityStore.addLiquidity}
             content={addLiquidityStore.getButtonText()}
             isDisabled={addLiquidityStore.isButtonDisabled()}
           />
