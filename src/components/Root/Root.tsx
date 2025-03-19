@@ -82,13 +82,13 @@ function RootInner({ children }: PropsWithChildren) {
         .mobile-wrap {
           position: absolute;
           left: 0;
-          top: 140px; /* Increased from 96px to 140px for header */
+          top: 180px; /* Increased from 96px to 180px for header */
           right: 0;
           bottom: 0;
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
-          height: calc(100% - 140px); /* Adjusted to account for larger header */
+          height: calc(100% - 180px); /* Adjusted to account for larger header */
           width: 100%;
           z-index: 1;
         }
