@@ -112,7 +112,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
             ],
             validUntil: Date.now() + 5 * 60 * 1000,
           }, returnUrl ? {
-            returnStrategy: returnUrl
+            twaReturnUrl: returnUrl
           } : undefined);
         } catch (e) {
           console.error(e);
@@ -130,7 +130,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
             }),
             validUntil: Date.now() + 5 * 60 * 1000,
           }, returnUrl ? {
-            returnStrategy: returnUrl
+            twaReturnUrl: returnUrl,
           } : undefined);
         } catch (e) {
           console.error(e);

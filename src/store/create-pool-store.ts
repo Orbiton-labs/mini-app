@@ -207,6 +207,15 @@ export const useCreatePoolStore = create<
                                 value: toNano("0.1"),
                             }
                         );
+
+                        // reset state
+                        set({
+                            token1: null,
+                            token2: null,
+                            feeTier: null,
+                            status: CreatePoolStatus.IDLE
+                        });
+
                         return res;
                     } catch (error) {
                         console.error(error);

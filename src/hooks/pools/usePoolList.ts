@@ -6,7 +6,7 @@ import { PoolListQuery } from "@/graphql/queries/pool";
 import { poolTransform } from "@/pipelines/transformer";
 
 export const usePoolList = () => {
-  const { data, loading, client } = usePoolListQueryQuery({
+  const { data, loading, client, refetch } = usePoolListQueryQuery({
     variables: {
       orderBy: {
         totalValueLockedUSD: {
@@ -27,7 +27,8 @@ export const usePoolList = () => {
           },
         },
       });
-    }
+    },
+    pollInterval: 15000,
   });
 
   //   const testData: PoolListQueryQuery = {
@@ -64,5 +65,6 @@ export const usePoolList = () => {
   return {
     loading,
     poolList: poolTransform(data),
+    refetch
   };
 };
