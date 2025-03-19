@@ -7,6 +7,7 @@ import { StatusFilter } from "@/components/StatusFilter/StatusFilter";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
 import { PositionFilter } from "@/constants/position";
+import { formatLargeNumber } from "@/helper/format";
 import { usePoolDetail } from "@/hooks/pool-detail/usePoolDetail";
 import { IconCircleInfo } from "@/icons/fixed/circle-info";
 import { Avatar } from "@telegram-apps/telegram-ui";
@@ -71,12 +72,12 @@ export default function PoolDetailPage() {
             <div className="grid grid-cols-3 grid-rows-2 gap-3">
               <div className="flex flex-col gap-1">
                 <p className="text-ss text-white1">TVL</p>
-                <p className="text-xs">${poolDetail.tvl.toFixed(2)}</p>
+                <p className="text-xs">${formatLargeNumber(poolDetail.tvl, 2)}</p>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <p className="text-ss text-white1">Volume 24H</p>
-                <p className="text-xs">${poolDetail.volume24h.toFixed(2)}</p>
+                <p className="text-xs">${formatLargeNumber(poolDetail.volume24h, 2)}</p>
               </div>
 
               <div className="flex flex-col items-end gap-1">
@@ -101,12 +102,12 @@ export default function PoolDetailPage() {
               </div>
               <div className="flex flex-col items-center gap-1 ">
                 <p className="text-ss text-white1">TVL</p>
-                <p className="text-xs">${total.tvl}</p>
+                <p className="text-xs">${formatLargeNumber(total.tvl, 2)}</p>
               </div>
               <div className="flex flex-col items-end gap-1">
                 <p className="text-ss text-white1 ">Total Fee 24H</p>
                 <p className="text-xs bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                  ${total.fee24h}
+                  ${formatLargeNumber(total.fee24h, 2)}
                 </p>
               </div>
             </div>
@@ -154,7 +155,7 @@ export default function PoolDetailPage() {
                           </span>
                         </div>
                         <span className="text-xs">
-                          {position.amount0.toFixed(2)}
+                          {formatLargeNumber(position.amount0, 2)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center w-full">
@@ -165,7 +166,7 @@ export default function PoolDetailPage() {
                           </span>
                         </div>
                         <span className="text-xs">
-                          {position.amount1.toFixed(2)}
+                          {formatLargeNumber(position.amount1, 2)}
                         </span>
                       </div>
                     </div>

@@ -1,4 +1,4 @@
-import { printBigInt } from "@/helper/format";
+import { formatLargeNumber, printBigInt } from "@/helper/format";
 import { Token } from "@/types/Token";
 import { FC } from "react";
 import { ChoosePercentOfBalance } from "../ChoosePercentOfBalance/ChoosePercentOfBalance";
@@ -33,7 +33,7 @@ export const SelectTokenWithBalance: FC<SelectTokenWithBalanceProps> = ({
       <ChoosePercentOfBalance
         balance={
           selectedToken?.balance
-            ? printBigInt(selectedToken.balance, selectedToken.token.decimals)
+            ? formatLargeNumber(printBigInt(selectedToken.balance, selectedToken.token.decimals), 2)
             : "0.00"
         }
       />

@@ -98,7 +98,7 @@ export default function SwapPage() {
                 },
                 {
                   key: "Price impact",
-                  data: `${priceImpact.toFixed(2)}%`,
+                  data: `${formatLargeNumber(priceImpact, 2)}%`,
                   warning: priceImpact > 5,
                 },
                 {
@@ -107,7 +107,7 @@ export default function SwapPage() {
                 },
                 {
                   key: "Slippage tolerance",
-                  data: `${slippage.toFixed(2)}%`,
+                  data: `${formatLargeNumber(slippage, 2)}%`,
                   warning: slippage > 1,
                 },
                 {

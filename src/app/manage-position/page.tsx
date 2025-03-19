@@ -6,6 +6,7 @@ import { Page } from "@/components/Page";
 import { Slider } from "@/components/Slider/Slider";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import { formatLargeNumber } from "@/helper/format";
 import {
   PERCENT,
   useHandleRemoveLiquidity,
@@ -52,10 +53,10 @@ export default function ManagePositionPage() {
     setPercent,
   } = useHandleRemoveLiquidity(positionAddress, jettons, poolDetail, position);
 
-  const { 
-    selectedTab, 
-    setSelectedTab, 
-    status, 
+  const {
+    selectedTab,
+    setSelectedTab,
+    status,
     error,
     getButtonText,
     isButtonDisabled
@@ -71,9 +72,8 @@ export default function ManagePositionPage() {
               <button
                 onClick={() => setSelectedTab(tab)}
                 key={tab}
-                className={`py-4 px-3 ${
-                  selectedTab === tab ? " bg-green3" : " bg-grey8"
-                }  text-xs rounded-lg text-white2`}
+                className={`py-4 px-3 ${selectedTab === tab ? " bg-green3" : " bg-grey8"
+                  }  text-xs rounded-lg text-white2`}
               >
                 {tab}
               </button>
@@ -118,17 +118,15 @@ export default function ManagePositionPage() {
                 <div className="flex gap-2">
                   <span
                     onClick={() => setIsToken0Base(true)}
-                    className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${
-                      isToken0Base && "bg-gradient-to-b from-green1 to-green2"
-                    }`}
+                    className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${isToken0Base && "bg-gradient-to-b from-green1 to-green2"
+                      }`}
                   >
                     {position.token0.symbol}
                   </span>
                   <span
                     onClick={() => setIsToken0Base(false)}
-                    className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${
-                      !isToken0Base && "bg-gradient-to-b from-green1 to-green2"
-                    }`}
+                    className={`py-2 px-4 text-xs border rounded-lg border-grey3 ${!isToken0Base && "bg-gradient-to-b from-green1 to-green2"
+                      }`}
                   >
                     {position.token1.symbol}
                   </span>
@@ -170,7 +168,7 @@ export default function ManagePositionPage() {
                 <span className="text-xs">Current Price</span>
                 <p className="text-xs py-2 px-3 bg-grey3 rounded-lg border border-grey7 ">
                   <span className=" bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                    {price.toFixed(2)} {quote}
+                    {formatLargeNumber(price.toString(), 2)} {quote}
                   </span>{" "}
                   per {base}
                 </p>
@@ -191,8 +189,8 @@ export default function ManagePositionPage() {
                 }}
                 interactive={false}
                 price={Number(price)}
-                onLeftRangeInput={() => {}}
-                onRightRangeInput={() => {}}
+                onLeftRangeInput={() => { }}
+                onRightRangeInput={() => { }}
                 variant={"dark"}
                 width={window.innerWidth > 768 ? 600 : 320}
                 isSorted={isToken0Base}
@@ -212,7 +210,7 @@ export default function ManagePositionPage() {
                 <div className="flex justify-between items-center w-full">
                   <span className="text-ss text-white1">Total</span>
                   <span className="text-xs bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent">
-                    ${totalUsd.toFixed(2)}
+                    ${formatLargeNumber(totalUsd, 2)}
                   </span>
                 </div>
               )}
@@ -225,7 +223,7 @@ export default function ManagePositionPage() {
                         {pooledAmount0} {position.token0.symbol}
                       </span>
                       <span className="text-ss text-grey5">
-                        ${amount0Usd.toFixed(2)}
+                        ${formatLargeNumber(amount0Usd, 2)}
                       </span>
                     </div>
                   </div>
@@ -238,7 +236,7 @@ export default function ManagePositionPage() {
                         {pooledAmount1} {position.token1.symbol}
                       </span>
                       <span className="text-ss text-grey5">
-                        ${amount1Usd.toFixed(2)}
+                        ${formatLargeNumber(amount1Usd, 2)}
                       </span>
                     </div>
                   </div>
@@ -264,7 +262,7 @@ export default function ManagePositionPage() {
                   <div className="flex gap-1 items-center">
                     <Avatar size={20} src={position.token0.image} />
                     <span className="text-xs text-white2">
-                      {percent0.toFixed(0)}%
+                      {formatLargeNumber(percent0, 0)}%
                     </span>
                   </div>
                 )}
@@ -272,7 +270,7 @@ export default function ManagePositionPage() {
                   <div className="flex gap-1 items-center">
                     <Avatar size={20} src={position.token1.image} />
                     <span className="text-xs text-white2">
-                      {percent1.toFixed(0)}%
+                      {formatLargeNumber(percent1, 0)}%
                     </span>
                   </div>
                 )}
@@ -319,11 +317,10 @@ export default function ManagePositionPage() {
                   {PERCENT.map((option, index) => (
                     <div
                       key={option}
-                      className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center text-xs px-2 ${
-                        useManagePositionStore.getState().percent === option
-                          ? "bg-gradient-to-b from-green1 to-green2 border-green2 text-black2"
-                          : "text-white2"
-                      }`}
+                      className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center text-xs px-2 ${useManagePositionStore.getState().percent === option
+                        ? "bg-gradient-to-b from-green1 to-green2 border-green2 text-black2"
+                        : "text-white2"
+                        }`}
                       onClick={() => {
                         setPercent(option);
                       }}

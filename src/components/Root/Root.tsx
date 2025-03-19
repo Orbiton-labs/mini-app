@@ -65,6 +65,34 @@ function RootInner({ children }: PropsWithChildren) {
       });
       postEvent("web_app_expand");
       setIsFullScreen(true);
+
+      // Add sticky app CSS classes for mobile platforms
+      document.body.classList.add('mobile-body');
+      const appRootElement = document.querySelector('.telegram-ui-app-root');
+      if (appRootElement) {
+        appRootElement.classList.add('mobile-wrap');
+      }
+
+      // Add styles to the document
+      const style = document.createElement('style');
+      style.textContent = `
+        .mobile-body {
+          overflow: hidden;
+          height: 100vh;
+        }
+        
+        .mobile-wrap {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      `;
+      document.head.appendChild(style);
     }
   }, [lp, isTelegramMiniApp]);
 
@@ -107,7 +135,7 @@ function RootInner({ children }: PropsWithChildren) {
             {children}
           </AnimatePresence>
 
-          <FixedLayout vertical="bottom">
+          <FixedLayout vertical="bottom" className="w-full sticky bottom-0 left-0 right-0 z-50">
             {show && (
               <div className="w-full flex justify-center items-center">
                 <TransactionStatus />
