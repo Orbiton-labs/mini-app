@@ -68,10 +68,6 @@ function RootInner({ children }: PropsWithChildren) {
 
       // Add sticky app CSS classes for mobile platforms
       document.body.classList.add('mobile-body');
-      const appRootElement = document.querySelector('.telegram-ui-app-root');
-      if (appRootElement) {
-        appRootElement.classList.add('mobile-wrap');
-      }
 
       // Add styles to the document
       const style = document.createElement('style');
@@ -79,6 +75,8 @@ function RootInner({ children }: PropsWithChildren) {
         .mobile-body {
           overflow: hidden;
           height: 100vh;
+          width: 100vw;
+          position: fixed;
         }
         
         .mobile-wrap {
@@ -90,6 +88,13 @@ function RootInner({ children }: PropsWithChildren) {
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+          height: 100%;
+          width: 100%;
+        }
+        
+        .content-scroll {
+          min-height: 100%;
+          padding-bottom: 60px; /* Ensure space for fixed nav */
         }
       `;
       document.head.appendChild(style);
@@ -131,11 +136,15 @@ function RootInner({ children }: PropsWithChildren) {
         >
           <Header isFullScreen={isFullScreen} />
 
-          <AnimatePresence mode="wait">
-            {children}
-          </AnimatePresence>
+          <div className={`${isTelegramMiniApp ? 'mobile-wrap' : ''}`}>
+            <div className="content-scroll">
+              <AnimatePresence mode="wait">
+                {children}
+              </AnimatePresence>
+            </div>
+          </div>
 
-          <FixedLayout vertical="bottom" className="w-full sticky bottom-0 left-0 right-0 z-50">
+          <FixedLayout vertical="bottom" className="w-full z-50">
             {show && (
               <div className="w-full flex justify-center items-center">
                 <TransactionStatus />
