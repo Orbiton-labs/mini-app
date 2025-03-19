@@ -2,6 +2,7 @@
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
+import { AnimatedLink } from "@/components/ui/animated-link";
 import { init } from "@/core/init";
 import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
@@ -18,7 +19,7 @@ import {
 } from "@telegram-apps/sdk-react";
 import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
-import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { Header } from "../Header/Header";
@@ -89,7 +90,6 @@ function RootInner({ children }: PropsWithChildren) {
 
   return (
     <>
-
       <TonConnectUIProvider
         manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json"
         actionsConfiguration={{
@@ -103,7 +103,9 @@ function RootInner({ children }: PropsWithChildren) {
         >
           <Header isFullScreen={isFullScreen} />
 
-          {children}
+          <AnimatePresence mode="wait">
+            {children}
+          </AnimatePresence>
 
           <FixedLayout vertical="bottom">
             {show && (
@@ -118,14 +120,14 @@ function RootInner({ children }: PropsWithChildren) {
                   const selected = id === currentTab;
 
                   return (
-                    <Link
+                    <AnimatedLink
                       key={id}
                       href={`/${id}`}
+                      isActive={selected}
                       className={`${selected
                         ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
                         : "text-white-2"
                         } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
-                    // onClick={() => router.push(`/${id}`)}
                     >
                       <Icon isActive={id === currentTab} />
                       <span
@@ -136,7 +138,7 @@ function RootInner({ children }: PropsWithChildren) {
                       >
                         {text}
                       </span>
-                    </Link>
+                    </AnimatedLink>
                   );
                 }
               )}

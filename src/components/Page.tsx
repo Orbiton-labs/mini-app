@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTransition } from "@/components/ui/page-transition";
 import { backButton } from "@telegram-apps/sdk-react";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
@@ -30,5 +31,9 @@ export function Page({
     });
   }, [router]);
 
-  return <>{children}</>;
+  return (
+    <PageTransition>
+      {children}
+    </PageTransition>
+  );
 }

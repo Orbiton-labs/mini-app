@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import type { Metadata, Viewport } from "next";
 import { type PropsWithChildren } from "react";
 
@@ -26,7 +27,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body>
         <ApolloWrapper>
-          <Root>{children}</Root>
+          <AnimatePresence>
+            <Root>{children}</Root>
+          </AnimatePresence>
         </ApolloWrapper>
       </body>
     </html>
