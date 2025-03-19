@@ -135,7 +135,7 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <>
       <TonConnectUIProvider
-        manifestUrl="https://raw.githubusercontent.com/BKHNZ-labs/mini-app/main/public/tonconnect-manifest.json"
+        manifestUrl="https://raw.githubusercontent.com/Orbiton-labs/mini-app/main/public/tonconnect-manifest.json"
         actionsConfiguration={{
           twaReturnUrl
         }}
