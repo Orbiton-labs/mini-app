@@ -82,19 +82,28 @@ function RootInner({ children }: PropsWithChildren) {
         .mobile-wrap {
           position: absolute;
           left: 0;
-          top: 0;
+          top: 56px; /* Account for header height */
           right: 0;
           bottom: 0;
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
-          height: 100%;
+          height: calc(100% - 56px); /* Adjust height to account for header */
           width: 100%;
+          z-index: 1;
         }
         
         .content-scroll {
           min-height: 100%;
           padding-bottom: 60px; /* Ensure space for fixed nav */
+        }
+        
+        .header-fixed {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 10;
         }
       `;
       document.head.appendChild(style);
@@ -134,7 +143,9 @@ function RootInner({ children }: PropsWithChildren) {
           appearance={isDark ? "dark" : "light"}
           platform={"base"}
         >
-          <Header isFullScreen={isFullScreen} />
+          <div className={`${isTelegramMiniApp ? 'header-fixed' : ''}`}>
+            <Header isFullScreen={isFullScreen} />
+          </div>
 
           <div className={`${isTelegramMiniApp ? 'mobile-wrap' : ''}`}>
             <div className="content-scroll">
