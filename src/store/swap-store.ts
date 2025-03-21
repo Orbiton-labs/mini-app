@@ -4,9 +4,9 @@ import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { useTokenListStore } from "./token-list-store";
 import { useTonWalletStore } from "./ton-wallet-store";
 import { SwapState, SwapStatus } from "./types";
-import { useTokenListStore } from "./token-list-store";
 
 const defaultPair = process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" ? DEFAULT_PAIR_MAINNET : DEFAULT_PAIR_TESTNET;
 
@@ -51,7 +51,15 @@ export const useSwapStore = create<
                     await get().setAmount1(amount);
                 },
                 setPair: (token1, token2) => {
-                    set({ token1, token2, error: null, status: SwapStatus.IDLE });
+                    set({
+                        token1: {
+                            ...token1!,
+                            amount: get().token1?.amount,
+                        }, token2: {
+                            ...token2!,
+                            amount: get().token2?.amount,
+                        }, error: null, status: SwapStatus.IDLE
+                    });
                 },
                 setAmount1: async (amount) => {
                     if (!amount) {
@@ -280,6 +288,8 @@ export const useSwapStore = create<
                             return "Swap Failed";
                         case SwapStatus.SWAP_READY:
                             return "Swap";
+                        case SwapStatus.REFETCHING:
+                            return "Refetching...";
                         default:
                             return "Enter an amount";
                     }
@@ -294,13 +304,15 @@ export const useSwapStore = create<
                         SwapStatus.INSUFFICIENT_BALANCE,
                         SwapStatus.INSUFFICIENT_LIQUIDITY,
                         SwapStatus.PRICE_IMPACT_TOO_HIGH,
-                        SwapStatus.NO_ROUTE_FOUND
+                        SwapStatus.NO_ROUTE_FOUND,
+                        SwapStatus.REFETCHING
                     ].includes(status);
                 },
                 reload: async (amount) => {
-                    get().setAmount1(amount);
+                    set({ status: SwapStatus.REFETCHING });
                     const tokenStore = useTokenListStore.getState();
                     await tokenStore.fetchAccountData();
+                    await get().setAmount1(amount);
                 }
             }), "swap")
     )

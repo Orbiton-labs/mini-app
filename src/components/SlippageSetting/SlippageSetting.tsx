@@ -1,6 +1,7 @@
 import { Icon24Gear } from "@/icons/24/gear";
 import { IconClose } from "@/icons/fixed/close";
 import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
+import { motion } from "framer-motion";
 import { FC, useState } from "react";
 import {
   Drawer,
@@ -9,7 +10,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { motion } from "framer-motion";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -43,6 +43,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
       <DrawerTrigger>
         <motion.div
           whileHover={{ rotate: 90 }}
+          whileTap={{ rotate: 720 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Icon24Gear />
@@ -70,8 +71,8 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
               <div
                 key={option.value}
                 className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center  ${slippage === option.value && !isCustom
-                    ? "bg-gradient-to-b from-green1 to-green2 border-none text-black2"
-                    : "text-white2"
+                  ? "bg-gradient-to-b from-green1 to-green2 border-none text-black2"
+                  : "text-white2"
                   }`}
                 onClick={() => {
                   setIsCustom(false);

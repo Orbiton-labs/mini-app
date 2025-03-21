@@ -11,6 +11,7 @@ import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
 import { useSwapStore, useTokenListStore } from "@/store";
+import { SwapStatus } from "@/store/types";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -59,6 +60,8 @@ export default function SwapPage() {
     setInputAmount1(amount);
   };
 
+  console.log("status === SwapStatus.REFETCHING", status === SwapStatus.REFETCHING)
+
   return (
     <Page back={false}>
       <div className="flex flex-col pl-4 pr-4 gap-1">
@@ -68,9 +71,13 @@ export default function SwapPage() {
             <div className="flex justify-between gap-4 items-center">
               <motion.div
                 onClick={() => reload(debouncedAmount1)}
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                whileHover={{ rotate: -90 }}
+                animate={status === SwapStatus.REFETCHING ? { rotate: [0, 360] } : {}}
+                transition={{
+                  duration: status === SwapStatus.REFETCHING ? 1 : 0.5,
+                  ease: "easeInOut",
+                  repeat: status === SwapStatus.REFETCHING ? Infinity : 0,
+                }}
               >
                 <Icon24ArrowRotateReverse />
               </motion.div>

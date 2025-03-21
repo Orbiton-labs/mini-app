@@ -82,7 +82,7 @@ export const PairInput: FC<PairInputProps> = ({
             className="absolute z-[1] bg-black1 p-3 rounded-full border border-grey7 cursor-pointer hover:bg-grey7"
             onClick={handleSwap}
             whileHover={{ scale: 1.1, rotate: 180 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.85, rotate: 180 }}
             animate={{ rotate: isSwapped ? 180 : 0 }}
             transition={{
               duration: 0.3,
