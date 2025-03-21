@@ -15,3 +15,4 @@ export const Icon20AnglesUpDown = ({ ...restProps }: Icon) => (
     />
   </svg>
 );
+

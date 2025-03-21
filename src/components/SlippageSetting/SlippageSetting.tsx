@@ -9,6 +9,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
+import { motion } from "framer-motion";
 
 export interface SlippageSettingProps {
   slippage: number;
@@ -40,7 +41,12 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
     <Drawer>
       <DrawerTitle></DrawerTitle>
       <DrawerTrigger>
-        <Icon24Gear />
+        <motion.div
+          whileHover={{ rotate: 90 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <Icon24Gear />
+        </motion.div>
       </DrawerTrigger>
       <DrawerContent
         aria-describedby={undefined}
@@ -53,7 +59,7 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
             </span>
           </div>
           <ModalClose>
-              <IconClose className="absolute right-6 top-6" />
+            <IconClose className="absolute right-6 top-6" />
           </ModalClose>
         </DrawerHeader>
 
@@ -63,11 +69,10 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
             {SLIPPAGE_OPTIONS.map((option, index) => (
               <div
                 key={option.value}
-                className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center  ${
-                  slippage === option.value && !isCustom
+                className={`border rounded-lg border-solid border-[grey] flex-1 py-3 text-center  ${slippage === option.value && !isCustom
                     ? "bg-gradient-to-b from-green1 to-green2 border-none text-black2"
                     : "text-white2"
-                }`}
+                  }`}
                 onClick={() => {
                   setIsCustom(false);
                   setSlippage(option.value);
@@ -85,9 +90,9 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
               type="number"
               value={
                 isCustom &&
-                !SLIPPAGE_OPTIONS.map((option) => option.value).includes(
-                  slippage
-                )
+                  !SLIPPAGE_OPTIONS.map((option) => option.value).includes(
+                    slippage
+                  )
                   ? slippage
                   : undefined
               }

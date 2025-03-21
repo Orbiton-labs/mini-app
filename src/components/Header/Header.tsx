@@ -1,6 +1,6 @@
 import { truncateHash } from "@/helper/format";
 import { Logo } from "@/icons/fixed/logo";
-import { useTonWalletStore } from "@/store";
+import { useTokenListStore, useTonWalletStore } from "@/store";
 import {
   Popover,
   PopoverContent,
@@ -97,6 +97,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const returnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
 
   const initWallet = useTonWalletStore((state) => state.initWallet);
+  const fetchAccountData = useTokenListStore((state) => state.fetchAccountData);
 
   useEffect(() => {
     initWallet(userFriendlyAddress, rawAddress, wallet, tonConnectUI, {
@@ -141,6 +142,28 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
         : undefined,
     });
   }, [userFriendlyAddress, rawAddress, wallet, tonConnectUI]);
+
+  // Add polling effect for account data
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (wallet && tonConnectUI.connected) {
+      // Initial fetch
+      fetchAccountData();
+
+      // Set up polling interval
+      interval = setInterval(() => {
+        fetchAccountData();
+      }, 20000);
+    }
+
+    // Cleanup interval on unmount or when wallet disconnects
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [wallet, tonConnectUI.connected, fetchAccountData]);
 
   return (
     <div

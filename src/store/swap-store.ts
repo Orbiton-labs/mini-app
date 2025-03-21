@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { useTonWalletStore } from "./ton-wallet-store";
 import { SwapState, SwapStatus } from "./types";
+import { useTokenListStore } from "./token-list-store";
 
 const defaultPair = process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" ? DEFAULT_PAIR_MAINNET : DEFAULT_PAIR_TESTNET;
 
@@ -21,6 +22,7 @@ export const useSwapStore = create<
         resetInputSwap: () => void;
         getButtonText: () => string;
         isButtonDisabled: () => boolean;
+        reload: (amount: string | undefined) => Promise<void>;
     }
 >()(
     devtools(
@@ -157,7 +159,7 @@ export const useSwapStore = create<
                     });
 
                     // If we have an amount to simulate with
-                    if (newToken1.amount && newToken1.token.address) {
+                    if (newToken1.amount && newToken1.amount !== "0" && newToken1.token.address) {
                         const walletStore = useTonWalletStore.getState();
                         const sender = walletStore.friendlyAddress;
                         if (!sender) {
@@ -294,6 +296,11 @@ export const useSwapStore = create<
                         SwapStatus.PRICE_IMPACT_TOO_HIGH,
                         SwapStatus.NO_ROUTE_FOUND
                     ].includes(status);
+                },
+                reload: async (amount) => {
+                    get().setAmount1(amount);
+                    const tokenStore = useTokenListStore.getState();
+                    await tokenStore.fetchAccountData();
                 }
             }), "swap")
     )

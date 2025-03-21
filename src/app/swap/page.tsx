@@ -10,7 +10,8 @@ import {
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
-import { usePendingTxStore, useSwapStore, useTokenListStore } from "@/store";
+import { useSwapStore, useTokenListStore } from "@/store";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function SwapPage() {
@@ -25,6 +26,7 @@ export default function SwapPage() {
   const reverseOrder = useSwapStore((state) => state.reverseOrder);
   const resetInputSwap = useSwapStore((state) => state.resetInputSwap);
   const swap = useSwapStore((state) => state.swap);
+  const reload = useSwapStore((state) => state.reload);
   const filteredTokens = useTokenListStore((state) => state.filteredTokens);
   const displayFilteredTokens = useTokenListStore(
     (state) => state.displayFilteredTokens
@@ -34,11 +36,8 @@ export default function SwapPage() {
   );
   const status = useSwapStore((state) => state.status);
   const error = useSwapStore((state) => state.error);
-  const priceImpact = useSwapStore((state) => state.priceImpact);
   const buttonMessage = useSwapStore((state) => state.getButtonText());
   const isButtonDisabled = useSwapStore((state) => state.isButtonDisabled);
-
-  const toggle = usePendingTxStore((state) => state.toggle);
 
   // Debounce the amount1 input with 500ms delay
   const debouncedAmount1 = useDebounce<string | undefined>(inputAmount1, 500);
@@ -67,7 +66,14 @@ export default function SwapPage() {
           title="Swap"
           after={
             <div className="flex justify-between gap-4 items-center">
-              <Icon24ArrowRotateReverse />
+              <motion.div
+                onClick={() => reload(debouncedAmount1)}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <Icon24ArrowRotateReverse />
+              </motion.div>
               <SlippageSetting slippage={slippage} setSlippage={setSlippage} />
             </div>
           }
