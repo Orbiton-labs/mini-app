@@ -1,10 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
-
-import { cn } from "@/lib/utils";
-import { VisuallyHidden } from "@telegram-apps/telegram-ui";
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -116,5 +115,6 @@ export {
   DrawerOverlay,
   DrawerPortal,
   DrawerTitle,
-  DrawerTrigger,
+  DrawerTrigger
 };
+

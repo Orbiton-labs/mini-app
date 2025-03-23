@@ -6,11 +6,11 @@ import { PoolName } from "@/components/PoolName/PoolName";
 import { StatusFilter } from "@/components/StatusFilter/StatusFilter";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { PositionFilter } from "@/constants/position";
 import { formatLargeNumber } from "@/helper/format";
 import { usePoolDetail } from "@/hooks/pool-detail/usePoolDetail";
 import { IconCircleInfo } from "@/icons/fixed/circle-info";
-import { Avatar } from "@telegram-apps/telegram-ui";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -150,7 +150,9 @@ export default function PoolDetailPage() {
                       </div>
                       <div className="flex justify-between items-center w-full">
                         <div className="flex gap-1 items-center">
-                          <Avatar size={20} src={position.token0.image} />
+                          <Avatar>
+                            <AvatarImage src={position.token0.image} />
+                          </Avatar>
                           <span className="text-xs">
                             {position.token0.symbol}
                           </span>
@@ -161,7 +163,9 @@ export default function PoolDetailPage() {
                       </div>
                       <div className="flex justify-between items-center w-full">
                         <div className="flex gap-1 items-center">
-                          <Avatar size={20} src={position.token1.image} />
+                          <Avatar>
+                            <AvatarImage src={position.token1.image} />
+                          </Avatar>
                           <span className="text-xs">
                             {position.token1.symbol}
                           </span>

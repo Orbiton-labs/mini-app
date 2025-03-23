@@ -4,20 +4,20 @@ import { IconLoading } from "@/icons/fixed/loading";
 import { IconSendTransaction } from "@/icons/fixed/send-tx";
 import { IconShieldCheck } from "@/icons/fixed/shield-check";
 import { IconToOtherPage } from "@/icons/fixed/to-other-page";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { FC } from "react";
 import { ProgressBar } from "../ProgressBar/ProgressBar";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
 
-export interface TransactionStatusProps {}
+export interface TransactionStatusProps { }
 
-export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
+export const TransactionStatus: FC<TransactionStatusProps> = ({ }) => {
   return (
     <Drawer>
       <DrawerTitle></DrawerTitle>
@@ -43,9 +43,9 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({}) => {
               Swap 1 USD for 0.2443 TON
             </span>
           </div>
-          <ModalClose>
-              <IconClose className="absolute right-6 top-6" />
-          </ModalClose>
+          <DrawerClose>
+            <IconClose className="absolute right-6 top-6" />
+          </DrawerClose>
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 justify-between items-center w-full my-5">

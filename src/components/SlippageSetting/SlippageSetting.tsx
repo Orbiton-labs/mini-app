@@ -1,10 +1,10 @@
 import { Icon24Gear } from "@/icons/24/gear";
 import { IconClose } from "@/icons/fixed/close";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { motion } from "framer-motion";
 import { FC, useState } from "react";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -59,9 +59,9 @@ export const SlippageSetting: FC<SlippageSettingProps> = ({
               Slippage Settings
             </span>
           </div>
-          <ModalClose>
+          <DrawerClose>
             <IconClose className="absolute right-6 top-6" />
-          </ModalClose>
+          </DrawerClose>
         </DrawerHeader>
 
         <div className="mx-4 px-2">

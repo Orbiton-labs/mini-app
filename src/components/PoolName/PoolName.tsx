@@ -1,5 +1,5 @@
-import { Avatar, AvatarStack } from "@telegram-apps/telegram-ui";
 import { FC } from "react";
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 export interface PoolNameProps {
   token1Img: string;
@@ -20,16 +20,15 @@ export const PoolName: FC<PoolNameProps> = ({
 }) => {
   return (
     <div className={`flex justify-start items-center gap-2 ${className}`}>
-      <AvatarStack className="pools_avatar-stack">
-        <Avatar size={28} src={token1Img} />
-        <Avatar
+      <Avatar className="pools_avatar-stack">
+        <AvatarImage src={token1Img} />
+        <AvatarImage
           style={{
             marginLeft: -5,
           }}
-          size={28}
           src={token2Img}
         />
-      </AvatarStack>
+      </Avatar>
       <span className="bg-grey4 py-2 px-3 rounded-lg">
         {token1Name} - {token2Name}
       </span>

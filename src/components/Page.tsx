@@ -1,9 +1,9 @@
 "use client";
 
 import { PageTransition } from "@/components/ui/page-transition";
-import { backButton } from "@telegram-apps/sdk-react";
+import { backButton, isTMA } from "@telegram-apps/sdk-react";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export function Page({
   children,
@@ -16,8 +16,12 @@ export function Page({
   back?: boolean;
 }>) {
   const router = useRouter();
+  const [isTelegramMiniApp, setIsTelegramMiniApp] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!isTMA()) {
+      return;
+    }
     if (back) {
       backButton.show();
     } else {
@@ -26,6 +30,9 @@ export function Page({
   }, [back]);
 
   useEffect(() => {
+    if (!isTMA()) {
+      return;
+    }
     return backButton.onClick(() => {
       router.back();
     });

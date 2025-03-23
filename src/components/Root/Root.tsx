@@ -2,7 +2,6 @@
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
-import { AnimatedLink } from "@/components/ui/animated-link";
 import { init } from "@/core/init";
 import { useClientOnce } from "@/hooks/useClientOnce";
 import { useDidMount } from "@/hooks/useDidMount";
@@ -13,67 +12,51 @@ import { IconPortfolio } from "@/icons/fixed/portfolio";
 import { IconSwap } from "@/icons/fixed/swap";
 import { usePendingTxStore } from "@/store";
 import {
-  miniApp,
+  isTMA,
   postEvent,
-  retrieveLaunchParams,
-  useSignal,
+  retrieveLaunchParams
 } from "@telegram-apps/sdk-react";
-import { AppRoot, FixedLayout, Tabbar } from "@telegram-apps/telegram-ui";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
 import { type PropsWithChildren, useEffect, useState } from "react";
+import { BottomNav } from "../BottomNav";
 import { Header } from "../Header/Header";
 import { TransactionStatus } from "../TransactionStatus/TransactionStatus";
 import { Skeleton } from "../ui/skeleton";
 
-const TABS = [
-  {
-    id: "swap",
-    text: "Swap",
-    Icon: IconSwap,
-  },
-  {
-    id: "pools",
-    text: "Pools",
-    Icon: IconPool,
-  },
-  {
-    id: "explore",
-    text: "Explore",
-    Icon: IconExplore,
-  },
-  {
-    id: "portfolio",
-    text: "Portfolio",
-    Icon: IconPortfolio,
-  },
-];
-
 function RootInner({ children }: PropsWithChildren) {
-  const pathname = usePathname();
-  const lp = retrieveLaunchParams();
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
-  const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
-  const twaReturnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
+  const [isTelegramMiniApp, setIsTelegramMiniApp] = useState<boolean>(false);
+
+
+  console.log(isTMA())
 
   useEffect(() => {
-    if (isTelegramMiniApp) {
-      postEvent("web_app_request_fullscreen");
-      postEvent("web_app_request_content_safe_area");
-      postEvent("web_app_request_safe_area");
-      postEvent("web_app_setup_swipe_behavior", {
-        allow_vertical_swipe: false,
-      });
-      postEvent("web_app_expand");
-      setIsFullScreen(true);
+    if (!isTMA()) {
+      return;
+    }
+    const lp = retrieveLaunchParams();
+    const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
+    setIsTelegramMiniApp(isTelegramMiniApp);
+    // const twaReturnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
+    if (!isTelegramMiniApp) {
+      return;
+    }
+    postEvent("web_app_request_fullscreen");
+    postEvent("web_app_request_content_safe_area");
+    postEvent("web_app_request_safe_area");
+    postEvent("web_app_setup_swipe_behavior", {
+      allow_vertical_swipe: false,
+    });
+    postEvent("web_app_expand");
+    setIsFullScreen(true);
 
-      // Add sticky app CSS classes for mobile platforms
-      document.body.classList.add('mobile-body');
+    // Add sticky app CSS classes for mobile platforms
+    document.body.classList.add('mobile-body');
 
-      // Add styles to the document
-      const style = document.createElement('style');
-      style.textContent = `
+    // Add styles to the document
+    const style = document.createElement('style');
+    style.textContent = `
         .mobile-body {
           overflow: hidden;
           height: 100vh;
@@ -108,27 +91,14 @@ function RootInner({ children }: PropsWithChildren) {
           z-index: 10;
         }
       `;
-      document.head.appendChild(style);
-    }
-  }, [lp, isTelegramMiniApp]);
+    document.head.appendChild(style);
+  }, []);
 
   useClientOnce(() => {
-    init();
-  });
-  const isDark = useSignal(miniApp.isDark);
-  const [currentTab, setCurrentTab] = useState(TABS[0].id);
-
-  useEffect(() => {
-    // take the first element path of the pathname
-    const id = pathname.split("/")[1];
-
-    if (id === "") {
-      setCurrentTab("swap");
-      return;
+    if (isTelegramMiniApp) {
+      init();
     }
-
-    setCurrentTab(id);
-  }, [pathname]);
+  });
 
   const show = usePendingTxStore((state) => state.show);
 
@@ -137,64 +107,29 @@ function RootInner({ children }: PropsWithChildren) {
       <TonConnectUIProvider
         manifestUrl="https://raw.githubusercontent.com/Orbiton-labs/mini-app/main/public/tonconnect-manifest.json"
         actionsConfiguration={{
-          twaReturnUrl
+          twaReturnUrl: "https://t.me/orbiton_swap_bot"
         }}
       >
-        <AppRoot
-          className={`${isDark ? "theme-black" : ""}`}
-          appearance={isDark ? "dark" : "light"}
-          platform={"base"}
-        >
-          <div className={`${isTelegramMiniApp ? 'header-fixed' : ''}`}>
-            <Header isFullScreen={isFullScreen} />
+
+        <div className={`${isTelegramMiniApp ? 'header-fixed' : ''}`}>
+          <Header isFullScreen={isFullScreen} />
+        </div>
+
+        <div className={`${isTelegramMiniApp ? 'mobile-wrap' : ''}`}>
+          <div className="content-scroll">
+            <AnimatePresence mode="wait">
+              {children}
+            </AnimatePresence>
           </div>
+        </div>
 
-          <div className={`${isTelegramMiniApp ? 'mobile-wrap' : ''}`}>
-            <div className="content-scroll">
-              <AnimatePresence mode="wait">
-                {children}
-              </AnimatePresence>
-            </div>
+        {show && (
+          <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center">
+            <TransactionStatus />
           </div>
+        )}
 
-          <FixedLayout vertical="bottom" className="w-full z-50">
-            {show && (
-              <div className="w-full flex justify-center items-center">
-                <TransactionStatus />
-              </div>
-            )}
-
-            <Tabbar className="flex bg-grey3 justify-evenly p-2 items-center">
-              {TABS.filter((tab) => tab.id !== "welcome").map(
-                ({ id, text, Icon }) => {
-                  const selected = id === currentTab;
-
-                  return (
-                    <AnimatedLink
-                      key={id}
-                      href={`/${id}`}
-                      isActive={selected}
-                      className={`${selected
-                        ? "bg-gradient-to-b from-green-1 to-green-2 text-transparent bg-clip-text"
-                        : "text-white-2"
-                        } mb-6 flex flex-col gap-2 justify-between items-center pt-3 pb-4 pl-2 pr-2`}
-                    >
-                      <Icon isActive={id === currentTab} />
-                      <span
-                        className={`${selected
-                          ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
-                          : ""
-                          } text-xs`}
-                      >
-                        {text}
-                      </span>
-                    </AnimatedLink>
-                  );
-                }
-              )}
-            </Tabbar>
-          </FixedLayout>
-        </AppRoot>
+        <BottomNav />
       </TonConnectUIProvider>
     </>
   );

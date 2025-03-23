@@ -6,6 +6,7 @@ import { Page } from "@/components/Page";
 import { Slider } from "@/components/Slider/Slider";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import { SubPageTitle } from "@/components/SubPageTitle/SubPageTitle";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { formatLargeNumber } from "@/helper/format";
 import {
   PERCENT,
@@ -15,7 +16,6 @@ import { usePositionDetail } from "@/hooks/manage-position/usePositionDetail";
 import { usePositionTransform } from "@/hooks/manage-position/usePositionTransform";
 import { cn, toAmount } from "@/lib/utils";
 import { ManagePositionTab, useManagePositionStore } from "@/store/manage-position-store";
-import { Avatar, AvatarStack } from "@telegram-apps/telegram-ui";
 import { useSearchParams } from "next/navigation";
 
 export default function ManagePositionPage() {
@@ -84,16 +84,15 @@ export default function ManagePositionPage() {
             {position && (
               <>
                 <div className={`flex justify-start items-center gap-2`}>
-                  <AvatarStack className="pools_avatar-stack">
-                    <Avatar size={28} src={position.token0.image} />
-                    <Avatar
+                  <Avatar className="pools_avatar-stack">
+                    <AvatarImage src={position.token0.image} />
+                    <AvatarImage
                       style={{
                         marginLeft: -5,
                       }}
-                      size={28}
                       src={position.token1.image}
                     />
-                  </AvatarStack>
+                  </Avatar>
                   <div className="flex flex-col gap-1">
                     <span className="text-xs text-white2">
                       {position.token0.symbol} - {position.token1.symbol}
@@ -217,7 +216,9 @@ export default function ManagePositionPage() {
               <div className="grid grid-cols-2 gap-2 w-full">
                 {position && (
                   <div className="flex gap-1 items-center bg-grey3 rounded-lg py-1 px-2">
-                    <Avatar size={20} src={position.token0.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token0.image} />
+                    </Avatar>
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
                         {pooledAmount0} {position.token0.symbol}
@@ -230,7 +231,9 @@ export default function ManagePositionPage() {
                 )}
                 {position && (
                   <div className="flex gap-1 items-center bg-grey3 rounded-lg py-1 px-2">
-                    <Avatar size={20} src={position.token1.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token1.image} />
+                    </Avatar>
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
                         {pooledAmount1} {position.token1.symbol}
@@ -260,7 +263,9 @@ export default function ManagePositionPage() {
               <div className="flex justify-between gap-[0.2rem] w-full mt-2">
                 {position && (
                   <div className="flex gap-1 items-center">
-                    <Avatar size={20} src={position.token0.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token0.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       {formatLargeNumber(percent0, 0)}%
                     </span>
@@ -268,7 +273,9 @@ export default function ManagePositionPage() {
                 )}
                 {position && (
                   <div className="flex gap-1 items-center">
-                    <Avatar size={20} src={position.token1.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token1.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       {formatLargeNumber(percent1, 0)}%
                     </span>
@@ -281,7 +288,9 @@ export default function ManagePositionPage() {
                 {position && poolDetail && (
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
-                      <Avatar size={20} src={position.token0.image} />
+                      <Avatar>
+                        <AvatarImage src={position.token0.image} />
+                      </Avatar>
                       <span className="text-xs text-white2">
                         {position.token0.symbol} Inactive Amount
                       </span>
@@ -295,7 +304,9 @@ export default function ManagePositionPage() {
                 {position && poolDetail && (
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
-                      <Avatar size={20} src={position.token1.image} />
+                      <Avatar>
+                        <AvatarImage src={position.token1.image} />
+                      </Avatar>
                       <span className="text-xs text-white2">
                         {position.token1.symbol} Inactive Amount
                       </span>
@@ -360,7 +371,9 @@ export default function ManagePositionPage() {
               {position && (
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
-                    <Avatar size={20} src={position.token0.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token0.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       Pooled {position.token0.symbol}
                     </span>
@@ -373,7 +386,9 @@ export default function ManagePositionPage() {
               {position && (
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
-                    <Avatar size={20} src={position.token1.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token1.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       Pooled {position.token1.symbol}
                     </span>
@@ -386,7 +401,9 @@ export default function ManagePositionPage() {
               {position && (
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
-                    <Avatar size={20} src={position.token0.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token0.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       {position.token0.symbol} Fee Generated
                     </span>
@@ -401,7 +418,9 @@ export default function ManagePositionPage() {
               {position && (
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
-                    <Avatar size={20} src={position.token1.image} />
+                    <Avatar>
+                      <AvatarImage src={position.token1.image} />
+                    </Avatar>
                     <span className="text-xs text-white2">
                       {position.token1.symbol} Fee Generated
                     </span>

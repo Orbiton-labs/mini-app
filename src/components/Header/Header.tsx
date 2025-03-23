@@ -6,10 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import {
-  retrieveLaunchParams
-} from "@telegram-apps/sdk-react";
-import { Divider } from "@telegram-apps/telegram-ui";
 import { Address, SenderArguments } from "@ton/core";
 import {
   TonConnectButton,
@@ -20,6 +16,7 @@ import {
 import { Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 export interface HeaderProps {
   isFullScreen: boolean;
@@ -92,9 +89,10 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
-  const lp = retrieveLaunchParams();
-  const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
-  const returnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
+
+  // const lp = retrieveLaunchParams();
+  // const isTelegramMiniApp = lp.tgWebAppPlatform === "ios" || lp.tgWebAppPlatform === "android";
+  // const returnUrl = isTelegramMiniApp ? "https://t.me/orbiton_swap_bot" : undefined;
 
   const initWallet = useTonWalletStore((state) => state.initWallet);
   const fetchAccountData = useTokenListStore((state) => state.fetchAccountData);
@@ -112,9 +110,11 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
               },
             ],
             validUntil: Date.now() + 5 * 60 * 1000,
-          }, returnUrl ? {
-            twaReturnUrl: returnUrl
-          } : undefined);
+          },
+            // returnUrl ? {
+            //   twaReturnUrl: returnUrl
+            // } : undefined
+          );
         } catch (e) {
           console.error(e);
         }
@@ -130,9 +130,11 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
               };
             }),
             validUntil: Date.now() + 5 * 60 * 1000,
-          }, returnUrl ? {
-            twaReturnUrl: returnUrl,
-          } : undefined);
+          },
+            // returnUrl ? {
+            //   twaReturnUrl: returnUrl,
+            // } : undefined
+          );
         } catch (e) {
           console.error(e);
         }
@@ -178,7 +180,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
         <Account />
       </div>
-      <Divider />
+      <Separator />
     </div>
   );
 }

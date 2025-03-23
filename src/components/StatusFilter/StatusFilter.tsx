@@ -1,9 +1,9 @@
 import { Icon20Chevron } from "@/icons/20/chevron-down";
 import { IconClose } from "@/icons/fixed/close";
-import { ModalClose } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalClose/ModalClose";
 import { FC } from "react";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -47,20 +47,20 @@ export const StatusFilter: FC<StatusFilterProps> = ({
             Select a token
           </span>
           <div className="flex justify-end">
-            <ModalClose>
+            <DrawerClose>
               <IconClose />
-            </ModalClose>
+            </DrawerClose>
           </div>
         </DrawerHeader>
         {statusFilterList.map((option, index) => (
-          <ModalClose key={index}>
+          <DrawerClose key={index}>
             <div
               className="mx-4 flex py-4 gap-2 px-1 justify-center items-center"
               onClick={() => setStatus(option)}
             >
               <span className="text-sm text-white2">{option}</span>
             </div>
-          </ModalClose>
+          </DrawerClose>
         ))}
       </DrawerContent>
     </Drawer>

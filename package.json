@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-template",
+  "name": "orbiton-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,11 +19,12 @@
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-progress": "^1.1.2",
     "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slider": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-visually-hidden": "^1.1.2",
     "@tanstack/react-table": "^8.20.6",
     "@telegram-apps/sdk-react": "^3.1.2",
-    "@telegram-apps/telegram-ui": "^2.1.5",
     "@ton-api/client": "^0.3.1",
     "@ton/core": "^0.60.0",
     "@ton/crypto": "^3.3.0",
@@ -36,6 +37,7 @@
     "d3": "^7.9.0",
     "decimal.js": "^10.5.0",
     "eruda": "^3.0.1",
+    "framer-motion": "^12.5.0",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
     "immer": "^10.1.1",
@@ -52,8 +54,7 @@
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "zustand": "^5.0.3",
-    "framer-motion": "^12.5.0"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.12.16",
