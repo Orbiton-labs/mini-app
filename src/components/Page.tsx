@@ -16,7 +16,6 @@ export function Page({
   back?: boolean;
 }>) {
   const router = useRouter();
-  const [isTelegramMiniApp, setIsTelegramMiniApp] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isTMA()) {

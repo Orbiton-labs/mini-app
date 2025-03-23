@@ -95,7 +95,7 @@ function RootInner({ children }: PropsWithChildren) {
   }, []);
 
   useClientOnce(() => {
-    if (isTelegramMiniApp) {
+    if (isTMA()) {
       init();
     }
   });
