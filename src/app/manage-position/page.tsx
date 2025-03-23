@@ -84,9 +84,10 @@ export default function ManagePositionPage() {
             {position && (
               <>
                 <div className={`flex justify-start items-center gap-2`}>
-                  <Avatar className="pools_avatar-stack">
-                    <AvatarImage src={position.token0.image} />
+                  <Avatar>
+                    <AvatarImage className="h-8 w-8 rounded-full object-cover" src={position.token0.image} />
                     <AvatarImage
+                      className="h-8 w-8 rounded-full object-cover"
                       style={{
                         marginLeft: -5,
                       }}
@@ -217,7 +218,7 @@ export default function ManagePositionPage() {
                 {position && (
                   <div className="flex gap-1 items-center bg-grey3 rounded-lg py-1 px-2">
                     <Avatar>
-                      <AvatarImage src={position.token0.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                     </Avatar>
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
@@ -232,7 +233,7 @@ export default function ManagePositionPage() {
                 {position && (
                   <div className="flex gap-1 items-center bg-grey3 rounded-lg py-1 px-2">
                     <Avatar>
-                      <AvatarImage src={position.token1.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                     </Avatar>
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-white2">
@@ -264,7 +265,7 @@ export default function ManagePositionPage() {
                 {position && (
                   <div className="flex gap-1 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token0.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       {formatLargeNumber(percent0, 0)}%
@@ -274,7 +275,7 @@ export default function ManagePositionPage() {
                 {position && (
                   <div className="flex gap-1 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token1.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       {formatLargeNumber(percent1, 0)}%
@@ -289,7 +290,7 @@ export default function ManagePositionPage() {
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
                       <Avatar>
-                        <AvatarImage src={position.token0.image} />
+                        <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                       </Avatar>
                       <span className="text-xs text-white2">
                         {position.token0.symbol} Inactive Amount
@@ -305,7 +306,7 @@ export default function ManagePositionPage() {
                   <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
                       <Avatar>
-                        <AvatarImage src={position.token1.image} />
+                        <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                       </Avatar>
                       <span className="text-xs text-white2">
                         {position.token1.symbol} Inactive Amount
@@ -372,7 +373,7 @@ export default function ManagePositionPage() {
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token0.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       Pooled {position.token0.symbol}
@@ -387,7 +388,7 @@ export default function ManagePositionPage() {
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token1.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       Pooled {position.token1.symbol}
@@ -402,7 +403,7 @@ export default function ManagePositionPage() {
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token0.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       {position.token0.symbol} Fee Generated
@@ -419,7 +420,7 @@ export default function ManagePositionPage() {
                 <div className="flex justify-between items-center w-full">
                   <div className="flex gap-2 items-center">
                     <Avatar>
-                      <AvatarImage src={position.token1.image} />
+                      <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                     </Avatar>
                     <span className="text-xs text-white2">
                       {position.token1.symbol} Fee Generated

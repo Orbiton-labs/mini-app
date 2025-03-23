@@ -20,12 +20,13 @@ export const PoolName: FC<PoolNameProps> = ({
 }) => {
   return (
     <div className={`flex justify-start items-center gap-2 ${className}`}>
-      <Avatar className="pools_avatar-stack">
-        <AvatarImage src={token1Img} />
+      <Avatar>
+        <AvatarImage className="h-8 w-8 rounded-full object-cover" src={token1Img} />
         <AvatarImage
           style={{
             marginLeft: -5,
           }}
+          className="h-8 w-8 rounded-full object-cover"
           src={token2Img}
         />
       </Avatar>

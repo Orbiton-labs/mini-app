@@ -3,7 +3,7 @@
 import { PageTransition } from "@/components/ui/page-transition";
 import { backButton, isTMA } from "@telegram-apps/sdk-react";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect } from "react";
 
 export function Page({
   children,
@@ -15,12 +15,13 @@ export function Page({
    */
   back?: boolean;
 }>) {
+  if (isTMA()) return (<PageTransition>
+    {children}
+  </PageTransition>);
+
   const router = useRouter();
 
   useEffect(() => {
-    if (!isTMA()) {
-      return;
-    }
     if (back) {
       backButton.show();
     } else {
@@ -29,9 +30,6 @@ export function Page({
   }, [back]);
 
   useEffect(() => {
-    if (!isTMA()) {
-      return;
-    }
     return backButton.onClick(() => {
       router.back();
     });

@@ -151,7 +151,7 @@ export default function PoolDetailPage() {
                       <div className="flex justify-between items-center w-full">
                         <div className="flex gap-1 items-center">
                           <Avatar>
-                            <AvatarImage src={position.token0.image} />
+                            <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token0.image} />
                           </Avatar>
                           <span className="text-xs">
                             {position.token0.symbol}
@@ -164,7 +164,7 @@ export default function PoolDetailPage() {
                       <div className="flex justify-between items-center w-full">
                         <div className="flex gap-1 items-center">
                           <Avatar>
-                            <AvatarImage src={position.token1.image} />
+                            <AvatarImage className="h-5 w-5 rounded-full object-cover" src={position.token1.image} />
                           </Avatar>
                           <span className="text-xs">
                             {position.token1.symbol}
