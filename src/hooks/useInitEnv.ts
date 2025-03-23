@@ -10,6 +10,11 @@ export enum AppType {
     WEB = "weba"
 }
 
+// Initialize TMA SDK immediately if we're in TMA environment
+if (isTMA()) {
+    init();
+}
+
 export const useInitEnv = () => {
     const [appType] = useState(() => {
         const isTma = isTMA();
@@ -35,8 +40,6 @@ export const useInitEnv = () => {
         if (appType === AppType.WEB) {
             return;
         }
-
-        init();
 
         if (appType === AppType.ANDROID || appType === AppType.IOS) {
             postEvent("web_app_request_fullscreen");

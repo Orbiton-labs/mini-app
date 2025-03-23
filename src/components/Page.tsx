@@ -15,25 +15,31 @@ export function Page({
    */
   back?: boolean;
 }>) {
-  if (isTMA()) return (<PageTransition>
-    {children}
-  </PageTransition>);
-
   const router = useRouter();
+  const isTelegram = isTMA();
+  const isBackButtonSupported = isTelegram && backButton.isSupported();
 
   useEffect(() => {
+    if (!isBackButtonSupported) return;
+
     if (back) {
       backButton.show();
     } else {
       backButton.hide();
     }
-  }, [back]);
+  }, [back, isBackButtonSupported]);
 
   useEffect(() => {
+    if (!isBackButtonSupported) return;
+
     return backButton.onClick(() => {
       router.back();
     });
-  }, [router]);
+  }, [router, isBackButtonSupported]);
+
+  if (isTMA()) {
+    return <PageTransition>{children}</PageTransition>;
+  }
 
   return (
     <PageTransition>
