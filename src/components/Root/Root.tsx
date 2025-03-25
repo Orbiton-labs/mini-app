@@ -28,23 +28,27 @@ function RootInner({ children }: PropsWithChildren) {
           twaReturnUrl: "https://t.me/orbiton_swap_bot"
         }}
       >
-        <div className={`${isMobile ? 'header-fixed' : ''}`}>
-          <Header isFullScreen={isMobile} />
-        </div>
+        <div className="mobile-wrap">
+          <div className="mobile-content">
+            <div className={`${isMobile ? 'header-fixed' : ''}`}>
+              <Header isFullScreen={isMobile} />
+            </div>
 
-        <div className="content-scroll">
-          <AnimatePresence mode="wait">
-            {children}
-          </AnimatePresence>
-        </div>
+            <div className="content-scroll">
+              <AnimatePresence mode="wait">
+                {children}
+              </AnimatePresence>
+            </div>
 
-        {show && (
-          <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center">
-            <TransactionStatus />
+            {show && (
+              <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center">
+                <TransactionStatus />
+              </div>
+            )}
+
+            <BottomNav />
           </div>
-        )}
-
-        <BottomNav />
+        </div>
       </TonConnectUIProvider>
     </>
   );

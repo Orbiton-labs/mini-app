@@ -59,6 +59,8 @@ export const useInitEnv = () => {
                 .mobile-body {
                     overflow: hidden;
                     height: 100vh;
+                    position: fixed;
+                    width: 100%;
                 }
 
                 .mobile-wrap {
@@ -68,12 +70,14 @@ export const useInitEnv = () => {
                     right: 0;
                     bottom: 0;
                     overflow-x: hidden;
-                    overflow-y: auto;
-                    background: red;
+                    overflow-y: scroll;
+                    -webkit-overflow-scrolling: touch;
+                    background: transparent;
                 }
 
                 .mobile-content {
                     height: calc(100% + 1px);
+                    min-height: 100vh;
                 }
             `;
             document.head.appendChild(style);
