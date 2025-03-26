@@ -7,7 +7,7 @@ import { FeeTier } from "@/types/FeeTier";
 import { Token } from "@/types/Token";
 import { RouterWrapper, encodeSqrtRatioX96 } from "@orbiton_labs/v3-contracts-sdk";
 import { OpCreatePool } from "@orbiton_labs/v3-contracts-sdk/build/tlbs/router";
-import { Address, toNano } from "@ton/core";
+import { Address, Sender, toNano } from "@ton/core";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { autoInit } from "./middlewares/auto-init";
@@ -201,7 +201,7 @@ export const useCreatePoolStore = create<
 
                     try {
                         const res = await router.sendCreatePool(
-                            sender,
+                            sender as any,
                             createPoolParams as OpCreatePool,
                             {
                                 value: toNano("0.1"),
