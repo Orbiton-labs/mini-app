@@ -82,16 +82,6 @@ export const useInitEnv = () => {
             `;
             document.head.appendChild(style);
         }
-        // else {
-        //     // For desktop platforms (tdesktop, macos, etc)
-        //     postEvent("web_app_expand");
-
-        //     const style = document.createElement('style');
-        //     style.textContent = `
-
-        //     `;
-        //     document.head.appendChild(style);
-        // }
     }, [appType]);
 
     const isMobile = appType === AppType.IOS || appType === AppType.ANDROID;

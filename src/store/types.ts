@@ -1,6 +1,7 @@
 // src/store/types.ts
 import { FeeTier } from "@/types/FeeTier";
 import { Pool } from "@/types/Pool";
+import { Sender } from "@/types/Sender";
 import { Token } from "@/types/Token";
 import {
   TransactionCreatePoolEstimation,
@@ -8,7 +9,7 @@ import {
 } from "@/types/Transaction";
 import { WalletVersion } from "@orbiton_labs/v3-contracts-sdk/build/@types";
 import { TonApiClient } from "@ton-api/client";
-import { Sender, SenderArguments } from "@ton/core";
+import { SenderArguments } from "@ton/core";
 import { TonClient } from "@ton/ton";
 import {
   TonConnectUI,
@@ -24,11 +25,7 @@ export interface TonWalletState {
   rawAddress: string | null;
   wallet: Wallet | (Wallet & WalletInfoWithOpenMethod) | null;
   ui: TonConnectUI | null;
-  sender:
-  | (Sender & {
-    sendMultiple: (args: SenderArguments[]) => Promise<void>;
-  })
-  | null;
+  sender: Sender | null;
   balance: number;
   accounts: string[];
   balanceLoading: boolean;
@@ -78,6 +75,9 @@ export interface CreatePoolState {
 
 export interface PendingTxState {
   show: boolean;
+  title: string;
+  description: string;
+  txHash: string;
 }
 
 export interface PoolState {

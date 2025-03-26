@@ -1,11 +1,7 @@
-import { IconArrowUpArrowDown } from "@/icons/fixed/arrow-up-arrow-down";
 import { IconClose } from "@/icons/fixed/close";
 import { IconLoading } from "@/icons/fixed/loading";
-import { IconSendTransaction } from "@/icons/fixed/send-tx";
-import { IconShieldCheck } from "@/icons/fixed/shield-check";
 import { IconToOtherPage } from "@/icons/fixed/to-other-page";
 import { FC } from "react";
-import { ProgressBar } from "../ProgressBar/ProgressBar";
 import {
   Drawer,
   DrawerClose,
@@ -15,16 +11,20 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 
-export interface TransactionStatusProps { }
+export interface TransactionStatusProps {
+  title: string;
+  description: string;
+  onViewOnTonviewer: () => void;
+}
 
-export const TransactionStatus: FC<TransactionStatusProps> = ({ }) => {
+export const TransactionStatus: FC<TransactionStatusProps> = ({ title, description, onViewOnTonviewer }) => {
   return (
     <Drawer>
       <DrawerTitle></DrawerTitle>
       <DrawerTrigger asChild={true}>
         <div className="flex w-full py-3 px-3 justify-between items-center bg-black3 rounded-lg border border-solid border-grey5 mb-[125px] mx-4">
           <div className="flex flex-col gap-2 justify-between items-start">
-            <p className="text-white2 text-sm">Swap 1 USD for 0.2443 TON</p>
+            <p className="text-white2 text-sm">{title}</p>
             <p className="text-white1 text-xs">Transaction pending</p>
           </div>
 
@@ -40,7 +40,7 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({ }) => {
         <DrawerHeader className="flex justify-center items-center mx-4 px-2 py-5">
           <div>
             <span className="col-span-8 text-sm text-white2">
-              Swap 1 USD for 0.2443 TON
+              {title}
             </span>
           </div>
           <DrawerClose>
@@ -52,12 +52,12 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({ }) => {
           <IconLoading />
 
           <div className="flex flex-col gap-2 justify-between items-center">
-            <p className="text-white2 text-sm">Confirming Swap</p>
+            <p className="text-white2 text-sm">{description}</p>
             <p className="text-white1 text-xs">It will only take a moment</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mt-8 mx-10">
+        {/* <div className="grid grid-cols-3 gap-2 mt-8 mx-10">
           <div className="flex flex-col gap-4 justify-between items-center">
             <IconSendTransaction />
             <ProgressBar value={100} />
@@ -79,9 +79,9 @@ export const TransactionStatus: FC<TransactionStatusProps> = ({ }) => {
               Confirming Swap
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex justify-center gap-2 items-center w-full mt-10 mb-2">
+        <div onClick={onViewOnTonviewer} className="flex justify-center gap-2 items-center w-full mt-10 mb-2">
           <p className="text-base text-white2">View on Tonviewer</p>
           <IconToOtherPage />
         </div>

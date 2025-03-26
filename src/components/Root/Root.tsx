@@ -40,11 +40,11 @@ function RootInner({ children }: PropsWithChildren) {
               </AnimatePresence>
             </div>
 
-            {show && (
-              <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center">
-                <TransactionStatus />
+            {/* {show && ( */}
+              <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center">
+                <TransactionStatus title="Swap 1 USD for 0.2443 TON" description="Confirming Swap" onViewOnTonviewer={() => {}} />
               </div>
-            )}
+            {/* )} */}
 
             <BottomNav />
           </div>

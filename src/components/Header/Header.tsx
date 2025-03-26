@@ -6,12 +6,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { Address, SenderArguments } from "@ton/core";
+import { Address, Cell, SenderArguments } from "@ton/core";
 import {
   TonConnectButton,
   useTonAddress,
   useTonConnectUI,
-  useTonWallet,
+  useTonWallet
 } from "@tonconnect/ui-react";
 import { Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -90,6 +90,25 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
 
+  tonConnectUI.uiOptions = {
+    actionsConfiguration: {
+      modals: 'all',
+      notifications: 'all',
+      returnStrategy: 'back',
+      /**
+       * Specifies return url for TWA-TWA connections.
+       * This will be applied as a return strategy if dApp is opened as a TWA and user selects TWA wallet (overrides `returnStrategy` if).
+       */
+      // twaReturnUrl: window.location.origin as `${string}://${string}`
+      /**
+       * @deprecated Shouldn't be used anymore, SDK will automatically detect return strategy for TWA-TWA connections.
+       * Specifies whether the method should redirect user to the connected wallet
+       * @default 'ios'
+       */
+      // skipRedirectToWallet: 'never'
+    }
+  }
+
   const initWallet = useTonWalletStore((state) => state.initWallet);
   const fetchAccountData = useTokenListStore((state) => state.fetchAccountData);
 
@@ -97,7 +116,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
     initWallet(userFriendlyAddress, rawAddress, wallet, tonConnectUI, {
       send: async (args: SenderArguments) => {
         try {
-          tonConnectUI.sendTransaction({
+          const tx = await tonConnectUI.sendTransaction({
             messages: [
               {
                 address: args.to.toString(),
@@ -107,24 +126,36 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
             ],
             validUntil: Date.now() + 5 * 60 * 1000,
           });
+
+          const cell = Cell.fromBase64(tx.boc);
+          const buffer = cell.hash();
+          const txHash = buffer.toString('hex');
+
+          return txHash;
         } catch (e) {
           console.error(e);
+          return '';
         }
       },
       sendMultiple: async (args: SenderArguments[]) => {
         try {
-          tonConnectUI.sendTransaction({
-            messages: args.map((arg) => {
-              return {
-                address: arg.to.toString(),
-                amount: arg.value.toString(),
-                payload: arg.body?.toBoc().toString("base64"),
-              };
-            }),
+          const tx = await tonConnectUI.sendTransaction({
+            messages: args.map((arg) => ({
+              address: arg.to.toString(),
+              amount: arg.value.toString(),
+              payload: arg.body?.toBoc().toString("base64"),
+            })),
             validUntil: Date.now() + 5 * 60 * 1000,
           });
+
+          const cell = Cell.fromBase64(tx.boc);
+          const buffer = cell.hash();
+          const txHash = buffer.toString('hex');
+
+          return txHash;
         } catch (e) {
           console.error(e);
+          return '';
         }
       },
       address: tonConnectUI.account?.address

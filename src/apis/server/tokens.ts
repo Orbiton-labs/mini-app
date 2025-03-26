@@ -8,7 +8,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
       ? [
         {
           type: TokenType.NATIVE,
-          address: PTON_MASTER, 
+          address: PTON_MASTER,
           name: "Toncoin",
           symbol: "TON",
           image: "https://assets.dedust.io/images/ton.webp",
@@ -51,7 +51,7 @@ export const getTokenList = async (): Promise<TokenInfo[]> => {
           name: "Orbiton Swap",
           symbol: "ORB",
           image:
-            "https://pbs.twimg.com/profile_images/1871028225511702528/N23ltPQQ_400x400.jpg",
+            "https://pbs.twimg.com/profile_images/1900284998013374464/ZHYwqELr_400x400.jpg",
           decimals: 9,
           price: 0.1,
         },

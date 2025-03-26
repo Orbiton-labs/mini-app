@@ -1,8 +1,9 @@
 import { WALLET_VERSION } from "@/constants/wallet-version";
 import { logger } from "@/helper/zustand/middleware/logger";
+import { Sender } from "@/types/Sender";
 import { getHttpEndpoint, Network } from "@orbs-network/ton-access"; // src/store/ton-wallet-store.ts
 import { TonApiClient } from "@ton-api/client";
-import { Address, Sender, SenderArguments } from "@ton/core";
+import { Address } from "@ton/core";
 import { TonClient } from "@ton/ton";
 import {
   TonConnectUI,
@@ -23,11 +24,7 @@ export const useTonWalletStore = create<
       rawAddress: string,
       wallet: Wallet | (Wallet & WalletInfoWithOpenMethod) | null,
       ui: TonConnectUI | null,
-      sender:
-        | (Sender & {
-          sendMultiple: (args: SenderArguments[]) => Promise<void>;
-        })
-        | null
+      sender: Sender | null,
     ) => Promise<void>;
     loadWalletVersion: () => Promise<void>;
   }
