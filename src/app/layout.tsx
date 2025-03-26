@@ -4,6 +4,7 @@ import { type PropsWithChildren } from "react";
 
 import { Root } from "@/components/Root/Root";
 
+import { Toaster } from "@/components/ui/toaster";
 import "normalize.css/normalize.css";
 import "./_assets/globals.css";
 import { ApolloWrapper } from "./ApolloWrapper";
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
             <Root>{children}</Root>
           </AnimatePresence>
         </ApolloWrapper>
+        <Toaster />
       </body>
     </html>
   );

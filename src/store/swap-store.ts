@@ -4,6 +4,7 @@ import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { usePendingTxStore } from "./pending-tx-store";
 import { useTokenListStore } from "./token-list-store";
 import { useTonWalletStore } from "./ton-wallet-store";
 import { SwapState, SwapStatus } from "./types";
@@ -58,7 +59,7 @@ export const useSwapStore = create<
                         }, token2: {
                             ...token2!,
                             amount: get().token2?.amount,
-                        }, error: null, status: SwapStatus.IDLE
+                        }
                     });
                 },
                 setAmount1: async (amount) => {
@@ -229,6 +230,17 @@ export const useSwapStore = create<
                         set({ status: SwapStatus.SWAPPING, error: null });
                         const res = await sender.sendMultiple(swapMsg);
                         console.log(res);
+
+                        if (res) {
+                            const token1 = get().token1;
+                            const token2 = get().token2;
+
+                            if (!token1 || !token2) return;
+
+                            const pendingTxStore = usePendingTxStore.getState();
+                            pendingTxStore.setPendingTxStore(`Swap ${token1.token.symbol} for ${token2.token.symbol}`, 'Confirming Swap', res);
+                        }
+
                         // set({ status: SwapStatus.SWAP_SUCCESS });
 
                         // Reset states after successful swap with a delay

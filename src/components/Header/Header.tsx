@@ -92,7 +92,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
   tonConnectUI.uiOptions = {
     actionsConfiguration: {
-      modals: 'all',
+      modals: ['before'],
       notifications: 'all',
       returnStrategy: 'back',
       /**

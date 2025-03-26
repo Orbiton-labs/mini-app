@@ -2,13 +2,16 @@
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorPage } from "@/components/ErrorPage";
+import { useToast } from "@/hooks/use-toast";
 import { useDidMount } from "@/hooks/useDidMount";
 import { useInitEnv } from "@/hooks/useInitEnv";
 import { IconLoading } from "@/icons/fixed/loading";
+import { viewTxOnTonViewer } from "@/lib/ton/explorer";
 import { usePendingTxStore } from "@/store";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { AnimatePresence } from "framer-motion";
-import { type PropsWithChildren } from "react";
+import { ExternalLink } from "lucide-react";
+import { useEffect, type PropsWithChildren } from "react";
 import { BottomNav } from "../BottomNav";
 import { Header } from "../Header/Header";
 import { TransactionStatus } from "../TransactionStatus/TransactionStatus";
@@ -19,6 +22,38 @@ function RootInner({ children }: PropsWithChildren) {
   console.log("isMobile", isMobile);
 
   const show = usePendingTxStore((state) => state.show);
+  const title = usePendingTxStore((state) => state.title);
+  const description = usePendingTxStore((state) => state.description);
+  const txHash = usePendingTxStore((state) => state.txHash);
+  const checkPendingTx = usePendingTxStore((state) => state.checkPendingTx);
+  const toastInfo = usePendingTxStore((state) => state.toastInfo);
+
+  const { toast } = useToast()
+
+  // interval check pending tx
+  useEffect(() => {
+    if (!show) return;
+
+    const interval = setInterval(() => {
+      checkPendingTx();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [checkPendingTx, show]);
+
+  useEffect(() => {
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: (
+          <div onClick={() => {
+            window.open(viewTxOnTonViewer(toastInfo.txHash), '_blank');
+          }} className="flex items-center gap-2">
+            View transaction <ExternalLink className="h-4 w-4" />
+          </div>
+        ),
+      });
+    }
+  }, [toastInfo]);
 
   return (
     <>
@@ -40,11 +75,13 @@ function RootInner({ children }: PropsWithChildren) {
               </AnimatePresence>
             </div>
 
-            {/* {show && ( */}
+            {show && (
               <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center">
-                <TransactionStatus title="Swap 1 USD for 0.2443 TON" description="Confirming Swap" onViewOnTonviewer={() => {}} />
+                <TransactionStatus title={title} description={description} onViewOnTonviewer={() => {
+                  window.open(viewTxOnTonViewer(txHash), '_blank');
+                }} />
               </div>
-            {/* )} */}
+            )}
 
             <BottomNav />
           </div>

@@ -78,6 +78,11 @@ export interface PendingTxState {
   title: string;
   description: string;
   txHash: string;
+  toastInfo: {
+    title: string;
+    description: string;
+    txHash: string;
+  } | null;
 }
 
 export interface PoolState {
