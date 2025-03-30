@@ -11,6 +11,7 @@ import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
 import { useInitEnv } from "@/hooks/useInitEnv";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
+import Backdrop from "@/icons/fixed/backdrop";
 import { useSwapStore, useTokenListStore } from "@/store";
 import { SwapStatus } from "@/store/types";
 import { motion } from "framer-motion";
@@ -69,15 +70,17 @@ export default function SwapPage() {
     <Page back={false}>
       <div className="flex flex-col px-2 sm:px-4 gap-1 items-center w-full">
         <div className="relative w-full max-w-[480px] mx-auto">
-          <div className="absolute w-[600px] h-[600px] bg-red-200" />
-          <div className={`relative ${isMobile ? "" : "top-20"} w-full flex flex-col gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-6 bg-navy1 rounded-3xl`}>
+          {/* <div className="absolute left-1/2 -translate-x-1/2 -translate-y-9 w-[600px] h-[700px] bg-purple1 backdrop-blur-[240px] rounded-full" /> */}
+
+          <Backdrop className="absolute left-1/2 -translate-x-1/2 -translate-y-28 w-[600px] h-[700px] sm:w-[700px] sm:h-[750px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[850px] xl:w-[972px] xl:h-[910px]" />
+          <div className="relative top-5 md:top-20 w-full flex flex-col gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-6 bg-navy1 rounded-3xl">
             <PageTitle
               title="Swap"
               after={
                 <div className="flex justify-between gap-2 sm:gap-4 items-center">
                   <motion.div
                     onClick={() => reload(debouncedAmount1)}
-                    whileHover={{ rotate: -90 }}
+                    whileHover={{ rotate: -90, cursor: "pointer" }}
                     animate={status === SwapStatus.REFETCHING ? { rotate: [0, 360] } : {}}
                     transition={{
                       duration: status === SwapStatus.REFETCHING ? 1 : 0.5,

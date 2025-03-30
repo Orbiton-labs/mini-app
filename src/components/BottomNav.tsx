@@ -5,7 +5,7 @@ import { IconSwap } from "@/icons/fixed/swap";
 import { usePathname } from "next/navigation";
 import { AnimatedLink } from "./ui/animated-link";
 
-const TABS = [
+export const TABS = [
     {
         id: "swap",
         text: "Swap",
@@ -33,7 +33,7 @@ export function BottomNav() {
     const currentTab = pathname.split("/")[1] || "swap";
 
     return (
-        <div className="fixed bottom-0 left-0 z-50 w-full">
+        <div className="fixed bottom-0 left-0 z-50 w-full md:hidden">
             <div className="flex bg-grey3 items-center justify-evenly">
                 {TABS.map(({ id, text, Icon }) => {
                     const selected = id === currentTab;
