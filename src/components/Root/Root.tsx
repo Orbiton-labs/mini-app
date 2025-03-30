@@ -65,7 +65,7 @@ function RootInner({ children }: PropsWithChildren) {
       >
         <div className="mobile-wrap">
           <div className="mobile-content">
-            <div className={`${isMobile ? 'header-fixed' : ''}`}>
+            <div className={`${isMobile ? 'header-fixed telegram-header-spacing' : ''}`}>
               <Header isFullScreen={isMobile} />
             </div>
 

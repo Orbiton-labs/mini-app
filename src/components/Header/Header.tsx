@@ -8,15 +8,16 @@ import {
 } from "@radix-ui/react-popover";
 import { Address, Cell, SenderArguments } from "@ton/core";
 import {
-  TonConnectButton,
   useTonAddress,
   useTonConnectUI,
   useTonWallet
 } from "@tonconnect/ui-react";
 import { Wallet } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { TABS } from "../BottomNav";
+import { AnimatedLink } from "../ui/animated-link";
 import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
 
 export interface HeaderProps {
   isFullScreen: boolean;
@@ -28,8 +29,24 @@ function Account() {
   const [tonConnectUI] = useTonConnectUI();
 
   return (
-    <div className="flex w-1/3 items-center justify-end gap-4 whitespace-nowrap">
-      <TonConnectButton className="max-md:hidden" />
+    <div className="flex items-center justify-end gap-2 sm:gap-3 md:gap-4 whitespace-nowrap relative z-50">
+      {/* SVG definitions for the wallet icon */}
+      <svg width="0" height="0" style={{ position: 'absolute', visibility: 'hidden' }}>
+        <defs>
+          <linearGradient
+            id="paint0_linear_257_2027"
+            x1="32.7002"
+            y1="2"
+            x2="32.7002"
+            y2="22"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#836CDE" />
+            <stop offset="1" stopColor="#B866D2" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <Popover
         open={isPopoverOpen}
         onOpenChange={() => {
@@ -38,29 +55,31 @@ function Account() {
         }}
       >
         <PopoverTrigger className="relative">
-          <Wallet
-            stroke="url(#paint0_linear_257_2027)"
-            onClick={() =>
-              tonConnectUI.connected
-                ? setIsPopoverOpen(true)
-                : tonConnectUI.openModal()
-            }
-            size={36}
-            className="cursor-pointer rounded-xl hover:bg-border-light md:hidden"
-          />
+          <div className="flex items-center justify-center cursor-pointer ">
+            <Wallet
+              stroke="url(#paint0_linear_257_2027)"
+              onClick={() =>
+                tonConnectUI.connected
+                  ? setIsPopoverOpen(true)
+                  : tonConnectUI.openModal()
+              }
+              size={28}
+              className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10"
+            />
+          </div>
         </PopoverTrigger>
         {wallet ? (
           <PopoverContent
             align="end"
-            className="flex w-fit flex-col items-center gap-1 rounded-xl p-4 bg-black3 border border-grey7"
+            className="flex w-fit flex-col items-center gap-1 rounded-xl p-3 sm:p-4 bg-black3 border border-grey7"
             style={{
-              zIndex: 10,
+              zIndex: 100,
             }}
           >
             <p className="text-xs opacity-50">
               {tonConnectUI.wallet?.device.appName}
             </p>
-            <p className="text-xs">
+            <p className="text-xs sm:text-sm">
               {truncateHash(
                 Address.parseRaw(wallet.account.address).toString({
                   bounceable: false,
@@ -73,7 +92,7 @@ function Account() {
                 tonConnectUI.disconnect();
               }}
               variant={"ghost"}
-              className="w-full mt-1 rounded-xl bg-grey4 py-2 hover:opacity-80 text-xs"
+              className="w-full mt-1 rounded-xl bg-grey4 py-1.5 sm:py-2 hover:opacity-80 text-xs"
             >
               Disconnect
             </Button>
@@ -85,6 +104,9 @@ function Account() {
 }
 
 export function Header({ isFullScreen }: HeaderProps): JSX.Element {
+  const pathname = usePathname();
+  const currentTab = pathname.split("/")[1] || "swap";
+
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
@@ -188,18 +210,48 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
   return (
     <div
-      className={`flex flex-col items-center gap-2 ${isFullScreen ? "pt-24" : "pt-8"
-        } pl-4 pr-4`}
+      className={`flex flex-col items-center gap-1 sm:gap-2 ${isFullScreen
+        ? "pt-6 sm:pt-8" // Less padding here since we're using the telegram-header-spacing class in CSS
+        : "pt-4 sm:pt-6 md:pt-8"
+        } px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8 w-full max-w-screen-2xl mx-auto relative z-50`}
     >
-      <div className="flex justify-between w-full border-b-[1px] border-b-grey7 pt-2 pb-2">
-        <div className="flex items-center justify-between gap-2">
-          <Logo width={40} height={40} />
-          <span className="text-xl text-white3">Orbiton</span>
+      <div className={`flex items-center justify-between w-full ${
+        // Conditionally add border only on mobile screens (shown by default, hidden on md and larger)
+        'border-b-[1px] border-b-grey7 md:border-b-0'
+        } pt-1 pb-1 sm:pt-1.5 sm:pb-1.5 md:pt-2 md:pb-2`}>
+        <div className="flex items-center gap-1 sm:gap-2 lg:w-1/5">
+          <Logo className="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+          <span className="text-lg sm:text-lg md:text-xl lg:text-2xl text-white3">Orbiton</span>
         </div>
 
-        <Account />
+        {/* Show navigation on md screens and larger */}
+        <div className="hidden md:flex flex-1 items-center justify-center gap-2 md:gap-4 lg:gap-6 px-1 sm:px-2 z-[60] relative">
+          {TABS.map(({ id, text, Icon }) => {
+            const selected = id === currentTab;
+            return (
+              <AnimatedLink
+                key={id}
+                href={`/${id}`}
+                isActive={selected}
+                className="relative z-[60]"
+              >
+                <span
+                  className={`${selected
+                    ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
+                    : ""
+                    } text-xs sm:text-sm md:text-base lg:text-lg relative z-[60]`}
+                >
+                  {text}
+                </span>
+              </AnimatedLink>
+            )
+          })}
+        </div>
+
+        <div className="flex justify-end w-1/4 lg:w-1/5">
+          <Account />
+        </div>
       </div>
-      <Separator />
     </div>
   );
 }

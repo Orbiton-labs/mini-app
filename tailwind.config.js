@@ -32,6 +32,8 @@ module.exports = {
         black2: "var(--color-black-2)",
         black3: "var(--color-black-3)",
         yellow1: "var(--color-yellow-1)",
+        navy1: "var(--color-navy-1)",
+        purple1: "var(--color-purple-1)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -1,6 +1,7 @@
 import { init } from "@/core/init";
 import { isTMA, postEvent, retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
+import { useClientOnce } from "./useClientOnce";
 
 export enum AppType {
     ANDROID = "android",
@@ -11,11 +12,17 @@ export enum AppType {
 }
 
 // Initialize TMA SDK immediately if we're in TMA environment
-if (isTMA()) {
-    init();
-}
+// if (isTMA()) {
+//     init();
+// }
 
 export const useInitEnv = () => {
+    useClientOnce(() => {
+        if (isTMA()) {
+            init();
+        }
+    })
+
     const [appType] = useState(() => {
         const isTma = isTMA();
         if (isTma) {
@@ -78,6 +85,17 @@ export const useInitEnv = () => {
                 .mobile-content {
                     height: calc(100% + 1px);
                     min-height: 100vh;
+                }
+                
+                .telegram-header-spacing {
+                    padding-top: 60px !important; /* Ensuring adequate space for Telegram buttons */
+                }
+                
+                /* For iOS specifically which might need more space */
+                @supports (-webkit-touch-callout: none) {
+                    .telegram-header-spacing {
+                        padding-top: 70px !important;
+                    }
                 }
             `;
             document.head.appendChild(style);
