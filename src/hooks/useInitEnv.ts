@@ -86,6 +86,17 @@ export const useInitEnv = () => {
                     height: calc(100% + 1px);
                     min-height: 100vh;
                 }
+                
+                .telegram-header-spacing {
+                    padding-top: 50px !important; /* Ensuring adequate space for Telegram buttons */
+                }
+                
+                /* For iOS specifically which might need more space */
+                @supports (-webkit-touch-callout: none) {
+                    .telegram-header-spacing {
+                        padding-top: 60px !important;
+                    }
+                }
             `;
             document.head.appendChild(style);
         }

@@ -29,7 +29,7 @@ function Account() {
   const [tonConnectUI] = useTonConnectUI();
 
   return (
-    <div className="flex items-center justify-end gap-2 sm:gap-3 md:gap-4 whitespace-nowrap">
+    <div className="flex items-center justify-end gap-2 sm:gap-3 md:gap-4 whitespace-nowrap relative z-50">
       {/* SVG definitions for the wallet icon */}
       <svg width="0" height="0" style={{ position: 'absolute', visibility: 'hidden' }}>
         <defs>
@@ -55,7 +55,7 @@ function Account() {
         }}
       >
         <PopoverTrigger className="relative">
-          <div className="flex items-center justify-center cursor-pointer">
+          <div className="flex items-center justify-center cursor-pointer ">
             <Wallet
               stroke="url(#paint0_linear_257_2027)"
               onClick={() =>
@@ -64,7 +64,7 @@ function Account() {
                   : tonConnectUI.openModal()
               }
               size={28}
-              className="w-7 h-7 sm:w-10 sm:h-10 md:w-10 md:h-10"
+              className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10"
             />
           </div>
         </PopoverTrigger>
@@ -73,7 +73,7 @@ function Account() {
             align="end"
             className="flex w-fit flex-col items-center gap-1 rounded-xl p-3 sm:p-4 bg-black3 border border-grey7"
             style={{
-              zIndex: 10,
+              zIndex: 100,
             }}
           >
             <p className="text-xs opacity-50">
@@ -210,20 +210,22 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
   return (
     <div
-      className={`flex flex-col items-center gap-1 sm:gap-2 ${isFullScreen ? "pt-16 sm:pt-20 md:pt-24" : "pt-4 sm:pt-6 md:pt-8"
-        } px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 w-full max-w-screen-2xl mx-auto`}
+      className={`flex flex-col items-center gap-1 sm:gap-2 ${isFullScreen
+        ? "pt-6 sm:pt-8" // Less padding here since we're using the telegram-header-spacing class in CSS
+        : "pt-4 sm:pt-6 md:pt-8"
+        } px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8 w-full max-w-screen-2xl mx-auto relative z-50`}
     >
       <div className={`flex items-center justify-between w-full ${
         // Conditionally add border only on mobile screens (shown by default, hidden on md and larger)
         'border-b-[1px] border-b-grey7 md:border-b-0'
         } pt-1 pb-1 sm:pt-1.5 sm:pb-1.5 md:pt-2 md:pb-2`}>
-        <div className="flex items-center gap-1 sm:gap-2 w-1/4 lg:w-1/5">
-          <Logo className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14" />
-          <span className="text-base sm:text-lg md:text-xl lg:text-2xl text-white3">Orbiton</span>
+        <div className="flex items-center gap-1 sm:gap-2 lg:w-1/5">
+          <Logo className="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+          <span className="text-lg sm:text-lg md:text-xl lg:text-2xl text-white3">Orbiton</span>
         </div>
 
         {/* Show navigation on md screens and larger */}
-        <div className="hidden md:flex flex-1 items-center justify-center gap-2 md:gap-4 lg:gap-6 px-1 sm:px-2 z-10">
+        <div className="hidden md:flex flex-1 items-center justify-center gap-2 md:gap-4 lg:gap-6 px-1 sm:px-2 z-[60] relative">
           {TABS.map(({ id, text, Icon }) => {
             const selected = id === currentTab;
             return (
@@ -231,12 +233,13 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
                 key={id}
                 href={`/${id}`}
                 isActive={selected}
+                className="relative z-[60]"
               >
                 <span
                   className={`${selected
                     ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
                     : ""
-                    } text-xs sm:text-sm md:text-base lg:text-lg`}
+                    } text-xs sm:text-sm md:text-base lg:text-lg relative z-[60]`}
                 >
                   {text}
                 </span>
