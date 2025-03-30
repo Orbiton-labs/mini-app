@@ -9,6 +9,7 @@ import {
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
+import { useInitEnv } from "@/hooks/useInitEnv";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
 import { useSwapStore, useTokenListStore } from "@/store";
 import { SwapStatus } from "@/store/types";
@@ -16,6 +17,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function SwapPage() {
+  const { isMobile } = useInitEnv();
+
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
   const [inputAmount1, setInputAmount1] = useState<string | undefined>("");
 
@@ -64,51 +67,62 @@ export default function SwapPage() {
 
   return (
     <Page back={false}>
-      <div className="flex flex-col pl-4 pr-4 gap-1">
-        <PageTitle
-          title="Swap"
-          after={
-            <div className="flex justify-between gap-4 items-center">
-              <motion.div
-                onClick={() => reload(debouncedAmount1)}
-                whileHover={{ rotate: -90 }}
-                animate={status === SwapStatus.REFETCHING ? { rotate: [0, 360] } : {}}
-                transition={{
-                  duration: status === SwapStatus.REFETCHING ? 1 : 0.5,
-                  ease: "easeInOut",
-                  repeat: status === SwapStatus.REFETCHING ? Infinity : 0,
-                }}
-              >
-                <Icon24ArrowRotateReverse />
-              </motion.div>
-              <SlippageSetting slippage={slippage} setSlippage={setSlippage} />
-            </div>
-          }
-        />
+      <div className="flex flex-col px-2 sm:px-4 gap-1 items-center w-full">
+        <div className="relative w-full max-w-[480px] mx-auto">
+          <div className="absolute w-[600px] h-[600px] bg-red-200" />
+          <div className={`relative ${isMobile ? "" : "top-20"} w-full flex flex-col gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-6 bg-navy1 rounded-3xl`}>
+            <PageTitle
+              title="Swap"
+              after={
+                <div className="flex justify-between gap-2 sm:gap-4 items-center">
+                  <motion.div
+                    onClick={() => reload(debouncedAmount1)}
+                    whileHover={{ rotate: -90 }}
+                    animate={status === SwapStatus.REFETCHING ? { rotate: [0, 360] } : {}}
+                    transition={{
+                      duration: status === SwapStatus.REFETCHING ? 1 : 0.5,
+                      ease: "easeInOut",
+                      repeat: status === SwapStatus.REFETCHING ? Infinity : 0,
+                    }}
+                  >
+                    <Icon24ArrowRotateReverse />
+                  </motion.div>
+                  <SlippageSetting slippage={slippage} setSlippage={setSlippage} />
+                </div>
+              }
+            />
+            <PairInput
+              token1={{
+                token: token1?.token!,
+                balance: token1?.balance,
+                amount: inputAmount1
+              }}
+              token2={token2}
+              setToken1={(token) => setToken1(token, debouncedAmount1)}
+              setToken2={(token) => setToken2(token, debouncedAmount1)}
+              setAmount1={handleAmount1Change}
+              setAmount2={() => { }}
+              tokenList={filteredTokens}
+              reverseOrder={() => {
+                reverseOrder();
+                setInputAmount1(token2?.amount);
+              }}
+              displayTokenList={() => displayFilteredTokens([token1, token2])}
+              hideBalance={false}
+              canSwapOrder={true}
+              disable1={true}
+            />
+            <SubmitButton
+              onClick={swap}
+              isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
+              isDisabled={isButtonDisabled()}
+              error={error || undefined}
+              content={buttonMessage}
+            />
+          </div>
+        </div>
 
-        <div className={`w-full flex flex-col gap-4 px-0 py-4 bg-primary`}>
-          <PairInput
-            token1={{
-              token: token1?.token!,
-              balance: token1?.balance,
-              amount: inputAmount1
-            }}
-            token2={token2}
-            setToken1={(token) => setToken1(token, debouncedAmount1)}
-            setToken2={(token) => setToken2(token, debouncedAmount1)}
-            setAmount1={handleAmount1Change}
-            setAmount2={() => { }}
-            tokenList={filteredTokens}
-            reverseOrder={() => {
-              reverseOrder();
-              setInputAmount1(token2?.amount);
-            }}
-            displayTokenList={() => displayFilteredTokens([token1, token2])}
-            hideBalance={false}
-            canSwapOrder={true}
-            disable1={true}
-          />
-          {/* {token2 && token2.amount !== "0" && (
+        {/* {token2 && token2.amount !== "0" && (
             <TransactionSimulation
               infos={[
                 {
@@ -138,14 +152,6 @@ export default function SwapPage() {
               slippage={slippage}
             />
           )} */}
-          <SubmitButton
-            onClick={swap}
-            isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
-            isDisabled={isButtonDisabled()}
-            error={error || undefined}
-            content={buttonMessage}
-          />
-        </div>
       </div>
     </Page>
   );

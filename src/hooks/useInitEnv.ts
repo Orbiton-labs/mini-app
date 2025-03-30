@@ -1,6 +1,7 @@
 import { init } from "@/core/init";
 import { isTMA, postEvent, retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
+import { useClientOnce } from "./useClientOnce";
 
 export enum AppType {
     ANDROID = "android",
@@ -11,11 +12,17 @@ export enum AppType {
 }
 
 // Initialize TMA SDK immediately if we're in TMA environment
-if (isTMA()) {
-    init();
-}
+// if (isTMA()) {
+//     init();
+// }
 
 export const useInitEnv = () => {
+    useClientOnce(() => {
+        if (isTMA()) {
+            init();
+        }
+    })
+
     const [appType] = useState(() => {
         const isTma = isTMA();
         if (isTma) {

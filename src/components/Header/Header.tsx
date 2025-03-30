@@ -1,4 +1,5 @@
 import { truncateHash } from "@/helper/format";
+import { useInitEnv } from "@/hooks/useInitEnv";
 import { Logo } from "@/icons/fixed/logo";
 import { useTokenListStore, useTonWalletStore } from "@/store";
 import {
@@ -16,7 +17,6 @@ import {
 import { Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
 
 export interface HeaderProps {
   isFullScreen: boolean;
@@ -28,8 +28,7 @@ function Account() {
   const [tonConnectUI] = useTonConnectUI();
 
   return (
-    <div className="flex w-1/3 items-center justify-end gap-4 whitespace-nowrap">
-      <TonConnectButton className="max-md:hidden" />
+    <div className="flex w-full sm:w-2/3 md:w-1/2 lg:w-1/3 items-center justify-end gap-2 sm:gap-3 md:gap-4 whitespace-nowrap">
       <Popover
         open={isPopoverOpen}
         onOpenChange={() => {
@@ -45,14 +44,14 @@ function Account() {
                 ? setIsPopoverOpen(true)
                 : tonConnectUI.openModal()
             }
-            size={36}
-            className="cursor-pointer rounded-xl hover:bg-border-light md:hidden"
+            size={28}
+            className="cursor-pointer rounded-xl hover:bg-border-light sm:size-14 md:size-14"
           />
         </PopoverTrigger>
         {wallet ? (
           <PopoverContent
             align="end"
-            className="flex w-fit flex-col items-center gap-1 rounded-xl p-4 bg-black3 border border-grey7"
+            className="flex w-fit flex-col items-center gap-1 rounded-xl p-3 sm:p-4 bg-black3 border border-grey7"
             style={{
               zIndex: 10,
             }}
@@ -60,7 +59,7 @@ function Account() {
             <p className="text-xs opacity-50">
               {tonConnectUI.wallet?.device.appName}
             </p>
-            <p className="text-xs">
+            <p className="text-xs sm:text-sm">
               {truncateHash(
                 Address.parseRaw(wallet.account.address).toString({
                   bounceable: false,
@@ -73,7 +72,7 @@ function Account() {
                 tonConnectUI.disconnect();
               }}
               variant={"ghost"}
-              className="w-full mt-1 rounded-xl bg-grey4 py-2 hover:opacity-80 text-xs"
+              className="w-full mt-1 rounded-xl bg-grey4 py-1.5 sm:py-2 hover:opacity-80 text-xs"
             >
               Disconnect
             </Button>
@@ -89,6 +88,7 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
   const rawAddress = useTonAddress(false);
   const wallet = useTonWallet();
   const [tonConnectUI] = useTonConnectUI();
+  const { isMobile } = useInitEnv();
 
   tonConnectUI.uiOptions = {
     actionsConfiguration: {
@@ -188,18 +188,17 @@ export function Header({ isFullScreen }: HeaderProps): JSX.Element {
 
   return (
     <div
-      className={`flex flex-col items-center gap-2 ${isFullScreen ? "pt-24" : "pt-8"
-        } pl-4 pr-4`}
+      className={`flex flex-col items-center gap-1 sm:gap-2 ${isFullScreen ? "pt-16 sm:pt-20 md:pt-24" : "pt-4 sm:pt-6 md:pt-8"
+        } px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 w-full max-w-screen-2xl mx-auto`}
     >
-      <div className="flex justify-between w-full border-b-[1px] border-b-grey7 pt-2 pb-2">
-        <div className="flex items-center justify-between gap-2">
-          <Logo width={40} height={40} />
-          <span className="text-xl text-white3">Orbiton</span>
+      <div className={`flex justify-between w-full ${isMobile ? 'border-b-[1px] border-b-grey7' : ''} pt-1 pb-1 sm:pt-1.5 sm:pb-1.5 md:pt-2 md:pb-2`}>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Logo className="w-10 h-10 sm:w-14 sm:h-14 md:w-14 md:h-14" />
+          <span className="text-lg sm:text-xl md:text-2xl text-white3">Orbiton</span>
         </div>
 
         <Account />
       </div>
-      <Separator />
     </div>
   );
 }
