@@ -9,17 +9,16 @@ import {
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
-import { useInitEnv } from "@/hooks/useInitEnv";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
 import Backdrop from "@/icons/fixed/backdrop";
 import { useSwapStore, useTokenListStore } from "@/store";
 import { SwapStatus } from "@/store/types";
+import { useTonConnectUI } from "@tonconnect/ui-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function SwapPage() {
-  const { isMobile } = useInitEnv();
-
+  const [tonConnectUI] = useTonConnectUI();
   const [slippage, setSlippage] = useState<number>(SLIPPAGE_OPTIONS[0].value);
   const [inputAmount1, setInputAmount1] = useState<string | undefined>("");
 
@@ -115,7 +114,14 @@ export default function SwapPage() {
               disable1={true}
             />
             <SubmitButton
-              onClick={swap}
+              onClick={async () => {
+                if (status === SwapStatus.CONNECT_WALLET) {
+                  await tonConnectUI.openModal()
+                  return;
+                }
+
+                await swap();
+              }}
               isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
               isDisabled={isButtonDisabled()}
               error={error || undefined}

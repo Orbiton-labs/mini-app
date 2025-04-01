@@ -28,6 +28,7 @@ export const useTonWalletStore = create<
       sender: Sender | null,
     ) => Promise<void>;
     loadWalletVersion: () => Promise<void>;
+    getTonApiClient: () => TonApiClient;
   }
 >()(
   devtools(
@@ -119,6 +120,18 @@ export const useTonWalletStore = create<
               });
             }
           }
+        },
+        getTonApiClient: () => {
+          let tonApiClient = get().tonApiClient;
+          if (!tonApiClient) {
+            tonApiClient = new TonApiClient({
+              baseUrl:
+                process.env.NEXT_PUBLIC_TON_API_BASE_URL || "https://tonapi.io",
+              apiKey: process.env.NEXT_PUBLIC_TON_API_KEY || undefined,
+            });
+            set({ tonApiClient });
+          }
+          return tonApiClient;
         },
       })),
       "ton-wallet"

@@ -83,6 +83,11 @@ export interface PendingTxState {
     description: string;
     txHash: string;
   } | null;
+  latestTransaction: {
+    title: string;
+    description: string;
+    txHash: string;
+  } | null;
 }
 
 export interface PoolState {
