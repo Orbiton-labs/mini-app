@@ -32,21 +32,6 @@ Add the following secrets to your GitHub repository:
 1. `VERCEL_TOKEN`: Your Vercel access token (generate at https://vercel.com/account/tokens)
 2. `VERCEL_ORG_ID`: Your organization ID from `.vercel/project.json`
 3. `VERCEL_PROJECT_ID`: Your project ID from `.vercel/project.json`
-4. `NPM_TOKEN`: Your npm authentication token (required for package installation)
-
-To get an NPM token:
-
-1. Log in to npm:
-   ```bash
-   npm login
-   ```
-
-2. Create a new access token at https://www.npmjs.com/settings/[your-username]/tokens
-   - Or extract your token from your local `.npmrc` file:
-     ```bash
-     cat ~/.npmrc
-     ```
-     Look for a line like `//registry.npmjs.org/:_authToken=npm_xxxxxx`
 
 ## Deployment Workflows
 

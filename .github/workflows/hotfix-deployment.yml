@@ -3,7 +3,6 @@ name: Hotfix Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 on:
   push:
@@ -20,7 +19,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
           
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
@@ -29,8 +27,9 @@ jobs:
           
       - name: Install dependencies
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          pnpm install --no-frozen-lockfile
+          # Use npm registry without authentication for public packages
+          pnpm config set registry https://registry.npmjs.org
+          pnpm install --no-frozen-lockfile --ignore-scripts
         
       - name: Install Vercel CLI
         run: pnpm add --global vercel@latest
