@@ -1,5 +1,5 @@
 {
-  "name": "orbiton-app",
+  "name": "@orbiton_labs/orbiton-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
