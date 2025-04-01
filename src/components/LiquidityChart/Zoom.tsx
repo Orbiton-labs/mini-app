@@ -57,7 +57,7 @@ export function Zoom({
   styles: LiquidityChartProps["styles"];
   currentPrice: number;
 }) {
-  const zoomBehavior = useRef<ZoomBehavior<Element, unknown>>();
+  const zoomBehavior = useRef<ZoomBehavior<Element, unknown> | undefined>(undefined);
   const preset = Presets.NORMAL;
 
   const [zoomIn, zoomOut, zoomInitial] = useMemo(

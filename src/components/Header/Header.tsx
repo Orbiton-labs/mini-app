@@ -103,7 +103,7 @@ function Account() {
   );
 }
 
-export function Header({ isFullScreen }: HeaderProps): JSX.Element {
+export function Header({ isFullScreen }: HeaderProps): React.ReactElement {
   const pathname = usePathname();
   const currentTab = pathname.split("/")[1] || "swap";
 
