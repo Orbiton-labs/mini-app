@@ -8,6 +8,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Add permissions section to allow commenting on issues/PRs
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   Deploy-Preview:
     runs-on: ubuntu-latest
