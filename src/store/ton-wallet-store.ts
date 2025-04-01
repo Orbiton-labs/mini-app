@@ -13,6 +13,7 @@ import {
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { autoInit } from "./middlewares/auto-init";
+import { useSwapStore } from "./swap-store";
 import { useTokenListStore } from "./token-list-store";
 import { TonWalletState } from "./types";
 
@@ -73,6 +74,10 @@ export const useTonWalletStore = create<
             }
           }
           await tokenListStore.fetchAccountData();
+
+          const swapStore = useSwapStore.getState();
+          const amount1 = swapStore.token1?.amount;
+          swapStore.reload(amount1);
         },
         init: async () => {
           const endpoint = await getHttpEndpoint({
