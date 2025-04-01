@@ -26,11 +26,11 @@ jobs:
         with:
           version: '9.15.0'
           
+      - name: Set up .npmrc
+        run: echo "registry=https://registry.npmjs.org" > .npmrc
+        
       - name: Install dependencies
-        run: |
-          # Use npm registry without authentication for public packages
-          pnpm config set registry https://registry.npmjs.org
-          pnpm install --no-frozen-lockfile --ignore-scripts
+        run: pnpm install --no-frozen-lockfile --ignore-scripts
         
       - name: Install Vercel CLI
         run: pnpm add --global vercel@latest
