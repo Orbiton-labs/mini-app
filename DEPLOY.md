@@ -23,6 +23,16 @@ Before your first deployment:
    - `VERCEL_TOKEN`: Generate at https://vercel.com/account/tokens
    - `VERCEL_ORG_ID`: From `.vercel/project.json`
    - `VERCEL_PROJECT_ID`: From `.vercel/project.json`
+   - `NPM_TOKEN`: Your npm authentication token for package installation
+
+   To get an NPM token:
+   ```bash
+   npm login
+   # Then create a token at https://www.npmjs.com/settings/[username]/tokens
+   # Or check your existing token with:
+   cat ~/.npmrc
+   # Look for: //registry.npmjs.org/:_authToken=npm_xxxxxx
+   ```
 
 ### Deploying to Production
 
