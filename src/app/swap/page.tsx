@@ -1,16 +1,16 @@
 "use client";
 
+import { MemoDialog } from "@/components/MemoDialog/MemoDialog";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PairInput } from "@/components/PairInput/PairInput";
 import {
   SLIPPAGE_OPTIONS,
-  SlippageSetting,
+  SlippageSetting
 } from "@/components/SlippageSetting/SlippageSetting";
 import { SubmitButton } from "@/components/SubmitButton/SubmitButton";
 import useDebounce from "@/hooks/useDebounce";
 import { Icon24ArrowRotateReverse } from "@/icons/24/arrows-rotate-reverse";
-import Backdrop from "@/icons/fixed/backdrop";
 import { useSwapStore, useTokenListStore } from "@/store";
 import { SwapStatus } from "@/store/types";
 import { useTonConnectUI } from "@tonconnect/ui-react";
@@ -31,6 +31,7 @@ export default function SwapPage() {
   const resetInputSwap = useSwapStore((state) => state.resetInputSwap);
   const swap = useSwapStore((state) => state.swap);
   const reload = useSwapStore((state) => state.reload);
+  const setMemo = useSwapStore((state) => state.setMemo);
   const filteredTokens = useTokenListStore((state) => state.filteredTokens);
   const displayFilteredTokens = useTokenListStore(
     (state) => state.displayFilteredTokens
@@ -67,11 +68,22 @@ export default function SwapPage() {
 
   return (
     <Page back={false}>
-      <div className="flex flex-col px-2 sm:px-4 gap-1 items-center w-full">
-        <div className="relative w-full max-w-[480px] mx-auto">
-          {/* Backdrop with lower z-index */}
-          <Backdrop className="absolute left-1/2 -translate-x-1/2 -translate-y-28 w-[320px] h-[650px] sm:w-[700px] sm:h-[750px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[850px] xl:w-[972px] xl:h-[910px]" />
-          <div className="relative top-5 md:top-20 w-full flex flex-col gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-6 bg-navy1 rounded-3xl">
+      <div className="flex flex-col px-4 sm:px-4 gap-1 items-center w-full">
+        <div className="relative max-w-[400px] top-5 md:top-20 w-full rounded-2xl">
+          <div className="flex flex-col gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-6 
+          bg-navy1 rounded-2xl relative
+          before:rounded-2xl before:absolute before:-inset-1 
+          before:bg-[conic-gradient(from_var(--gradient-angle),var(--gr-border-3),var(--gr-border-4),var(--gr-border-5),var(--gr-border-4),var(--gr-border-3))]
+          before:animate-[border-gradient-rotate_3s_linear_infinite]
+          before:content-['']
+          before:-z-[1]
+          after:rounded-2xl after:absolute after:-inset-1 
+          after:blur-xl
+          after:bg-[conic-gradient(from_var(--gradient-angle),var(--gr-border-3),var(--gr-border-4),var(--gr-border-5),var(--gr-border-4),var(--gr-border-3))]
+          after:animate-[border-gradient-rotate_3s_linear_infinite]
+          after:content-['']
+          after:-z-[1]
+          ">
             <PageTitle
               title="Swap"
               after={
@@ -113,20 +125,28 @@ export default function SwapPage() {
               canSwapOrder={true}
               disable1={true}
             />
-            <SubmitButton
-              onClick={async () => {
-                if (status === SwapStatus.CONNECT_WALLET) {
-                  await tonConnectUI.openModal()
-                  return;
-                }
-
+            <MemoDialog
+              setMemo={setMemo}
+              onSubmit={async () => {
                 await swap();
               }}
-              isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
-              isDisabled={isButtonDisabled()}
-              error={error || undefined}
-              content={buttonMessage}
-            />
+              trigger={<SubmitButton
+                onClick={async () => { }}
+
+                // onClick={async () => {
+                //   if (status === SwapStatus.CONNECT_WALLET) {
+                //     await tonConnectUI.openModal()
+                //     return;
+                //   }
+
+                //   await swap();
+                // }}
+                isLoading={status === 'SWAPPING' || status === 'FINDING_ROUTES'}
+                isDisabled={isButtonDisabled()}
+                error={error || undefined}
+                content={buttonMessage}
+              />} />
+
           </div>
         </div>
 

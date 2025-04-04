@@ -63,7 +63,7 @@ export const SelectToken: FC<SelectTokenProps> = ({
       </DrawerTrigger>
       <DrawerContent
         aria-describedby={undefined}
-        className="bg-black3 rounded-t-2xl max-h-[86vh] overflow-hidden border-none mb-10"
+        className="bg-black3 rounded-t-2xl max-h-[86vh] min-h-[86vh] overflow-hidden border-none mb-10"
       >
         <DrawerHeader className="flex justify-center items-center mx-4 px-2 py-5">
           <div>

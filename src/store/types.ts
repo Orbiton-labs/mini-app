@@ -61,6 +61,7 @@ export interface SwapState {
   error: string | null;
   priceImpact: number;
   slippage: number;
+  memo: string | null;
 }
 
 export interface CreatePoolState {

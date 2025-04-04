@@ -34,6 +34,12 @@ module.exports = {
         yellow1: "var(--color-yellow-1)",
         navy1: "var(--color-navy-1)",
         purple1: "var(--color-purple-1)",
+        purple2: "var(--color-purple-2)",
+        grBorder1: "var(--gr-border-1)",
+        grBorder2: "var(--gr-border-2)",
+        grBorder3: "var(--gr-border-3)",
+        grBorder4: "var(--gr-border-4)",
+        grBorder5: "var(--gr-border-5)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -80,6 +86,16 @@ module.exports = {
       },
       fontSize: {
         ss: "0.625rem",
+      },
+      keyframes: {
+        "border-gradient-rotate": {
+          "0%": {
+            "--gradient-angle": "0deg",
+          },
+          "100%": {
+            "--gradient-angle": "360deg",
+          },
+        },
       },
       // borderRadius: {
       // 	lg: 'var(--radius)',

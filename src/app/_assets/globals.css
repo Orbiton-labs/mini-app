@@ -5,14 +5,30 @@
 @tailwind utilities;
 
 @layer base {
+
+  @property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes border-gradient-rotate {
+    0% {
+      --gradient-angle: 0deg;
+    }
+    100% {
+      --gradient-angle: 360deg;
+    }
+  }
+
   body {
     /* background: var(--tg-theme-secondary-bg-color, white); */
     position: relative;
-
     background-image: url('/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    z-index: -9999999;
   }
 
   html,
@@ -49,6 +65,12 @@
     --color-yellow-1: hsla(72, 71%, 57%, 1);
     --color-navy-1: hsla(251, 78%, 10%, 1);
     --color-purple-1: hsla(266, 69%, 63%, 1);
+    --color-purple-2: hsla(251, 34%, 26%, 1);
+    --gr-border-1: #052b2f;
+    --gr-border-2: #073438;
+    --gr-border-3: #22174F;
+    --gr-border-4: #836CDE;
+    --gr-border-5: #B866D2;
   }
 
   .theme-black {
@@ -74,10 +96,17 @@
     --color-yellow-1: hsla(72, 71%, 57%, 1);
     --color-navy-1: hsla(251, 78%, 10%, 1);
     --color-purple-1: hsla(266, 69%, 63%, 1);
+    --color-purple-2: hsla(251, 34%, 26%, 1);
+    --gr-border-1: #052b2f;
+    --gr-border-2: #073438;
+    --gr-border-3: #22174F;
+    --gr-border-4: #836CDE;
+    --gr-border-5: #B866D2;
   }
 
   * {
-    font-family: "Michroma", sans-serif !important;
+    font-family: 'Michroma', sans-serif !important;
+
     --tgui--bg_color: linear-gradient(
       180deg,
       var(--color-grey-1, hsl(222, 13%, 15%)),

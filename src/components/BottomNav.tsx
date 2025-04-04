@@ -52,7 +52,7 @@ export function BottomNav() {
                                 className={`${selected
                                     ? "bg-gradient-to-b from-green1 via-green1 to-green2 bg-clip-text text-transparent"
                                     : ""
-                                    } text-xs`}
+                                    } text-sm`}
                             >
                                 {text}
                             </span>

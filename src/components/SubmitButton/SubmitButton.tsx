@@ -23,11 +23,16 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
       <Button
         onClick={onClick}
         disabled={isLoading || isDisabled}
-        className="w-full bg-gradient-to-b from-green1 to-green2 py-8 text-base text-black2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-gradient-to-b from-green1 to-green2 py-8 text-xl font-bold text-black2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 w-full">
-            <LoaderCircleIcon className="animate-spin" />
+            <LoaderCircleIcon
+              style={{
+                width: "24px",
+                height: "24px",
+              }}
+              className="animate-spin" />
             <span>Processing</span>
           </div>
         ) : error ? (
