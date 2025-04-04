@@ -17,7 +17,7 @@ export const MemoDialog: FC<MemoDialogProps> = ({ trigger, setMemo, onSubmit }) 
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className="sm:max-w-[425px] bg-grey3 border border-grey7">
+      <DialogContent aria-describedby={undefined} className="max-w-[350px] sm:max-w-[375px] md:max-w-[425px] bg-grey3 border border-grey7">
         <DialogHeader className="border-b border-grey7 pb-5">
           <DialogTitle className="text-white2 text-2xl">Special Event Code</DialogTitle>
           <DialogClose>
