@@ -2,6 +2,7 @@ import { simulateSwap } from "@/apis/server/swap";
 import { DEFAULT_PAIR_MAINNET, DEFAULT_PAIR_TESTNET } from "@/constants/default-pair";
 import { logger } from "@/helper/zustand/middleware/logger";
 import { Token } from "@/types/Token";
+import { beginCell } from "@ton/core";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { usePendingTxStore } from "./pending-tx-store";
@@ -15,11 +16,12 @@ export const useSwapStore = create<
     SwapState & {
         setToken1: (token: Token, amount?: string) => Promise<void>;
         setToken2: (token: Token, amount?: string) => Promise<void>;
+        setMemo: (memo: string) => void;
         setPair: (token1: Token, token2: Token) => void;
         setAmount1: (amount: string | undefined) => Promise<void>;
         setAmount2: (amount: string | undefined) => Promise<void>;
         reverseOrder: () => Promise<void>;
-        swap: () => Promise<void>;
+        swap: (callback?: () => void) => Promise<void>;
         resetInputSwap: () => void;
         getButtonText: () => string;
         isButtonDisabled: () => boolean;
@@ -41,6 +43,7 @@ export const useSwapStore = create<
                 error: null,
                 priceImpact: 0,
                 slippage: 0,
+                memo: null,
                 setToken1: async (token, amount?: string) => {
                     set({ token1: token, error: null, status: SwapStatus.IDLE });
                     console.log(amount);
@@ -50,6 +53,9 @@ export const useSwapStore = create<
                     set({ token2: token, error: null, status: SwapStatus.IDLE });
 
                     await get().setAmount1(amount);
+                },
+                setMemo: (memo: string) => {
+                    set({ memo });
                 },
                 setPair: (token1, token2) => {
                     set({
@@ -216,7 +222,7 @@ export const useSwapStore = create<
                         }
                     }
                 },
-                swap: async () => {
+                swap: async (callback?: () => void) => {
                     const walletStore = useTonWalletStore.getState();
                     const sender = walletStore.sender;
                     const swapMsg = get().swapMessage;
@@ -228,10 +234,27 @@ export const useSwapStore = create<
 
                     try {
                         set({ status: SwapStatus.SWAPPING, error: null });
+
+                        const memo = get().memo;
+                        if (memo) {
+                            swapMsg.push({
+                                to: sender.address!,
+                                value: 500000n,
+                                body: beginCell()
+                                    .storeUint(0, 32) // write 32 zero bits to indicate that a text comment will follow
+                                    .storeStringTail(memo) // write our text comment
+                                    .endCell()
+                            });
+                        }
+
                         const res = await sender.sendMultiple(swapMsg);
                         console.log(res);
 
                         if (res) {
+                            if (callback) {
+                                callback();
+                            }
+
                             const token1 = get().token1;
                             const token2 = get().token2;
 

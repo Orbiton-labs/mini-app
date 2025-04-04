@@ -215,13 +215,10 @@ export function Header({ isFullScreen }: HeaderProps): React.ReactElement {
         : "pt-4 sm:pt-6 md:pt-8"
         } px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8 w-full max-w-screen-2xl mx-auto relative z-50`}
     >
-      <div className={`flex items-center justify-between w-full ${
-        // Conditionally add border only on mobile screens (shown by default, hidden on md and larger)
-        'border-b-[1px] border-b-grey7 md:border-b-0'
-        } pt-1 pb-1 sm:pt-1.5 sm:pb-1.5 md:pt-2 md:pb-2`}>
+      <div className={`flex items-center justify-between w-full pt-1 pb-1 sm:pt-1.5 sm:pb-1.5 md:pt-2 md:pb-2`}>
         <div className="flex items-center gap-1 sm:gap-2 lg:w-1/5">
           <Logo className="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-          <span className="text-lg sm:text-lg md:text-xl lg:text-2xl text-white3">Orbiton</span>
+          <span className="pl-1 text-lg sm:text-lg md:text-xl lg:text-2xl text-white3">Orbiton</span>
         </div>
 
         {/* Show navigation on md screens and larger */}
