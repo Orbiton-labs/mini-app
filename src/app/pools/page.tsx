@@ -4,12 +4,11 @@ import { DataTable } from "@/app/pools/data-table";
 import { ActionButton } from "@/components/ActionButton/ActionButton";
 import { Page } from "@/components/Page";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
-import { CardSkeleton, ListSkeleton } from "@/components/ui/card-skeleton";
 import { usePoolList } from "@/hooks/pools/usePoolList";
+import { IconLoading } from "@/icons/fixed/loading";
 import Link from "next/link";
 import { useEffect } from "react";
 import { columns as newColumns } from "./columns";
-import { IconLoading } from "@/icons/fixed/loading";
 
 export default function PoolsPage() {
   const { poolList, loading, refetch } = usePoolList();
@@ -26,13 +25,13 @@ export default function PoolsPage() {
           <Link href="/create-pool">
             <ActionButton content="Create pool" />
           </Link>
-          {/* {loading ? (
+          {loading ? (
             <div className="mt-4 flex justify-center items-center">
               <IconLoading className="w-10 h-10" />
             </div>
-          ) : ( */}
+          ) : (
             <DataTable columns={newColumns} data={poolList} />
-          {/* )} */}
+          )}
         </div>
       </div>
     </Page>

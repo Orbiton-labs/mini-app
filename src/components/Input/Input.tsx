@@ -34,7 +34,7 @@ export const Input: FC<InputProps> = ({
       onFocus={onFocus}
       placeholder="0.0"
       className={`w-[100%] text-right text-base bg-transparent overflow-visible  ${value ? "text-white2" : "text-white1"
-        } py-[8px] border-none focus:ring-transparent ${disabled ? "opacity-50" : ""}`}
+        } py-[8px] border-none focus:ring-transparent ${disabled && !value ? "opacity-50" : ""}`}
       type="number"
       value={displayValue}
       onChange={(e) => handleSetValue(e.target.value)}
