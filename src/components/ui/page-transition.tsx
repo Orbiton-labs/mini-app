@@ -22,7 +22,7 @@ export function PageTransition({
             animate="enter"
             exit="exit"
             transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 25 }}
-            className={className}
+            className={`${className} w-full flex-grow`}
         >
             {children}
         </motion.div>
