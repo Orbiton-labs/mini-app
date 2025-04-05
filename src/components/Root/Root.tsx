@@ -58,7 +58,7 @@ function RootInner({ children }: PropsWithChildren) {
   return (
     <>
       <TonConnectUIProvider
-        manifestUrl="https://raw.githubusercontent.com/Orbiton-labs/mini-app/main/public/tonconnect-manifest.json"
+        manifestUrl="https://app.orbiton.fi/tonconnect-manifest.json"
         actionsConfiguration={{
           twaReturnUrl: "https://t.me/orbiton_swap_bot"
         }}
