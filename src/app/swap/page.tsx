@@ -125,7 +125,13 @@ export default function SwapPage() {
               canSwapOrder={true}
               disable1={true}
             />
-            <MemoDialog
+            {status === SwapStatus.CONNECT_WALLET ? <SubmitButton
+              onClick={async () => { await tonConnectUI.openModal() }}
+              isLoading={false}
+              isDisabled={isButtonDisabled()}
+              error={error || undefined}
+              content={buttonMessage}
+            /> : <MemoDialog
               setMemo={setMemo}
               onSubmit={async () => {
                 await swap();
@@ -145,7 +151,8 @@ export default function SwapPage() {
                 isDisabled={isButtonDisabled()}
                 error={error || undefined}
                 content={buttonMessage}
-              />} />
+              />} />}
+
 
           </div>
         </div>
