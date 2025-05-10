@@ -1,7 +1,4 @@
-import { IconExplore } from "@/icons/fixed/explore";
-import { IconPool } from "@/icons/fixed/pool";
-import { IconPortfolio } from "@/icons/fixed/portfolio";
-import { IconSwap } from "@/icons/fixed/swap";
+import { ArrowDownUpIcon, DropletsIcon, GiftIcon, TelescopeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { AnimatedLink } from "./ui/animated-link";
 
@@ -9,22 +6,22 @@ export const TABS = [
     {
         id: "swap",
         text: "Swap",
-        Icon: IconSwap,
+        Icon: ({ isActive }: { isActive: boolean }) => <ArrowDownUpIcon className={isActive ? "stroke-[url(#paint0_linear_257_2027)]" : "stroke-[#FBFCF4]"} />,
     },
     {
         id: "pools",
         text: "Pools",
-        Icon: IconPool,
+        Icon: ({ isActive }: { isActive: boolean }) => <DropletsIcon className={isActive ? "stroke-[url(#paint0_linear_257_2027)]" : "stroke-[#FBFCF4]"} />,
     },
     {
         id: "explore",
         text: "Explore",
-        Icon: IconExplore,
+        Icon: ({ isActive }: { isActive: boolean }) => <TelescopeIcon className={isActive ? "stroke-[url(#paint0_linear_257_2027)]" : "stroke-[#FBFCF4]"} />,
     },
     {
-        id: "portfolio",
-        text: "Portfolio",
-        Icon: IconPortfolio,
+        id: "events",
+        text: "Events",
+        Icon: ({ isActive }: { isActive: boolean }) => <GiftIcon className={isActive ? "stroke-[url(#paint0_linear_257_2027)]" : "stroke-[#FBFCF4]"} />,
     },
 ];
 
@@ -34,7 +31,7 @@ export function BottomNav() {
 
     return (
         <div className="fixed bottom-0 left-0 z-[100] w-full md:hidden">
-            <div className="flex bg-grey3 items-center justify-evenly">
+            <div className="flex bg-purple4 items-center justify-evenly">
                 {TABS.map(({ id, text, Icon }) => {
                     const selected = id === currentTab;
                     return (
